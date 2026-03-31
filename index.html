@@ -89,7 +89,7 @@
             color: #333;
         }
 
-        input[type="text"], input[type="date"], input[type="number"], select, input[type="file"], input[type="url"] {
+        input[type="text"], input[type="date"], input[type="number"], input[type="password"], select, input[type="file"], input[type="url"] {
             width: 100%;
             padding: 12px;
             border: 1px solid #CBD5E1;
@@ -179,14 +179,14 @@
             box-shadow: 0 0 10px rgba(100, 100, 100, 0.3);
         }
         
-        button.btn-imprimir {
+        button.btn-imprimir, button.btn-ia {
             background-color: var(--preto-fundo);
-            margin-top: 20px;
+            margin-top: 10px;
             margin-bottom: 0;
             border: 1px solid var(--cor-acento-tech);
         }
 
-        button.btn-imprimir:hover {
+        button.btn-imprimir:hover, button.btn-ia:hover {
             background-color: #333;
             border-color: #007bff;
         }
@@ -223,15 +223,8 @@
             color: #333;
         }
 
-        .alerta-item {
-            color: #007bff;
-            font-weight: bold;
-        }
-
-        .dica-item {
-            color: #1a1a1a;
-            font-weight: bold;
-        }
+        .alerta-item { color: #007bff; font-weight: bold; }
+        .dica-item { color: #1a1a1a; font-weight: bold; }
 
         .critico {
             background: var(--cor-acento-tech);
@@ -263,12 +256,32 @@
             object-fit: contain;
         }
 
+        /* Estilos do Loading da IA */
+        #loading-ia {
+            display: none;
+            text-align: center;
+            color: var(--cor-acento-tech);
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        #resposta-ia {
+            display: none;
+            background-color: #f0f8ff;
+            border-left: 5px solid #0056b3;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
         @media print {
             body { background-color: white; padding: 0; color: black; }
             .container { box-shadow: none; border: none; max-width: 100%; margin: 0; padding: 0; border-top: none; }
             #formulario_perguntas, button { display: none !important; }
             #resultado { border: none; display: block; border-left: none; }
-            .secao-res, .critico, .img-anexo { page-break-inside: avoid; border: none; }
+            .secao-res, .critico, .img-anexo, #resposta-ia { page-break-inside: avoid; border: none; }
             h2, h3 { page-break-after: avoid; }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
         }
@@ -282,37 +295,445 @@
         <h1>Laudo Técnico de Vistoria</h1>
     </div>
 
-    <!-- SEU CÓDIGO ORIGINAL CONTINUA IGUAL -->
+    <div id="formulario_perguntas">
+        
+        <div class="card">
+            <h3 class="card-title">🤖 Integração IA (Gemini Grátis)</h3>
+            <div class="form-group">
+                <label>Chave da API (Gemini):</label>
+                <input type="password" id="api_key_gemini" placeholder="Cole sua chave aqui (salva apenas no seu navegador)">
+                <small style="color: #666; font-size: 11px; display: block; margin-top: 4px;">Pegue sua chave grátis em: aistudio.google.com/app/apikey</small>
+            </div>
+            <button class="btn-secundario" onclick="salvarChave()" style="margin-top: 5px;">Salvar Chave Localmente</button>
+        </div>
 
+        <div class="card">
+            <h3 class="card-title">0. Dados Gerais</h3>
+            <div class="form-row">
+                <div class="form-group"><label>Nome do Técnico:</label><input type="text" id="nome_tecnico" placeholder="Ex: Daniel Lavor"></div>
+                <div class="form-group"><label>Cidade / UF:</label><input type="text" id="cidade" placeholder="Ex: Teresina - PI"></div>
+            </div>
+            
+            <div class="form-group"><label>Nome do Evento / Cliente:</label><input type="text" id="nome_evento" placeholder="Ex: Feira Agro 2026"></div>
+            
+            <div class="form-group">
+                <label>📍 Localização Exata (Maps):</label>
+                <div style="display: flex; gap: 8px;">
+                    <input type="url" id="link_maps" placeholder="Cole o link ou clique em Capturar GPS ->">
+                    <button type="button" class="btn-secundario" id="btn_gps" onclick="capturarLocalizacao()">Capturar GPS</button>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group"><label>Data da Vistoria:</label><input type="date" id="data_vistoria"></div>
+                <div class="form-group"><label>Data do Evento:</label><input type="date" id="data_evento"></div>
+            </div>
+
+            <div class="form-group" style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 15px;">
+                <label>📷 Anexar Foto ou Planta do Local (Opcional):</label>
+                <input type="file" id="imagem_local" accept="image/*">
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="card-title">1. Perfil e Criticidade</h3>
+            <div class="form-group">
+                <select id="tipo_evento" onchange="verificarGamer()">
+                    <option value="Palestra/Congresso">Palestra / Congresso / Workshop</option>
+                    <option value="Feira de Negócios">Feira de Negócios / Stands</option>
+                    <option value="Gamer/E-sports">Gamer / E-sports (Campeonato)</option>
+                    <option value="Grande Porte/Massa">Show / Festival / Evento de Massa</option>
+                    <option value="Transmissão Crítica">Transmissão Crítica (Live / TV)</option>
+                </select>
+            </div>
+
+            <div id="div_gamer_opcoes">
+                <div class="form-group">
+                    <label>Plataforma da Competição:</label>
+                    <select id="plataforma_gamer" onchange="verificarQtdPcs()">
+                        <option value="mobiles">Apenas Mobiles (Wi-Fi)</option>
+                        <option value="pcs">Apenas PCs/Consoles (Cabo)</option>
+                        <option value="ambos">Ambos (PCs e Mobiles)</option>
+                    </select>
+                </div>
+                <div class="form-group" id="div_qtd_pcs" style="display: none;">
+                    <label>Qtd. de PCs/Consoles (Cabo):</label>
+                    <input type="number" id="qtd_pcs" value="0" min="0">
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="card-title">2. Estimativa de Carga</h3>
+            <div class="form-row">
+                <div class="form-group"><label>Público Geral:</label><input type="number" id="publico" value="0" min="0"></div>
+                <div class="form-group"><label>Staff/Equipe:</label><input type="number" id="staff" value="0" min="0"></div>
+            </div>
+            <div class="form-group"><label>Maquininhas de Cartão (POS):</label><input type="number" id="maquininhas" value="0" min="0"></div>
+        </div>
+
+        <div class="card">
+            <h3 class="card-title">3. Infraestrutura e Barreiras</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Ambiente:</label>
+                    <select id="ambiente">
+                        <option value="interno">Interno (Indoor)</option>
+                        <option value="externo">Externo (Outdoor)</option>
+                        <option value="ambos">Ambos (Indoor e Outdoor)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Barreiras:</label>
+                    <select id="divisorias">
+                        <option value="amplo">Vão Livre</option>
+                        <option value="salas">Muitas Salas</option>
+                    </select>
+                </div>
+            </div>
+            <div class="checkbox-group"><input type="checkbox" id="metal"><label><b>Obstrução Metálica:</b> Food Trucks, tendas de metal ou palcos.</label></div>
+            <div class="checkbox-group"><input type="checkbox" id="fixacao" checked=""><label><b>Fixação Alta:</b> Existe local para APs acima de 2.5m.</label></div>
+            <div class="checkbox-group"><input type="checkbox" id="distancia_100m"><label><b>Distância > 100m:</b> Equipamento muito distante do Rack.</label></div>
+        </div>
+
+        <div class="card">
+            <h3 class="card-title">4. Fatores Críticos</h3>
+            <div class="checkbox-group"><input type="checkbox" id="tem_live"><label><b>Transmissão:</b> Haverá Live ou captação por Imprensa.</label></div>
+            <div class="checkbox-group"><input type="checkbox" id="sinal_ruim_4g"><label><b>Rede Móvel Ruim:</b> A internet das operadoras falha no local.</label></div>
+            <div class="checkbox-group"><input type="checkbox" id="energia_oscila"><label><b>Energia Instável:</b> Quedas ou uso de gerador oscilante.</label></div>
+            <div class="checkbox-group"><input type="checkbox" id="tem_hotspot"><label><b>Hotspot:</b> Cliente exige portal de login (Leads).</label></div>
+        </div>
+
+        <button onclick="gerarProjeto()">Gerar Laudo Técnico</button>
+    </div>
+
+    <div id="resultado" class="card"></div>
 </div>
 
-<!-- ✅ MINI-CHATGPT GRATUITO ADICIONADO -->
-<script src="https://chat.openai.com/embed.js" defer></script>
-<chatgpt-widget 
-    style="position: fixed; bottom: 20px; right: 20px; width: 380px; height: 500px;">
-</chatgpt-widget>
-<!-- MINI CHATGPT OFICIAL – GRATUITO -->
 <script>
-  window.addEventListener("DOMContentLoaded", () => {
-    const chat = document.createElement("div");
-    chat.id = "chatgpt-mini";
-    chat.style.position = "fixed";
-    chat.style.bottom = "20px";
-    chat.style.right = "20px";
-    chat.style.width = "360px";
-    chat.style.height = "480px";
-    chat.style.border = "2px solid #0056b3";
-    chat.style.borderRadius = "12px";
-    chat.style.overflow = "hidden";
-    chat.style.boxShadow = "0 4px 20px rgba(0,0,0,0.35)";
-    chat.innerHTML = `
-      <iframe 
-        src="https://chat.openai.com/g/embed"
-        style="width:100%; height:100%; border:0;"
-      ></iframe>
-    `;
-    document.body.appendChild(chat);
-  });
+    // Carrega a chave da API salva, se houver
+    document.addEventListener("DOMContentLoaded", () => {
+        const savedKey = localStorage.getItem('danieltec_gemini_key');
+        if (savedKey) {
+            document.getElementById('api_key_gemini').value = savedKey;
+        }
+    });
+
+    function salvarChave() {
+        const key = document.getElementById('api_key_gemini').value.trim();
+        if (key) {
+            localStorage.setItem('danieltec_gemini_key', key);
+            alert('Chave salva com sucesso no navegador!');
+        } else {
+            localStorage.removeItem('danieltec_gemini_key');
+            alert('Chave removida!');
+        }
+    }
+
+    // Variável global para armazenar os dados do laudo para a IA
+    let dadosParaIA = {};
+
+    function formatarData(dataISO) {
+        if (!dataISO) return "Não informada";
+        let partes = dataISO.split('-');
+        return `${partes[2]}/${partes[1]}/${partes[0]}`;
+    }
+
+    function lerImagemAsBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function capturarLocalizacao() {
+        let btn = document.getElementById('btn_gps');
+        let inputLink = document.getElementById('link_maps');
+
+        if (!navigator.geolocation) {
+            alert("O GPS não é suportado pelo seu navegador.");
+            return;
+        }
+
+        btn.innerText = "⏳ Buscando...";
+        btn.style.backgroundColor = "#ff9800";
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                let lat = position.coords.latitude;
+                let lon = position.coords.longitude;
+                let mapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+                
+                inputLink.value = mapsUrl;
+                btn.innerText = "✅ Salvo";
+                btn.style.backgroundColor = "#28a745";
+            },
+            (error) => {
+                alert("Erro ao acessar o GPS. Verifique se a localização está ativada no celular.");
+                btn.innerText = "Capturar GPS";
+                btn.style.backgroundColor = "var(--preto-texto)";
+            },
+            { enableHighAccuracy: true }
+        );
+    }
+
+    function verificarGamer() {
+        let tipo = document.getElementById('tipo_evento').value;
+        let divGamer = document.getElementById('div_gamer_opcoes');
+        divGamer.style.display = (tipo === 'Gamer/E-sports') ? 'block' : 'none';
+        verificarQtdPcs();
+    }
+
+    function verificarQtdPcs() {
+        let plat = document.getElementById('plataforma_gamer').value;
+        let divPcs = document.getElementById('div_qtd_pcs');
+        divPcs.style.display = (plat === 'pcs' || plat === 'ambos') ? 'block' : 'none';
+    }
+
+    async function gerarProjeto() {
+        // Captura Dados Gerais
+        let tec = document.getElementById('nome_tecnico').value || 'Não preenchido';
+        let evt = document.getElementById('nome_evento').value || 'Não preenchido';
+        let cidade = document.getElementById('cidade').value || 'Não preenchida';
+        let locUrl = document.getElementById('link_maps').value;
+        let htmlLocal = locUrl ? `<a href="${locUrl}" target="_blank" style="color: var(--cor-acento-tech); font-weight: bold; text-decoration: none;">📍 Ver no Google Maps</a>` : 'Não informada';
+        
+        let dVist = formatarData(document.getElementById('data_vistoria').value);
+        let dEvt = formatarData(document.getElementById('data_evento').value);
+
+        // Processa a Imagem
+        let fileInput = document.getElementById('imagem_local');
+        let imgHTML = '';
+        if (fileInput.files && fileInput.files[0]) {
+            let imgDataUrl = await lerImagemAsBase64(fileInput.files[0]);
+            imgHTML = `<div style="text-align: center;"><img src="${imgDataUrl}" class="img-anexo" alt="Foto do Local"></div>`;
+        }
+
+        // Captura Cenário
+        let tipo = document.getElementById('tipo_evento').value;
+        let pub = parseInt(document.getElementById('publico').value) || 0;
+        let stf = parseInt(document.getElementById('staff').value) || 0;
+        let maq = parseInt(document.getElementById('maquininhas').value) || 0;
+        let total = pub + stf + maq;
+        
+        let ambiente = document.getElementById('ambiente').value;
+        let area_aberta = (ambiente === 'externo' || ambiente === 'ambos');
+        let divisorias = document.getElementById('divisorias').value;
+        let metal = document.getElementById('metal').checked;
+        let fixacao = document.getElementById('fixacao').checked;
+        let longa_distancia = document.getElementById('distancia_100m').checked;
+        
+        let live = document.getElementById('tem_live').checked;
+        let sinal_rede_movel = document.getElementById('sinal_ruim_4g').checked;
+        let energia = document.getElementById('energia_oscila').checked;
+        let hotspot = document.getElementById('tem_hotspot').checked;
+
+        let gamer = (tipo === 'Gamer/E-sports');
+        let plat_gamer = document.getElementById('plataforma_gamer').value;
+        let qtd_pcs = gamer && (plat_gamer === 'pcs' || plat_gamer === 'ambos') ? (parseInt(document.getElementById('qtd_pcs').value) || 0) : 0;
+
+        let eq = []; let alertas = []; let dicas = [];
+        let eaps_qtd = 0;
+
+        // LÓGICA DE ROTEAMENTO
+        let precisa_rb = (total > 30 || hotspot || gamer || tipo === "Transmissão Crítica" || tipo === "Grande Porte/Massa");
+        if (!precisa_rb) {
+            eq.push(divisorias === "salas" ? "01x ONU Wi-Fi AX (Roteando) + 01x Roteador Adicional" : "01x ONU Wi-Fi AX (Roteando) ou Roteador Giga");
+        } else {
+            if (total <= 50) eq.push("01x ONU em Bridge + 01x Mikrotik (RB 750Gr3)");
+            else if (total < 150) eq.push("01x ONU em Bridge + 01x Mikrotik (RB 750Gr3 ou 760iGS)");
+            else if (total < 300) eq.push("01x ONU em Bridge + 01x Mikrotik (RB 760iGS ou superior)");
+            else eq.push("01x ONU em Bridge + 01x Mikrotik Alta Capacidade (RB 4011 ou CCR)");
+
+            let cap = area_aberta ? 100 : 80; 
+            if (metal) cap = cap * 0.8; 
+            
+            eaps_qtd = Math.max(1, Math.ceil(total / cap));
+            if (tipo === "Grande Porte/Massa" && eaps_qtd < 3) eaps_qtd = 3;
+            if (divisorias === "salas" && eaps_qtd < 2) eaps_qtd = 2;
+            
+            if (gamer && plat_gamer === 'pcs' && total <= maq) eaps_qtd = 0;
+
+            if (eaps_qtd > 0) {
+                let modelo_eap = "";
+                if (ambiente === 'externo') modelo_eap = "EAP 610 Outdoor";
+                else if (ambiente === 'interno') modelo_eap = "EAP 620/650 Indoor";
+                else modelo_eap = "Mix de EAPs (Outdoor e Indoor) - Verificar área";
+                
+                eq.push(`${eaps_qtd}x Access Points ${modelo_eap}`);
+                
+                if (eaps_qtd === 1) eq.push("01x Fonte PoE Gigabit (Injetor)");
+                else if (eaps_qtd <= 4) eq.push("01x Switch PoE 5 Portas (Para os EAPs)");
+                else if (eaps_qtd <= 7) eq.push("01x Switch PoE 8 Portas (Para os EAPs)");
+                else eq.push("01x Switch PoE 16 Portas (Para os EAPs)");
+
+                alertas.push("REGRA DE OURO: O Wi-Fi nativo da ONU **DEVE ESTAR DESABILITADO**. Toda a rede sem fio será emitida exclusivamente pelos EAPs.");
+            }
+        }
+
+        // SWITCH GIGABIT GAMER
+        if (qtd_pcs > 0) {
+            if (qtd_pcs <= 4) eq.push("01x Switch Gigabit 5 Portas (Rede PCs)");
+            else if (qtd_pcs <= 7) eq.push("01x Switch Gigabit 8 Portas (Rede PCs)");
+            else if (qtd_pcs <= 15) eq.push("01x Switch Gigabit 16 Portas (Rede PCs)");
+            else eq.push("01x Switch Gigabit 24 Portas (Rede PCs)");
+        }
+
+        // INFRAESTRUTURA E RACKS
+        if (eaps_qtd > 0 || qtd_pcs > 0) {
+            if (ambiente === 'ambos') {
+                eq.push("01x Rack Indoor + 01x Caixa Hermética (Para a área externa)");
+            } else {
+                eq.push(ambiente === 'externo' ? "01x Caixa Hermética / Rack Outdoor (Proteção climática)" : "01x Rack Indoor / Parede");
+            }
+        }
+        
+        if (longa_distancia) {
+            eq.push("01x Par de Conversores de Mídia (A e B) + Bobina Cabo Drop Óptico");
+            alertas.push("O limite de rede metálica é 100m. Utilize conversores e fibra óptica para equipamentos distantes.");
+        }
+        if (tipo === "Gamer/E-sports" || tipo === "Transmissão Crítica" || tipo === "Grande Porte/Massa") {
+            eq.push("01x Kit Antena Starlink (Link de Backup / Failover)");
+            alertas.push("EVENTO CRÍTICO: Configure a Starlink na porta WAN2 da Mikrotik com Failover.");
+        }
+        if (total > 50 || live || energia || gamer || tipo === "Transmissão Crítica") {
+            eq.push("01x Nobreak Senoidal (Acondicionamento obrigatório de energia)");
+        }
+
+        // AVISOS INTELIGENTES
+        if (total > 250) alertas.push("ESTOURO DE DHCP: A quantidade de usuários excede uma rede /24. Na Mikrotik, altere o Pool e a máscara para /23 ou /22.");
+        if (metal && eaps_qtd > 0) alertas.push("OBSTRUÇÃO METÁLICA: O sinal sofre reflexão no metal. Evite instalar os APs muito colados às estruturas.");
+        if (!fixacao && eaps_qtd > 0) alertas.push("ABSORÇÃO DE SINAL: Sem fixação alta, utilize pedestais/tripés para os APs (Mínimo 2.5m).");
+        if (live) alertas.push("LIVE DETECTADA: É proibido rodar a Live via Wi-Fi. Puxe um cabo de rede direto para a máquina de transmissão.");
+        if (sinal_rede_movel && eaps_qtd > 0) dicas.push("A rede móvel ruim sobrecarregará o Wi-Fi. Crie regras no Queue limitando a banda (Ex: 5 Mega/usuário).");
+        if (hotspot && maq > 0) dicas.push("Crie uma rede (SSID) separada e SEM hotspot, dedicada exclusivamente para as maquininhas de cartão.");
+        if (tipo === "Feira de Negócios") dicas.push("Poluição de RF alta. Fixe os canais dos EAPs apenas em 5GHz e evite canalização automática.");
+        if (gamer && qtd_pcs > 0) dicas.push("Crie uma VLAN exclusiva para a porta do Switch Gamer, separando totalmente o tráfego dos PCs do Wi-Fi do público (QoS ativo).");
+
+        // Salva os dados para a requisição da IA
+        dadosParaIA = {
+            evento: evt, tipo: tipo, total_conexoes: total, 
+            ambiente: ambiente, divisorias: divisorias, 
+            barreiras_metalicas: metal, live: live, energia_instavel: energia
+        };
+
+        // RENDERIZAÇÃO DO LAUDO
+        let txt_ambiente = ambiente === 'externo' ? 'Área Externa (Outdoor)' : (ambiente === 'interno' ? 'Área Interna (Indoor)' : 'Misto (Indoor + Outdoor)');
+        let txt_divisorias = divisorias === 'salas' ? 'Com Divisórias/Salas' : 'Vão Livre';
+
+        let resDiv = document.getElementById('resultado');
+        resDiv.innerHTML = `
+            <h2 style="color: var(--cor-acento-tech); font-size: 20px; text-transform: uppercase; margin-top: 0; border-bottom: 2px solid var(--cor-acento-tech); padding-bottom: 10px;">📋 Laudo Técnico de Vistoria</h2>
+            
+            <div class="secao-res" style="background: var(--cinza-fundo-card); border: 1px solid #eee; padding: 15px; border-radius: 6px; border-left: 5px solid var(--cor-acento-tech);">
+                <p style="margin: 0 0 8px 0;"><b>Cliente / Evento:</b> ${evt}   |   <b>Cidade:</b> ${cidade}</p>
+                <p style="margin: 0 0 8px 0;"><b>Localização GPS:</b> ${htmlLocal}</p>
+                <p style="margin: 0 0 8px 0;"><b>Técnico Responsável:</b> ${tec}</p>
+                <p style="margin: 0 0 8px 0;"><b>Data da Vistoria:</b> ${dVist}   |   <b>Data do Evento:</b> ${dEvt}</p>
+                <hr style="border: 0; border-top: 1px dashed #ccc; margin: 12px 0;">
+                <p style="margin: 0 0 8px 0;"><b>Tipo de Evento:</b> ${tipo}</p>
+                <p style="margin: 0 0 8px 0;"><b>Conexões Estimadas:</b> ${total} dispositivos (Público + Staff + POS)</p>
+                <p style="margin: 0;"><b>Ambiente Físico:</b> ${txt_ambiente} - ${txt_divisorias}</p>
+            </div>
+
+            ${imgHTML}
+
+            ${((tipo === "Grande Porte/Massa" || total > 400) ? '<div class="critico" style="margin-top: 20px;">⚠️ PROJETO ALTA DENSIDADE / EXIGE SITE SURVEY DO ENGENHEIRO</div>' : '')}
+            
+            <div class="secao-res" style="margin-top: 20px;"><h3>📦 Lista de Hardware Exigida</h3><ul>
+            ${eq.map(i => `<li><b>${i.substring(0, i.indexOf(' ') > 0 ? i.indexOf(' ') : i.length)}</b> ${i.substring(i.indexOf(' ') + 1)}</li>`).join('')}
+            </ul></div>
+            
+            ${alertas.length ? `<div class="secao-res"><h3>🚨 Alertas Críticos de Engenharia</h3><ul>
+            ${alertas.map(i => `<li class="alerta-item">⚠️ ${i}</li>`).join('')}
+            </ul></div>` : ''}
+            
+            ${dicas.length ? `<div class="secao-res"><h3>💡 Recomendações de Configuração</h3><ul>
+            ${dicas.map(i => `<li class="dica-item">✔ ${i}</li>`).join('')}
+            </ul></div>` : ''}
+
+            <div class="secao-res" id="container-ia">
+                <h3>🧠 Análise do Engenheiro (IA)</h3>
+                <button class="btn-ia" onclick="chamarIAGemini()" style="color: white;">Gerar Parecer Técnico com IA</button>
+                <div id="loading-ia">⏳ Analisando dados da vistoria... aguarde.</div>
+                <div id="resposta-ia"></div>
+            </div>
+
+            <button class="btn-imprimir" onclick="window.print()" style="color: white;">🖨️ Imprimir / Salvar PDF</button>
+        `;
+            
+        resDiv.style.display = 'block';
+        resDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Função assíncrona para chamar a API do Gemini
+    async function chamarIAGemini() {
+        const apiKey = localStorage.getItem('danieltec_gemini_key');
+        
+        if (!apiKey) {
+            alert("Você precisa inserir e salvar sua chave da API do Gemini no topo da página primeiro.");
+            document.getElementById('api_key_gemini').focus();
+            return;
+        }
+
+        const btn = document.querySelector('.btn-ia');
+        const loading = document.getElementById('loading-ia');
+        const respostaDiv = document.getElementById('resposta-ia');
+
+        btn.style.display = 'none';
+        loading.style.display = 'block';
+        respostaDiv.style.display = 'none';
+
+        // Constrói o prompt para a IA baseado nos dados do projeto
+        const promptTexto = `Aja como um Engenheiro de Redes Sênior projetando infraestrutura (Ubiquiti/Mikrotik/Cisco). 
+        Foi feita uma vistoria para o evento "${dadosParaIA.evento}". 
+        Tipo: ${dadosParaIA.tipo}. 
+        Conexões simultâneas: ${dadosParaIA.total_conexoes}. 
+        Ambiente: ${dadosParaIA.ambiente}. 
+        Barreiras: ${dadosParaIA.divisorias}.
+        Tem metal? ${dadosParaIA.barreiras_metalicas ? 'Sim' : 'Não'}.
+        Terá Live? ${dadosParaIA.live ? 'Sim' : 'Não'}.
+        Energia instável? ${dadosParaIA.energia_instavel ? 'Sim' : 'Não'}.
+        
+        Escreva um parecer executivo técnico e direto de no máximo 2 parágrafos. Resuma os riscos primários e valide a arquitetura de rede necessária. Não use marcadores, apenas o texto corrido profissional.`;
+
+        try {
+            const resposta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: promptTexto }] }]
+                })
+            });
+
+            if (!resposta.ok) {
+                throw new Error("Falha na API. Verifique sua chave.");
+            }
+
+            const dados = await resposta.json();
+            const textoGerado = dados.candidates[0].content.parts[0].text;
+            
+            // Renderiza o texto gerado mantendo formatação original e corrigindo estrutura
+            respostaDiv.innerHTML = `<p><strong>Parecer Técnico:</strong><br>${textoGerado.replace(/\n/g, '<br>')}</p>`;
+            respostaDiv.style.display = 'block';
+
+        } catch (erro) {
+            alert("Erro ao gerar IA: " + erro.message);
+            btn.style.display = 'block';
+        } finally {
+            loading.style.display = 'none';
+        }
+    }
 </script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+            .then((reg) => console.log('Service Worker registrado com sucesso!', reg))
+            .catch((err) => console.log('Erro ao registrar Service Worker:', err));
+    }
+</script>
+
 </body>
 </html>
