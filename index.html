@@ -644,6 +644,63 @@
             .catch((err) => console.log('Erro ao registrar Service Worker:', err));
     }
 </script>
+<!-- Mini ChatGPT Grátis - Rodando no Navegador -->
+<div id="miniChat" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 320px;
+    height: 420px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.3);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    z-index: 9999;
+">
+    <div style="background:#0056b3; color:white; padding:10px; font-weight:bold;">
+        DanielTec IA (Grátis)
+    </div>
 
+    <div id="chatContent" style="
+        flex:1; padding:10px; overflow-y:auto; font-size:14px; color:#333;
+    "></div>
+
+    <div style="padding:10px; border-top:1px solid #ccc;">
+        <input id="userMsg" type="text" placeholder="Digite aqui..."
+            style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px;">
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@mlc-ai/web-llm/dist/index.min.js"></script>
+
+<script>
+(async () => {
+    const chat = await webllm.ChatModule.create({
+        model: "Phi-3-mini-4k-instruct-q4f16_1"
+    });
+
+    const chatBox = document.getElementById("chatContent");
+    const input = document.getElementById("userMsg");
+
+    async function enviarMsg() {
+        let texto = input.value.trim();
+        if (!texto) return;
+
+        chatBox.innerHTML += `<div><b>Você:</b> ${texto}</div>`;
+        input.value = "";
+
+        const resposta = await chat.generate(texto);
+        chatBox.innerHTML += `<div><b>IA:</b> ${resposta}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    input.addEventListener("keydown", e => {
+        if (e.key === "Enter") enviarMsg();
+    });
+})();
+</script>
 </body>
 </html>
