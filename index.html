@@ -2,160 +2,94 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Gerador de Laudo Técnico</title>
+    <title>Gerador de Laudo</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-            padding: 20px;
-        }
-        h2, h3 {
-            margin-top: 25px;
-        }
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #0002;
-        }
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin: 6px 0 15px;
-        }
-        label {
-            font-weight: bold;
-        }
-        .img-anexo {
-            max-width: 300px;
-            margin-top: 15px;
-            border-radius: 8px;
-            border: 2px solid #ddd;
-        }
-        button {
-            padding: 12px 20px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 10px;
-            font-size: 16px;
-        }
-        #resultado {
-            margin-top: 35px;
-            padding: 20px;
-            background: #fff;
-            border-radius: 10px;
-            display: none;
-            box-shadow: 0 0 10px #0002;
-        }
+        body { font-family: Arial; padding: 20px; }
+        label { font-weight: bold; display: block; margin-top: 15px; }
+        input, select { width: 100%; padding: 8px; margin-top: 5px; }
+        button { padding: 10px 15px; margin-top: 10px; cursor: pointer; }
+        #resultado { margin-top: 30px; padding: 20px; border: 1px solid #ccc; display: none; }
+        .img-anexo { max-width: 300px; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>📋 Gerador de Laudo Técnico</h2>
+<h2>Gerador de Laudo</h2>
 
-    <label>Técnico</label>
-    <input id="nome_tecnico" placeholder="Nome do técnico">
+<label>Técnico</label>
+<input id="nome_tecnico">
 
-    <label>Nome do Evento</label>
-    <input id="nome_evento" placeholder="Nome do cliente ou evento">
+<label>Nome do Evento</label>
+<input id="nome_evento">
 
-    <label>Cidade</label>
-    <input id="cidade" placeholder="Ex: Teresina - PI">
+<label>Cidade</label>
+<input id="cidade">
 
-    <label>Data da Vistoria</label>
-    <input type="date" id="data_vistoria">
+<label>Data da Vistoria</label>
+<input type="date" id="data_vistoria">
 
-    <label>Data do Evento</label>
-    <input type="date" id="data_evento">
+<label>Data do Evento</label>
+<input type="date" id="data_evento">
 
-    <label>Localização (GPS)</label>
-    <input id="link_maps" placeholder="Link do Google Maps">
-    <button id="btn_gps" onclick="capturarLocalizacao()">Capturar GPS</button>
+<label>Endereço (GPS)</label>
+<input id="link_maps">
+<button id="btn_gps" onclick="capturarLocalizacao()">Capturar GPS</button>
 
-    <label>Imagem do Local</label>
-    <input type="file" id="imagem_local" accept="image/*">
+<label>Imagem do Local</label>
+<input type="file" id="imagem_local" accept="image/*">
 
-    <h3>Dados do Evento</h3>
+<label>Tipo do Evento</label>
+<select id="tipo_evento" onchange="verificarGamer()">
+    <option>Show</option>
+    <option>Corporativo</option>
+    <option>Gamer/E-sports</option>
+    <option>Religioso</option>
+    <option>Treinamento</option>
+</select>
 
-    <label>Tipo de Evento</label>
-    <select id="tipo_evento" onchange="verificarGamer()">
-        <option>Show</option>
-        <option>Corporativo</option>
-        <option>Gamer/E-sports</option>
-        <option>Religioso</option>
-        <option>Treinamento</option>
-        <option>Outro</option>
+<div id="div_gamer_opcoes" style="display:none;">
+    <label>Plataforma Gamer</label>
+    <select id="plataforma_gamer" onchange="verificarQtdPcs()">
+        <option value="console">Consoles</option>
+        <option value="pcs">PCs</option>
+        <option value="ambos">Ambos</option>
     </select>
 
-    <div id="div_gamer_opcoes" style="display:none;">
-        <label>Plataforma Gamer</label>
-        <select id="plataforma_gamer" onchange="verificarQtdPcs()">
-            <option value="console">Consoles</option>
-            <option value="pcs">PCs</option>
-            <option value="ambos">Ambos</option>
-        </select>
-
-        <div id="div_qtd_pcs" style="display:none;">
-            <label>Quantidade de PCs</label>
-            <input id="qtd_pcs" type="number">
-        </div>
+    <div id="div_qtd_pcs" style="display:none;">
+        <label>Quantidade de PCs</label>
+        <input id="qtd_pcs" type="number">
     </div>
-
-    <label>Público</label>
-    <input id="publico" type="number" placeholder="Quantidade de pessoas">
-
-    <label>Staff / Equipe</label>
-    <input id="staff" type="number" placeholder="Quantidade de staff">
-
-    <label>Maquininhas de cartão</label>
-    <input id="maquininhas" type="number">
-
-    <h3>Condições do Local</h3>
-
-    <label>Ambiente</label>
-    <select id="ambiente">
-        <option value="interno">Interno</option>
-        <option value="externo">Externo</option>
-    </select>
-
-    <label>Divisórias</label>
-    <select id="divisorias">
-        <option value="aberto">Ambiente aberto</option>
-        <option value="salas">Com salas/divisórias</option>
-    </select>
-
-    <label>
-        <input type="checkbox" id="metal"> Estruturas metálicas?
-    </label><br>
-
-    <label>
-        <input type="checkbox" id="fixacao"> Possui local alto para fixação?
-    </label><br>
-
-    <label>
-        <input type="checkbox" id="distancia_100m"> Distância maior que 100m?
-    </label><br>
-
-    <label>
-        <input type="checkbox" id="tem_live"> Haverá live?
-    </label><br>
-
-    <label>
-        <input type="checkbox" id="energia_oscila"> Energia instável?
-    </label><br>
-
-    <label>
-        <input type="checkbox" id="tem_hotspot"> Área para hotspot?
-    </label><br><br>
-
-    <button onclick="gerarProjeto()">Gerar Laudo</button>
 </div>
+
+<label>Público</label>
+<input id="publico" type="number">
+
+<label>Staff</label>
+<input id="staff" type="number">
+
+<label>Maquininhas</label>
+<input id="maquininhas" type="number">
+
+<label>Ambiente</label>
+<select id="ambiente">
+    <option value="interno">Interno</option>
+    <option value="externo">Externo</option>
+</select>
+
+<label>Divisórias</label>
+<select id="divisorias">
+    <option value="aberto">Aberto</option>
+    <option value="salas">Com salas</option>
+</select>
+
+<p><input type="checkbox" id="metal"> Estrutura metálica?</p>
+<p><input type="checkbox" id="fixacao"> Tem local para fixação?</p>
+<p><input type="checkbox" id="distancia_100m"> Distância > 100m</p>
+<p><input type="checkbox" id="tem_live"> Vai ter live?</p>
+<p><input type="checkbox" id="energia_oscila"> Energia instável?</p>
+<p><input type="checkbox" id="tem_hotspot"> Tem hotspot?</p>
+
+<button onclick="gerarProjeto()">Gerar Laudo</button>
 
 <div id="resultado"></div>
 
@@ -278,17 +212,23 @@
             const energia = $('energia_oscila').checked;
 
             let eq = [];
-            let dicas = [];
 
             const cap = calcularCapacidade(80, ambiente, metal, divisorias);
-            const aps = Math.ceil(total / cap);
+
+            let aps = Math.ceil(total / cap);
 
             if (aps > 0) {
                 eq.push(`${aps}x Access Points Wi-Fi 6`);
-                eq.push(aps > 1 ? "Switch PoE" : "Injetor PoE");
+
+                if (aps > 1) eq.push("Switch PoE");
+                else eq.push("Injetor PoE");
             }
 
-            eq.push(total > 50 ? "Roteador Mikrotik" : "Roteador padrão");
+            if (total > 50) {
+                eq.push("Roteador Mikrotik");
+            } else {
+                eq.push("Roteador padrão");
+            }
 
             if (longa) {
                 eq.push("Fibra óptica");
@@ -321,7 +261,7 @@
 
                 ${imgHTML}
 
-                <h3>Equipamentos Recomendados</h3>
+                <h3>Equipamentos</h3>
                 <ul>${eq.map(i => `<li>${i}</li>`).join('')}</ul>
 
                 <h3>Alertas</h3>
