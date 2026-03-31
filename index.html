@@ -291,6 +291,28 @@
 <chatgpt-widget 
     style="position: fixed; bottom: 20px; right: 20px; width: 380px; height: 500px;">
 </chatgpt-widget>
-
+<!-- MINI CHATGPT OFICIAL – GRATUITO -->
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const chat = document.createElement("div");
+    chat.id = "chatgpt-mini";
+    chat.style.position = "fixed";
+    chat.style.bottom = "20px";
+    chat.style.right = "20px";
+    chat.style.width = "360px";
+    chat.style.height = "480px";
+    chat.style.border = "2px solid #0056b3";
+    chat.style.borderRadius = "12px";
+    chat.style.overflow = "hidden";
+    chat.style.boxShadow = "0 4px 20px rgba(0,0,0,0.35)";
+    chat.innerHTML = `
+      <iframe 
+        src="https://chat.openai.com/g/embed"
+        style="width:100%; height:100%; border:0;"
+      ></iframe>
+    `;
+    document.body.appendChild(chat);
+  });
+</script>
 </body>
 </html>
