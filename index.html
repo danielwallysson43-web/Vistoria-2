@@ -1,98 +1,3 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Gerador de Laudo</title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        label { font-weight: bold; display: block; margin-top: 15px; }
-        input, select { width: 100%; padding: 8px; margin-top: 5px; }
-        button { padding: 10px 15px; margin-top: 10px; cursor: pointer; }
-        #resultado { margin-top: 30px; padding: 20px; border: 1px solid #ccc; display: none; }
-        .img-anexo { max-width: 300px; margin-top: 15px; }
-    </style>
-</head>
-<body>
-
-<h2>Gerador de Laudo</h2>
-
-<label>Técnico</label>
-<input id="nome_tecnico">
-
-<label>Nome do Evento</label>
-<input id="nome_evento">
-
-<label>Cidade</label>
-<input id="cidade">
-
-<label>Data da Vistoria</label>
-<input type="date" id="data_vistoria">
-
-<label>Data do Evento</label>
-<input type="date" id="data_evento">
-
-<label>Endereço (GPS)</label>
-<input id="link_maps">
-<button id="btn_gps" onclick="capturarLocalizacao()">Capturar GPS</button>
-
-<label>Imagem do Local</label>
-<input type="file" id="imagem_local" accept="image/*">
-
-<label>Tipo do Evento</label>
-<select id="tipo_evento" onchange="verificarGamer()">
-    <option>Show</option>
-    <option>Corporativo</option>
-    <option>Gamer/E-sports</option>
-    <option>Religioso</option>
-    <option>Treinamento</option>
-</select>
-
-<div id="div_gamer_opcoes" style="display:none;">
-    <label>Plataforma Gamer</label>
-    <select id="plataforma_gamer" onchange="verificarQtdPcs()">
-        <option value="console">Consoles</option>
-        <option value="pcs">PCs</option>
-        <option value="ambos">Ambos</option>
-    </select>
-
-    <div id="div_qtd_pcs" style="display:none;">
-        <label>Quantidade de PCs</label>
-        <input id="qtd_pcs" type="number">
-    </div>
-</div>
-
-<label>Público</label>
-<input id="publico" type="number">
-
-<label>Staff</label>
-<input id="staff" type="number">
-
-<label>Maquininhas</label>
-<input id="maquininhas" type="number">
-
-<label>Ambiente</label>
-<select id="ambiente">
-    <option value="interno">Interno</option>
-    <option value="externo">Externo</option>
-</select>
-
-<label>Divisórias</label>
-<select id="divisorias">
-    <option value="aberto">Aberto</option>
-    <option value="salas">Com salas</option>
-</select>
-
-<p><input type="checkbox" id="metal"> Estrutura metálica?</p>
-<p><input type="checkbox" id="fixacao"> Tem local para fixação?</p>
-<p><input type="checkbox" id="distancia_100m"> Distância > 100m</p>
-<p><input type="checkbox" id="tem_live"> Vai ter live?</p>
-<p><input type="checkbox" id="energia_oscila"> Energia instável?</p>
-<p><input type="checkbox" id="tem_hotspot"> Tem hotspot?</p>
-
-<button onclick="gerarProjeto()">Gerar Laudo</button>
-
-<div id="resultado"></div>
-
 <script>
     const $ = id => document.getElementById(id);
 
@@ -185,8 +90,8 @@
             const dVist = formatarData($('data_vistoria').value);
             const dEvt = formatarData($('data_evento').value);
 
+            // IMAGEM (com segurança)
             let imgHTML = '';
-            let alertas = [];
             try {
                 const file = $('imagem_local').files[0];
                 if (file) {
@@ -197,6 +102,7 @@
                 addAlerta(alertas, "Erro ao carregar imagem");
             }
 
+            const tipo = $('tipo_evento').value;
             const pub = +$('publico').value || 0;
             const stf = +$('staff').value || 0;
             const maq = +$('maquininhas').value || 0;
@@ -210,8 +116,11 @@
             const longa = $('distancia_100m').checked;
             const live = $('tem_live').checked;
             const energia = $('energia_oscila').checked;
+            const hotspot = $('tem_hotspot').checked;
 
             let eq = [];
+            let alertas = [];
+            let dicas = [];
 
             const cap = calcularCapacidade(80, ambiente, metal, divisorias);
 
@@ -274,7 +183,4 @@
 
         }, 300);
     }
-</script>
-
-</body>
-</html>
+</script>       melhore sem apagar nada 
