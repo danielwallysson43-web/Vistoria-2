@@ -670,58 +670,72 @@
     }
 
     // Função assíncrona para chamar a API do Gemini
- async function chamarIAGemini() {
-    // 1. Pega a chave direto do campo de input para não ter erro de memória
-    const inputKey = document.getElementById('api_key_gemini') || document.getElementById('api_key_input');
-    const apiKey = inputKey ? inputKey.value.trim() : localStorage.getItem('danieltec_gemini_key');
+async function analisarComIA() {
+    const keyInput = document.getElementById('api_key_gemini') || document.getElementById('api_key_input');
+    const apiKey = keyInput ? keyInput.value.trim() : localStorage.getItem('danieltec_gemini_key');
     
-    if (!apiKey || apiKey === "") {
-        alert("Por favor, digite sua chave da API no campo correspondente antes de clicar.");
+    if (!apiKey) {
+        alert("Erro: Chave não encontrada! Digite a chave e clique em Salvar.");
         return;
     }
 
-    const btn = document.querySelector('.btn-ia') || document.getElementById('btn_chamar_ia');
+    const btn = document.getElementById('btn_chamar_ia');
     const loading = document.getElementById('loading-ia');
     const respostaDiv = document.getElementById('resposta-ia');
 
-    // 2. Feedback visual imediato
     btn.style.display = 'none';
     loading.style.display = 'block';
     respostaDiv.style.display = 'none';
 
-    // 3. Montagem do Prompt
-    const promptTexto = `Aja como Engenheiro de Redes. Evento: ${dadosParaIA.evento || "Vistoria"}. Público: ${dadosParaIA.total_conexoes || 0}. Recomende equipamentos Mikrotik e Ubiquiti. Seja curto.`;
+    // Prompt técnico focado no seu perfil de infra
+    const prompt = `Aja como engenheiro de redes. Analise este evento: ${dadosProjeto.nome || "Vistoria"}, tipo ${dadosProjeto.tipo || "Geral"}, com ${dadosProjeto.conexoes || 0} pessoas. Recomende a RB Mikrotik e cuidados com Wi-Fi. Seja breve.`;
 
     try {
-        // 4. URL com v1beta (mais estável para Flash 1.5)
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+        // Rota que funciona em 99% dos casos para chaves novas
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
         
         const response = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                contents: [{ parts: [{ text: promptTexto }] }]
+                contents: [{ parts: [{ text: prompt }] }]
             })
         });
 
-        const result = await response.json();
+        const data = await response.json();
 
-        if (result.error) {
-            throw new Error(result.error.message);
+        if (data.error) {
+            // Se der erro de "not found" de novo, tentamos a rota v1 simples
+            if (data.error.message.includes("not found")) {
+                const urlV1 = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+                const resV1 = await fetch(urlV1, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                const dataV1 = await resV1.json();
+                if (dataV1.candidates) {
+                    exibirResposta(dataV1.candidates[0].content.parts[0].text);
+                    return;
+                }
+            }
+            throw new Error(data.error.message);
         }
 
-        if (result.candidates && result.candidates[0].content.parts[0].text) {
-            const texto = result.candidates[0].content.parts[0].text;
-            respostaDiv.innerHTML = `<p style="color: #000;"><strong>Parecer Técnico:</strong><br>${texto.replace(/\n/g, '<br>')}</p>`;
-            respostaDiv.style.display = 'block';
+        if (data.candidates) {
+            exibirResposta(data.candidates[0].content.parts[0].text);
         }
 
     } catch (error) {
-        console.error("Erro detalhado:", error);
-        alert("ERRO NA API: " + error.message + "\n\nVerifique se sua chave está correta e se você tem internet.");
+        alert("ERRO FINAL: " + error.message);
         btn.style.display = 'block';
     } finally {
         loading.style.display = 'none';
+    }
+
+    function exibirResposta(texto) {
+        respostaDiv.innerHTML = "<strong>Parecer do Engenheiro:</strong><br><br>" + texto.replace(/\n/g, '<br>');
+        respostaDiv.style.display = 'block';
     }
 }
 </script>
