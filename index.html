@@ -464,6 +464,7 @@
             (position) => {
                 let lat = position.coords.latitude;
                 let lon = position.coords.longitude;
+                // Corrigido para Template Literal com crases
                 let mapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
                 
                 inputLink.value = mapsUrl;
@@ -715,23 +716,17 @@
             const dados = await resposta.json();
             const textoGerado = dados.candidates[0].content.parts[0].text;
             
-            // Renderiza o texto gerado mantendo formatação original e corrigindo estrutura
+            // Renderiza o texto gerado mantendo formatação
             respostaDiv.innerHTML = `<p><strong>Parecer Técnico:</strong><br>${textoGerado.replace(/\n/g, '<br>')}</p>`;
             respostaDiv.style.display = 'block';
 
-        } catch (erro) {
-            alert("Erro ao gerar IA: " + erro.message);
+        } catch (error) {
+            console.error(error);
+            alert("Erro ao chamar a IA: " + error.message);
             btn.style.display = 'block';
         } finally {
             loading.style.display = 'none';
         }
-    }
-</script>
-<script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js')
-            .then((reg) => console.log('Service Worker registrado com sucesso!', reg))
-            .catch((err) => console.log('Erro ao registrar Service Worker:', err));
     }
 </script>
 
