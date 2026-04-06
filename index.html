@@ -670,12 +670,12 @@
     }
 
     // Função assíncrona para chamar a API do Gemini
+    // Substitua apenas a função chamarIAGemini no seu script por esta:
     async function chamarIAGemini() {
         const apiKey = localStorage.getItem('danieltec_gemini_key');
         
         if (!apiKey) {
-            alert("Você precisa inserir e salvar sua chave da API do Gemini no topo da página primeiro.");
-            document.getElementById('api_key_gemini').focus();
+            alert("Cole sua chave lá no topo da página e clique em 'Salvar Chave'!");
             return;
         }
 
@@ -685,23 +685,18 @@
 
         btn.style.display = 'none';
         loading.style.display = 'block';
-        respostaDiv.style.display = 'none';
 
-        // Constrói o prompt para a IA baseado nos dados do projeto
-        const promptTexto = `Aja como um Engenheiro de Redes Sênior projetando infraestrutura (Ubiquiti/Mikrotik/Cisco). 
-        Foi feita uma vistoria para o evento "${dadosParaIA.evento}". 
-        Tipo: ${dadosParaIA.tipo}. 
-        Conexões simultâneas: ${dadosParaIA.total_conexoes}. 
-        Ambiente: ${dadosParaIA.ambiente}. 
-        Barreiras: ${dadosParaIA.divisorias}.
-        Tem metal? ${dadosParaIA.barreiras_metalicas ? 'Sim' : 'Não'}.
-        Terá Live? ${dadosParaIA.live ? 'Sim' : 'Não'}.
-        Energia instável? ${dadosParaIA.energia_instavel ? 'Sim' : 'Não'}.
-        
-        Escreva um parecer executivo técnico e direto de no máximo 2 parágrafos. Resuma os riscos primários e valide a arquitetura de rede necessária. Não use marcadores, apenas o texto corrido profissional.`;
+        const promptTexto = `Aja como um Engenheiro de Redes Sênior (padrão Ubiquiti/Mikrotik). 
+        Analise o evento "${dadosParaIA.evento}" (${dadosParaIA.tipo}) com ${dadosParaIA.total_conexoes} conexões. 
+        Ambiente ${dadosParaIA.ambiente} com ${dadosParaIA.divisorias}. 
+        Riscos: Metal=${dadosParaIA.barreiras_metalicas}, Live=${dadosParaIA.live}, Energia=${dadosParaIA.energia_instavel}. 
+        Dê um parecer técnico curto e profissional.`;
 
         try {
-            const resposta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+            // URL ATUALIZADA PARA VERSÃO ESTÁVEL V1
+            const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            
+            const resposta = await fetch(url, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -709,20 +704,19 @@
                 })
             });
 
-            if (!resposta.ok) {
-                throw new Error("Falha na API. Verifique sua chave.");
+            const dados = await resposta.json();
+
+            if (dados.error) {
+                throw new Error(dados.error.message);
             }
 
-            const dados = await resposta.json();
             const textoGerado = dados.candidates[0].content.parts[0].text;
-            
-            // Renderiza o texto gerado mantendo formatação
-            respostaDiv.innerHTML = `<p><strong>Parecer Técnico:</strong><br>${textoGerado.replace(/\n/g, '<br>')}</p>`;
+            respostaDiv.innerHTML = `<p><strong>Parecer do Engenheiro:</strong><br>${textoGerado.replace(/\n/g, '<br>')}</p>`;
             respostaDiv.style.display = 'block';
 
         } catch (error) {
             console.error(error);
-            alert("Erro ao chamar a IA: " + error.message);
+            alert("Erro na IA: " + error.message);
             btn.style.display = 'block';
         } finally {
             loading.style.display = 'none';
