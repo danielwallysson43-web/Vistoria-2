@@ -670,33 +670,33 @@
     }
 
     // Função assíncrona para chamar a API do Gemini
-async function analisarComIA() {
-    // 1. Pega a chave direto do campo ou do que você salvou
+async function chamarIAGemini() {
+    // Busca a chave no input ou no localstorage
     const inputKey = document.getElementById('api_key_gemini') || document.getElementById('api_key_input');
     const apiKey = inputKey ? inputKey.value.trim() : localStorage.getItem('danieltec_gemini_key');
     
     if (!apiKey) {
-        alert("Daniel, cole sua chave no campo e clique em Salvar primeiro!");
+        alert("Por favor, insira e salve sua chave da API primeiro.");
         return;
     }
 
-    const btn = document.querySelector('.btn-ia') || document.getElementById('btn_chamar_ia');
+    const btn = document.querySelector('.btn-ia');
     const loading = document.getElementById('loading-ia');
     const respostaDiv = document.getElementById('resposta-ia');
 
-    btn.style.display = 'none';
-    loading.style.display = 'block';
-    respostaDiv.style.display = 'none';
+    if(btn) btn.style.display = 'none';
+    if(loading) loading.style.display = 'block';
+    if(respostaDiv) respostaDiv.style.display = 'none';
 
-    // Dados que você já preencheu no laudo
-    const nomeEvt = document.getElementById('nome_evento')?.value || "Evento";
-    const totalPos = document.getElementById('publico')?.value || "0";
+    // Pega os dados do projeto (garantindo que não fiquem vazios)
+    const evtNome = document.getElementById('nome_evento')?.value || "Evento Teresina";
+    const conexoes = document.getElementById('publico')?.value || "0";
 
-    const promptTexto = `Aja como engenheiro de redes. Analise o evento ${nomeEvt} para ${totalPos} conexões. Sugira a melhor RB Mikrotik e APs Ubiquiti. Seja técnico e direto.`;
+    const promptTexto = `Aja como engenheiro de redes senior. Analise o evento ${evtNome} com ${conexoes} conexoes. Recomende RB Mikrotik e cuidados com Wi-Fi Ubiquiti. Seja curto.`;
 
     try {
-        // ROTA UNIVERSAL (Esta não dá erro de "Model not found")
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+        // Rota v1beta com o modelo flash-latest
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
         
         const response = await fetch(url, {
             method: "POST",
@@ -706,35 +706,26 @@ async function analisarComIA() {
             })
         });
 
-        const result = await response.json();
+        const data = await response.json();
 
-        // Se o Google reclamar da versão, o código tenta a versão estável automaticamente
-        if (result.error && result.error.message.includes("not found")) {
-            const urlEstavel = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-            const resEstavel = await fetch(urlEstavel, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ contents: [{ parts: [{ text: promptTexto }] }] })
-            });
-            const dataEstavel = await resEstavel.json();
-            exibirResultado(dataEstavel.candidates[0].content.parts[0].text);
-        } else if (result.candidates) {
-            exibirResultado(result.candidates[0].content.parts[0].text);
-        } else {
-            throw new Error(result.error ? result.error.message : "Erro desconhecido");
+        if (data.error) {
+            throw new Error(data.error.message);
+        }
+
+        if (data.candidates && data.candidates[0].content.parts[0].text) {
+            const texto = data.candidates[0].content.parts[0].text;
+            if(respostaDiv) {
+                respostaDiv.innerHTML = `<p><strong>Parecer Técnico:</strong><br>${texto.replace(/\n/g, '<br>')}</p>`;
+                respostaDiv.style.display = 'block';
+            }
         }
 
     } catch (error) {
-        console.error(error);
-        alert("Erro Técnico: " + error.message);
-        btn.style.display = 'block';
+        console.error("Erro na requisição:", error);
+        alert("Erro ao gerar IA: " + error.message);
+        if(btn) btn.style.display = 'block';
     } finally {
-        loading.style.display = 'none';
-    }
-
-    function exibirResultado(texto) {
-        respostaDiv.innerHTML = `<p><strong>Parecer do Engenheiro:</strong><br>${texto.replace(/\n/g, '<br>')}</p>`;
-        respostaDiv.style.display = 'block';
+        if(loading) loading.style.display = 'none';
     }
 }
 </script>
