@@ -3,60 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vistoria ora Telecom</title>
+    <title>Vistoria Técnica - ora Telecom Tech</title>
     <style>
         :root {
-            /* DESIGN SYSTEM - ORA TELECOM */
-            --ora-azul: #0a4087;
-            --ora-laranja: #f7941d;
-            --preto-fundo: #0d0d0d;
+            /* NOVO DESIGN SYSTEM TECH - SEM LARANJA */
+            --color-blue-dark: #0a4087;   /* Azul escuro corporativo */
+            --color-blue-bright: #00bcd4; /* Ciano Elétrico (Tech Accent) */
+            --color-blue-highlight: rgba(0, 188, 212, 0.2); /* Brilho Tech */
+            --preto-fundo: #0d0d0d;        /* Fundo escuro Tech */
+            --preto-texto: #1a1a1a;
             --branco: #ffffff;
             --cinza-borda: #cbd5e1;
+            --cinza-fundo-card: #f8fafc;
         }
 
-        body { font-family: 'Inter', sans-serif; background-color: var(--preto-fundo); margin: 0; padding: 40px 15px; color: #1a1a1a; }
-        .container { max-width: 800px; margin: 0 auto; background: var(--branco); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.4); border-top: 10px solid var(--ora-azul); }
-        
-        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 30px; border-bottom: 2px solid var(--cinza-borda); }
-        .brand-logo { font-size: 28px; font-weight: 900; color: var(--ora-azul); }
-        .brand-logo span { color: var(--ora-laranja); }
-        
-        .protocol-box { text-align: right; border-left: 2px solid var(--cinza-borda); padding-left: 20px; }
-        .protocol-box label { display: block; font-size: 10px; font-weight: 800; color: var(--ora-azul); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .protocol-input { font-family: monospace; font-size: 20px; font-weight: bold; color: var(--ora-laranja); border: 2px solid var(--cinza-borda); padding: 8px; text-align: center; width: 160px; border-radius: 6px; }
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--preto-fundo);
+            color: var(--preto-texto);
+            margin: 0;
+            padding: 40px 15px;
+        }
 
-        .content { padding: 30px; }
-        .card { background: #f8fafc; border: 1px solid var(--cinza-borda); border-radius: 10px; padding: 25px; margin-bottom: 25px; border-left: 6px solid var(--ora-azul); transition: all 0.3s ease; }
-        h3 { font-size: 14px; color: var(--ora-azul); text-transform: uppercase; margin-top: 0; margin-bottom: 20px; letter-spacing: 1px; }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--branco);
+            border-radius: 16px;
+            overflow: hidden;
+            /* Sombra Tech azulada */
+            box-shadow: 0 20px 50px rgba(0, 188, 212, 0.15); 
+            border-top: 10px solid var(--color-blue-dark);
+        }
 
-        label { display: block; font-weight: 700; font-size: 13px; margin-bottom: 8px; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1.5px solid var(--cinza-borda); border-radius: 8px; font-size: 14px; box-sizing: border-box; margin-bottom: 15px; transition: 0.2s ease; }
-        input:focus, select:focus, textarea:focus { border-color: var(--ora-laranja); outline: none; box-shadow: 0 0 0 3px rgba(247,148,29,0.2); }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--cinza-borda); }
-        table th { background: var(--ora-azul); color: white; font-size: 12px; padding: 12px; text-align: left; text-transform: uppercase; }
-        table td { padding: 10px; border-bottom: 1px solid var(--cinza-borda); }
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 30px;
+            border-bottom: 2px solid var(--cinza-borda);
+        }
 
-        .btn-add { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        .btn-gps { background: var(--ora-laranja); color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; margin-bottom: 15px; }
-        .btn-del { background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-        .total-box { text-align: right; padding: 20px; font-size: 20px; font-weight: 900; color: var(--ora-azul); border-top: 2px solid var(--ora-azul); }
-        
-        #btn-executar { width: 100%; padding: 22px; background: var(--ora-azul); color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        #btn-executar:hover { background: #0d4a96; transform: translateY(-2px); }
-        #btn-executar:disabled { background: #666; cursor: not-allowed; }
+        /* Logo Placeholder - Mantendo limpo em branco/azul */
+        .brand-logo {
+            width: 150px;
+            height: auto;
+        }
 
-        #status_log { display: none; text-align: center; padding: 15px; margin-top: 15px; border-radius: 8px; font-weight: bold; }
+        .title-h1 {
+            color: var(--color-blue-dark);
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-top: -10px;
+            letter-spacing: 1px;
+        }
 
+        .protocol-box {
+            text-align: right;
+            border-left: 2px solid var(--cinza-borda);
+            padding-left: 20px;
+        }
+
+        .protocol-box label {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--color-blue-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .protocol-input {
+            font-family: monospace;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--color-blue-bright); /* Destaque Tech no número */
+            border: 2px solid var(--color-blue-bright); /* Borda Tech */
+            border-radius: 6px;
+            padding: 8px;
+            text-align: center;
+            width: 180px;
+            background: #fff;
+        }
+
+        .content-padding {
+            padding: 30px;
+        }
+
+        .card {
+            background: var(--cinza-fundo-card);
+            border: 1px solid var(--cinza-borda);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 6px solid var(--color-blue-dark);
+            transition: all 0.3s ease;
+        }
+
+        .card-title {
+            color: var(--color-blue-dark);
+            font-size: 15px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            margin-top: 0;
+            letter-spacing: 0.5px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input[type="text"], input[type="date"], input[type="number"], select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            background: var(--branco);
+            transition: 0.2s ease;
+        }
+
+        /* Foco tecnológico: brilho azul elétrico nos campos */
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--color-blue-bright);
+            box-shadow: 0 0 0 4px var(--color-blue-highlight);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        /* Tabela Dinâmica Tech */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: var(--branco);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--cinza-borda);
+        }
+
+        table th {
+            background: var(--color-blue-dark);
+            color: var(--branco);
+            font-size: 12px;
+            padding: 12px;
+            text-align: left;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        table td {
+            padding: 8px;
+            border-bottom: 1px solid var(--cinza-borda);
+        }
+
+        .total-box {
+            text-align: right;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--color-blue-dark);
+            border-top: 2px solid var(--color-blue-dark);
+            margin-top: 15px;
+        }
+
+        /* Botões de Mídia/Tabela */
+        .btn-add {
+            background: #28a745; /* Mantendo verde para "sucesso/adicionar" universal */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            margin-top: 15px;
+        }
+
+        .btn-del {
+            background: #dc3545; /* Mantendo vermelho para "remover/erro" universal */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Botão GPS Azul Elétrico Tech */
+        .btn-gps {
+            background: var(--color-blue-bright);
+            color: var(--color-blue-dark); /* Texto escuro para contraste */
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 900;
+            width: auto;
+            display: inline-block;
+            margin-top: 8px;
+            box-shadow: 0 0 10px var(--color-blue-highlight);
+        }
+
+        .btn-gps:hover {
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
+        }
+
+        /* Mídia Anexo */
+        input[type="file"] {
+            padding: 8px;
+            cursor: pointer;
+            border: 2px dashed var(--cinza-borda);
+        }
+
+        /* Botão Principal Unificado */
+        .footer-btns {
+            margin-top: 30px;
+        }
+
+        button#btn_finalizar {
+            width: 100%;
+            padding: 22px;
+            background-color: var(--color-blue-dark);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button#btn_finalizar:hover {
+            background-color: #0d4a96;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(10, 64, 135, 0.4);
+        }
+
+        button#btn_finalizar:disabled {
+            background-color: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #status_bot {
+            text-align: center;
+            font-weight: bold;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        /* Estilo de Impressão (Gerar PDF) */
         @media print {
-            body { background: white; padding: 0; }
-            .container { box-shadow: none; border: none; width: 100%; max-width: 100%; margin: 0; }
-            .main-header, .no-print, button, input[type="file"], .col-btn { display: none !important; }
-            input, select, textarea { border: none !important; background: transparent !important; padding: 0; }
-            .card { border: 1px solid #eee; border-left: 5px solid var(--ora-azul); }
-            table { border: 1px solid black; }
+            body { background: white; padding: 0; color: black; }
+            .container { box-shadow: none; border: none; max-width: 100%; margin: 0; padding: 0; border-top: none; }
+            .main-header, .footer-btns, #status_bot, .btn-add, .btn-del, .btn-gps, input[type="file"], .col-btn, .no-print { display: none !important; }
+            input, select, textarea { border: none !important; background: transparent !important; padding: 0; font-size: 14px; }
+            .card { border: 1px solid #eee; border-left: 5px solid var(--color-blue-dark); }
+            table { width: 100%; border: 1px solid black; }
             table th { background: #eee !important; color: black; border-bottom: 1px solid black; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
         }
     </style>
 </head>
@@ -64,173 +295,213 @@
 
 <div class="container">
     <header class="main-header">
-        <div class="brand-logo">ora<span>Telecom</span></div>
+        <div class="brand-box">
+            <img src="https://via.placeholder.com/200x80/ffffff/0a4087?text=ora+TELECOM" alt="ora Telecom" class="brand-logo">
+            <h1 class="title-h1">Vistoria de Infraestrutura</h1>
+        </div>
         <div class="protocol-box">
             <label>Nº PROTOCOLO / OS</label>
-            <input type="text" id="os_num" class="protocol-input" placeholder="000000">
+            <input type="text" id="protocolo_manual" class="protocol-input" placeholder="000000">
         </div>
     </header>
 
-    <div class="content">
-        <div class="card">
-            <h3>1. Informações Básicas</h3>
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
-                <div><label>Cliente / Unidade:</label><input type="text" id="cliente" placeholder="Ex: Shopping Teresina"></div>
-                <div><label>Data:</label><input type="date" id="data_v"></div>
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
-                <div><label>Técnico Responsável:</label><input type="text" id="tecnico" value="Daniel Lavor"></div>
-                <div>
-                    <label>Localização (GPS):</label>
-                    <input type="text" id="gps" placeholder="Aguardando captura...">
-                    <button class="btn-gps no-print" onclick="pegarLocal()">📍 CAPTURAR LOCALIZAÇÃO ORA</button>
+    <div class="content-padding">
+        <div id="formulario_perguntas">
+            <div class="card">
+                <h3 class="card-title">1. Dados da Vistoria e Técnico</h3>
+                <div class="form-row">
+                    <div class="form-group"><label>Cliente / Razão Social:</label><input type="text" id="cliente" placeholder="Ex: Shopping Teresina"></div>
+                    <div class="form-group"><label>Cidade/UF:</label><input type="text" id="cidade" value="Teresina - PI"></div>
                 </div>
+                <div class="form-row" style="margin-top:15px;">
+                    <div class="form-group"><label>Coordenadas GPS Exatas:</label>
+                        <input type="text" id="gps_coords" placeholder="Aguardando captura...">
+                        <button type="button" class="btn-gps no-print" onclick="capturarGPS()">📍 CAPTURAR LOCALIZAÇÃO TECH</button>
+                    </div>
+                    <div class="form-group"><label>Data da Vistoria:</label><input type="date" id="data_vistoria"></div>
+                </div>
+                <div class="form-group" style="margin-top:15px;"><label>Técnico Responsável ora:</label><input type="text" id="tecnico" value="Daniel Lavor"></div>
             </div>
-        </div>
 
-        <div class="card">
-            <h3>2. Ativos e Conectividade</h3>
-            <table id="tabela">
-                <thead>
-                    <tr>
-                        <th>Equipamento</th>
-                        <th style="width: 140px;">Conexão</th>
-                        <th style="width: 80px;">Qtd</th>
-                        <th style="width: 40px;" class="col-btn no-print"></th>
-                    </tr>
-                </thead>
-                <tbody id="corpo">
-                    <tr>
-                        <td><input type="text" class="item-n" placeholder="Ex: PC / DVR"></td>
-                        <td>
-                            <select class="item-c">
-                                <option value="Cabo">Cabo</option>
-                                <option value="Wi-Fi">Wi-Fi</option>
-                                <option value="Fibra">Fibra</option>
-                            </select>
-                        </td>
-                        <td><input type="number" value="1" class="item-q" onchange="atualizarTotal()"></td>
-                        <td class="col-btn no-print"><button class="btn-del" onclick="this.parentElement.parentElement.remove(); atualizarTotal();">✕</button></td>
-                    </tr>
-                </tbody>
-            </table>
-            <button class="btn-add no-print" onclick="addNovaLinha()">+ ADICIONAR ATIVO</button>
-            <div class="total-box">Total Geral: <span id="soma_fim">1</span></div>
-        </div>
+            <div class="card">
+                <h3 class="card-title">2. Inventário de Ativos (Cenário Atual)</h3>
+                <table id="tabela_ativos">
+                    <thead>
+                        <tr>
+                            <th>Equipamento/Ativo</th>
+                            <th style="width: 150px;">Conexão</th>
+                            <th style="width: 80px;">Qtd.</th>
+                            <th style="width: 40px;" class="col-btn no-print"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo_tabela">
+                        <tr>
+                            <td><input type="text" placeholder="Ex: Computador / DVR" class="item-nome"></td>
+                            <td>
+                                <select class="item-tipo">
+                                    <option value="Cabo">Cabo (RJ45)</option>
+                                    <option value="Wi-Fi">Wi-Fi (Wireless)</option>
+                                    <option value="Fibra">Fibra Óptica</option>
+                                </select>
+                            </td>
+                            <td><input type="number" value="1" min="1" class="item-qtd" onchange="calcularTotal()"></td>
+                            <td class="col-btn no-print"><button type="button" class="btn-del" onclick="removerLinha(this)">✕</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn-add no-print" onclick="adicionarLinha()">+ ADICIONAR ATIVO À LISTA</button>
+                <div class="total-box">Total Geral de Dispositivos: <span id="soma_total">1</span></div>
+            </div>
 
-        <div class="card">
-            <h3>3. Parecer Técnico ora</h3>
-            <label>Infraestrutura e Hardware Sugerido:</label>
-            <textarea id="infra" rows="5" placeholder="Liste o hardware necessário (Switches, APs, cabos...)"></textarea>
-            <label style="margin-top: 15px;">Parecer / Observações:</label>
-            <textarea id="obs" rows="4" placeholder="Dificuldades, passagens de cabo, energia..."></textarea>
-        </div>
+            <div class="card">
+                <h3 class="card-title">3. Detalhamento de Infraestrutura e Parecer ora</h3>
+                <label>Hardware de Rede Sugerido (Mikrotik, UniFi, Switches, Racks, Cabos):</label>
+                <textarea id="infra" rows="5" placeholder="Liste switches, APs, metragem de cabos, conversores..."></textarea>
+                
+                <label style="margin-top:15px;">Observações e Recomendações Técnicas:</label>
+                <textarea id="obs" rows="4" placeholder="Dificuldades de passagem, pontos de energia, interferências..."></textarea>
+            </div>
 
-        <div class="card no-print">
-            <h3>4. Mídias de Campo</h3>
-            <input type="file" id="midias" multiple accept="image/*,video/*" style="border: 2px dashed var(--cinza-borda); padding: 10px;">
-            <small style="color: #666; display: block; margin-top: 5px;">* Envio de fotos/vídeos para o Grupo de Teste.</small>
-        </div>
+            <div class="card no-print">
+                <h3 class="card-title">4. Evidências de Campo (Fotos/Vídeos Múltiplos)</h3>
+                <input type="file" id="midia" multiple accept="image/*,video/*">
+                <small style="color: #666; display: block; margin-top: 5px;">* Envio para o Grupo de Teste ora.</small>
+            </div>
 
-        <div id="status_log"></div>
-        <button id="btn-executar" onclick="enviarEGeraPDF()" class="no-print">🚀 ENVIAR PARA O GRUPO E GERAR PDF</button>
+            <div id="status_bot"></div>
+            <button type="button" id="btn_finalizar" onclick="processarEnviooraEGerarPDF()">🚀 ENVIAR RELATÓRIO E GERAR PDF AUTOMÁTICO</button>
+        </div>
     </div>
 </div>
 
 <script>
     // --- CONFIGURAÇÃO CONECTADA AO GRUPO DE TESTES ---
     const TOKEN = "8797747366:AAHBVt7Xh7O-hms4DmB6c8j5AmWiOhkB6K4";
-    const CHAT_ID = "-5263060753"; // ID do "Grupo teste de bot vistoria"
+    const CHAT_ID = "-5263060753"; // Grupo teste de bot vistoria
 
-    document.getElementById('data_v').valueAsDate = new Date();
+    // Setar data de hoje por padrão
+    document.getElementById('data_vistoria').valueAsDate = new Date();
 
-    function addNovaLinha() {
-        const row = document.getElementById('corpo').insertRow();
-        row.innerHTML = `<td><input type="text" class="item-n" placeholder="Equipamento"></td><td><select class="item-c"><option value="Cabo">Cabo</option><option value="Wi-Fi">Wi-Fi</option><option value="Fibra">Fibra</option></select></td><td><input type="number" value="1" min="1" class="item-q" onchange="atualizarTotal()"></td><td class="col-btn no-print"><button class="btn-del" onclick="this.parentElement.parentElement.remove(); atualizarTotal();">✕</button></td>`;
-        atualizarTotal();
-    }
-
-    function atualizarTotal() {
-        let t = 0;
-        document.querySelectorAll('.item-q').forEach(i => t += parseInt(i.value) || 0);
-        document.getElementById('soma_fim').innerText = t;
-    }
-
-    function pegarLocal() {
+    function capturarGPS() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(p => {
-                document.getElementById('gps').value = `${p.coords.latitude}, ${p.coords.longitude}`;
-                alert("📍 Coordenadas ora capturadas!");
+                document.getElementById('gps_coords').value = `${p.coords.latitude}, ${p.coords.longitude}`;
+                alert("📍 Localização capturada!");
             }, () => {
                 alert("Erro ao capturar GPS. Verifique as permissões.");
             });
         }
     }
 
-    async function enviarEGeraPDF() {
-        const btn = document.getElementById('btn-executar');
-        const log = document.getElementById('status_log');
-        const files = document.getElementById('midias').files;
-        
-        btn.disabled = true;
-        log.style.display = "block";
-        log.style.background = "#fff3cd"; // Amarelo ora
-        log.innerText = "⏳ Enviando dados para o grupo de vistoria...";
+    function adicionarLinha() {
+        const tabela = document.getElementById('corpo_tabela');
+        const novaLinha = document.createElement('tr');
+        novaLinha.innerHTML = `
+            <td><input type="text" placeholder="Equipamento" class="item-nome"></td>
+            <td>
+                <select class="item-tipo">
+                    <option value="Cabo">Cabo (RJ45)</option>
+                    <option value="Wi-Fi">Wi-Fi (Wireless)</option>
+                    <option value="Fibra">Fibra Óptica</option>
+                </select>
+            </td>
+            <td><input type="number" value="1" min="1" class="item-qtd" onchange="calcularTotal()"></td>
+            <td class="col-btn no-print"><button type="button" class="btn-del" onclick="removerLinha(this)">✕</button></td>
+        `;
+        tabela.appendChild(novaLinha);
+        calcularTotal();
+    }
 
-        let itensStr = "";
-        document.querySelectorAll('#corpo tr').forEach(tr => {
-            const n = tr.querySelector('.item-n').value;
-            const c = tr.querySelector('.item-c').value;
-            const q = tr.querySelector('.item-q').value;
-            if(n) itensStr += `• ${n}: ${q} un (${c})\n`;
+    function removerLinha(btn) {
+        btn.parentElement.parentElement.remove();
+        calcularTotal();
+    }
+
+    function calcularTotal() {
+        let total = 0;
+        document.querySelectorAll('.item-qtd').forEach(input => {
+            total += parseInt(input.value) || 0;
+        });
+        document.getElementById('soma_total').innerText = total;
+    }
+
+    // FUNÇÃO UNIFICADA: ENVIA TUDO E ABRE O PDF AUTOMATICAMENTE
+    async function processarEnviooraEGerarPDF() {
+        const status = document.getElementById('status_bot');
+        const arquivos = document.getElementById('midia').files;
+        const protocolo = document.getElementById('protocolo_manual').value || "S/N";
+        const gps = document.getElementById('gps_coords').value;
+        const btn = document.getElementById('btn_finalizar');
+        
+        status.style.display = "block";
+        status.style.background = "#e1f5fe"; // Light blue Tech sending status
+        status.style.color = "#1a1a1a";
+        status.innerText = "⏳ Sincronizando arquivos e enviando laudo operacional...";
+        btn.disabled = true;
+
+        let listaAtivos = "";
+        document.querySelectorAll('#corpo_tabela tr').forEach(tr => {
+            const nome = tr.querySelector('.item-nome').value;
+            const tipo = tr.querySelector('.item-tipo').value;
+            const qtd = tr.querySelector('.item-qtd').value;
+            if(nome) listaAtivos += `• ${nome}: ${qtd} un (${tipo})\n`;
         });
 
-        let msg = `<b>📡 RELATÓRIO OPERACIONAL ora | OS: ${document.getElementById('os_num').value || 'S/N'}</b>\n\n`;
-        msg += `🏢 <b>Cliente:</b> ${document.getElementById('cliente').value}\n`;
-        msg += `👤 <b>Técnico:</b> ${document.getElementById('tecnico').value}\n\n`;
-        msg += `<b>🖥️ INVENTÁRIO:</b>\n${itensStr}`;
-        msg += `🔢 <b>Total:</b> ${document.getElementById('soma_fim').innerText} ativos\n\n`;
-        msg += `<b>⚙️ INFRA/HARDWARE:</b>\n${document.getElementById('infra').value}\n\n`;
-        msg += `<b>📝 PARECER TÉCNICO:</b>\n${document.getElementById('obs').value}\n`;
-        if(document.getElementById('gps').value) msg += `\n📍 <b>GPS:</b> <a href="https://www.google.com/maps?q=${document.getElementById('gps').value}">Abrir Maps</a>`;
+        // Montar Mensagem ora Formatada
+        let texto = `<b>📡 LAUDO OPERACIONAL ora TELECOM | OS: ${protocolo}</b>\n\n`;
+        texto += `🏢 <b>Cliente:</b> ${document.getElementById('cliente').value}\n`;
+        texto += `📍 <b>Cidade:</b> ${document.getElementById('cidade').value}\n`;
+        texto += `👤 <b>Técnico:</b> ${document.getElementById('tecnico').value}\n\n`;
+        texto += `<b>🖥️ INVENTÁRIO DE ATIVOS:</b>\n${listaAtivos}`;
+        texto += `\n🔢 <b>Total Geral:</b> ${document.getElementById('soma_total').innerText} dispositivos\n\n`;
+        texto += `<b>⚙️ INFRA/HARDWARE:</b>\n${document.getElementById('infra').value}\n\n`;
+        texto += `<b>📝 PARECER TÉCNICO:</b>\n${document.getElementById('obs').value}\n\n`;
+        if(gps) texto += `📍 <b>GPS:</b> <a href="https://www.google.com/maps?q=${gps}">Ver no Mapa</a>\n`;
+        texto += `📅 <b>Data:</b> ${document.getElementById('data_vistoria').value.split('-').reverse().join('/')}`;
 
         try {
-            // Enviar Mídias (Fotos/Vídeos)
-            if (files.length > 0) {
-                for (let i = 0; i < files.length; i++) {
-                    const f = files[i];
-                    const fd = new FormData();
-                    fd.append("chat_id", CHAT_ID);
-                    fd.append(f.type.startsWith('video/') ? "video" : "photo", f);
-                    log.innerText = `⏳ Enviando mídia ${i+1} de ${files.length}...`;
-                    await fetch(`https://api.telegram.org/bot${TOKEN}/${f.type.startsWith('video/') ? 'sendVideo' : 'sendPhoto'}`, { method: "POST", body: fd });
+            // 1. Enviar arquivos (multi-anexo)
+            if (arquivos.length > 0) {
+                for (let i = 0; i < arquivos.length; i++) {
+                    const file = arquivos[i];
+                    const isVideo = file.type.startsWith('video/');
+                    const rota = isVideo ? 'sendVideo' : 'sendPhoto';
+                    const formData = new FormData();
+                    formData.append("chat_id", CHAT_ID);
+                    formData.append(isVideo ? "video" : "photo", file);
+                    status.innerText = `⏳ Enviando mídia ${i+1} de ${arquivos.length}...`;
+                    await fetch(`https://api.telegram.org/bot${TOKEN}/${rota}`, { method: "POST", body: formData });
                 }
             }
 
-            log.innerText = "⏳ Mídias enviadas. Processando laudo técnico...";
+            status.innerText = "⏳ Mídias enviadas. Processando laudo técnico final...";
 
-            // Enviar Texto do Laudo
+            // 2. Enviar texto final
             await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: "HTML", disable_web_page_preview: false })
+                body: JSON.stringify({ chat_id: CHAT_ID, text: texto, parse_mode: "HTML", disable_web_page_preview: false })
             });
 
-            log.style.background = "#d4edda"; // Verde Sucesso
-            log.innerText = "✅ SUCESSO! Abrindo PDF Automático...";
+            // 3. Sucesso no Envio
+            status.style.background = "#d4edda"; // Verde Sucesso
+            status.style.color = "#155724";
+            status.innerText = "✅ LAUDO ENVIADO COM SUCESSO! ABRINDO PDF AUTOMÁTICO...";
             
-            // Gerar o PDF na tela
+            // 4. MÁGICA AUTOMÁTICA: ABRE A TELA DE PDF (PRINT)
             setTimeout(() => {
                 window.print();
-                btn.disabled = false;
-            }, 1000);
+                btn.disabled = false; // Reativa o botão
+            }, 1000); // delay de 1 segundo
 
         } catch (e) {
-            log.style.background = "#f8d7da"; // Vermelho Erro
-            log.innerText = "❌ Falha no envio. Verifique a conexão.";
+            status.style.background = "#f8d7da"; // Vermelho erro
+            status.style.color = "#721c24";
+            status.innerText = "❌ Falha operacional no envio. O PDF não abrirá automaticamente.";
             btn.disabled = false;
         }
     }
 </script>
+
 </body>
 </html>
