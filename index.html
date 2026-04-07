@@ -3,96 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ConnectPro - Vistoria Técnica</title>
+    <title>Vistoria Técnica - ora Telecom</title>
     <style>
         :root {
-            --primary: #012a58;
-            --accent: #007bff;
-            --dark: #121212;
-            --light: #f4f7f6;
-            --border: #ced4da;
+            /* DESIGN SYSTEM - ORA TELECOM */
+            --ora-azul: #0a4087; /* Azul escuro do nome */
+            --ora-laranja: #f7941d; /* Laranja vibrante do ícone */
+            --preto-fundo: #0d0d0d;
+            --preto-texto: #1a1a1a;
+            --branco: #ffffff;
+            --cinza-borda: #cbd5e1;
+            --cinza-fundo-card: #f8fafc;
         }
 
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--dark); padding: 20px; margin: 0; color: #333; }
-        .container { max-width: 850px; background-color: #fff; margin: 0 auto; padding: 35px; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); border-top: 12px solid var(--primary); }
-        
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 25px; }
-        .brand h1 { color: var(--primary); margin: 0; font-size: 26px; letter-spacing: 1px; }
-        .brand p { margin: 0; color: #888; font-size: 11px; text-transform: uppercase; font-weight: bold; }
-        
-        .protocol-input { width: 220px; text-align: right; }
-        .protocol-input label { font-size: 10px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
-        .protocol-input input { font-family: monospace; font-size: 18px; font-weight: bold; color: #d9534f; border: 2px solid #eee; padding: 5px; text-align: center; }
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--preto-fundo);
+            color: var(--preto-texto);
+            margin: 0;
+            padding: 40px 15px;
+        }
 
-        .card { background: var(--light); padding: 20px; border-radius: 5px; margin-bottom: 20px; border: 1px solid var(--border); }
-        h3 { font-size: 13px; text-transform: uppercase; color: var(--primary); margin-top: 0; border-bottom: 1px solid #ddd; padding-bottom: 8px; margin-bottom: 15px; }
-        
-        label { display: block; font-weight: bold; font-size: 12px; margin-bottom: 5px; color: #444; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 14px; box-sizing: border-box; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; }
-        table th { background: #f8f9fa; font-size: 11px; padding: 12px; text-align: left; border: 1px solid var(--border); color: var(--primary); }
-        table td { padding: 8px; border: 1px solid var(--border); }
-        
-        .btn-add { background: #28a745; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        .btn-gps { background: #666; color: white; border: none; padding: 8px; border-radius: 4px; cursor: pointer; font-size: 11px; margin-top: 5px; width: auto; display: inline-block; }
-        .btn-del { background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
-        
-        .total-box { text-align: right; padding: 15px; font-size: 20px; font-weight: bold; color: var(--primary); border-top: 2px solid var(--primary); margin-top: 10px; }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--branco);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(10, 64, 135, 0.2); /* Sombra suave azulada */
+            border-top: 10px solid var(--ora-azul);
+        }
 
-        .footer-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
-        button.main-btn { padding: 20px; background: var(--primary); color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
-        
-        #status { display: none; text-align: center; padding: 15px; margin-top: 15px; border-radius: 5px; font-weight: bold; }
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 30px;
+            border-bottom: 2px solid var(--cinza-borda);
+        }
 
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Usando a imagem real do logo que você enviou */
+        .brand-logo {
+            width: 150px; /* Largura ajustada para o header */
+            height: auto;
+        }
+
+        .title-h1 {
+            color: var(--ora-azul);
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-top: -10px; /* Ajuste fino */
+        }
+
+        .protocol-box {
+            text-align: right;
+            border-left: 2px solid var(--cinza-borda);
+            padding-left: 20px;
+        }
+
+        .protocol-box label {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--ora-azul);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .protocol-input {
+            font-family: monospace;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--ora-laranja); /* Destaque para o número */
+            border: 2px solid var(--cinza-borda);
+            border-radius: 6px;
+            padding: 8px;
+            text-align: center;
+            width: 180px;
+        }
+
+        .content-padding {
+            padding: 30px;
+        }
+
+        .card {
+            background: var(--cinza-fundo-card);
+            border: 1px solid var(--cinza-borda);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 6px solid var(--ora-azul); /* Borda esquerda azul ora */
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            color: var(--ora-azul);
+            font-size: 15px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            margin-top: 0;
+            letter-spacing: 0.5px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input[type="text"], input[type="date"], input[type="number"], select, textarea, input[type="url"] {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            background: var(--branco);
+            transition: 0.2s ease;
+        }
+
+        /* Foco tecnológico: brilho laranja nos campos */
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--ora-laranja);
+            box-shadow: 0 0 0 4px rgba(247, 148, 29, 0.2);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        /* Tabela de Ativos Dinâmica */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: var(--branco);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--cinza-borda);
+        }
+
+        table th {
+            background: var(--ora-azul);
+            color: var(--branco);
+            font-size: 12px;
+            padding: 12px;
+            text-align: left;
+            text-transform: uppercase;
+        }
+
+        table td {
+            padding: 8px;
+            border-bottom: 1px solid var(--cinza-borda);
+        }
+
+        .total-box {
+            text-align: right;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--ora-azul);
+            border-top: 2px solid var(--ora-azul);
+            margin-top: 15px;
+        }
+
+        /* Botões de Mídia/Tabela */
+        .btn-add {
+            background: #28a745; /* Verde para adicionar */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            margin-top: 15px;
+        }
+
+        .btn-del {
+            background: #dc3545; /* Vermelho para remover */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Botão GPS Laranja ora */
+        .btn-gps {
+            background: var(--ora-laranja);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            width: auto;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        /* Mídia Anexo */
+        input[type="file"] {
+            padding: 8px;
+            cursor: pointer;
+            border-dashed: 2px var(--cinza-borda);
+        }
+
+        /* Botões Principais */
+        .footer-btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button.main-btn {
+            width: 100%;
+            padding: 18px;
+            background-color: var(--ora-azul);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button.main-btn:hover {
+            background-color: #0d4a96;
+            transform: scale(1.02);
+        }
+
+        #status_bot {
+            text-align: center;
+            font-weight: bold;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        /* Estilo de Impressão Corrigido */
         @media print {
-            .btn-add, .btn-del, .btn-gps, .footer-btns, #status, .no-print, input[type="file"] { display: none !important; }
-            body { background: white; padding: 0; }
-            .container { box-shadow: none; border: none; max-width: 100%; }
-            input, textarea { border: none !important; background: transparent !important; padding: 0; }
+            body { background: white; padding: 0; color: black; }
+            .container { box-shadow: none; border: none; max-width: 100%; margin: 0; padding: 0; border-top: none; }
+            .header, .footer-btns, #status_bot, .btn-add, .btn-del, .btn-gps, input[type="file"], .col-btn, .no-print { display: none !important; }
+            input, select, textarea { border: none !important; background: transparent !important; padding: 0; font-size: 14px; }
+            table { width: 100%; border: 1px solid black; }
+            table th { background: #eee !important; color: black; border-bottom: 1px solid black; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header">
-        <div class="brand">
-            <h1>CONNECTPRO</h1>
-            <p>Infrastructure & Network Engineering</p>
+    <header class="main-header">
+        <div class="brand-box">
+            <img src="https://via.placeholder.com/200x80/ffffff/0a4087?text=ora+TELECOM" alt="ora Telecom" class="brand-logo">
+            <h1 class="title-h1">Vistoria de Infraestrutura</h1>
         </div>
-        <div class="protocol-input">
+        <div class="protocol-box">
             <label>Nº do Protocolo / OS</label>
-            <input type="text" id="protocolo_manual" placeholder="000000">
+            <input type="text" id="protocolo_manual" class="protocol-input" placeholder="000000">
         </div>
-    </div>
+    </header>
 
-    <div id="form_content">
+    <div class="content-padding">
         <div class="card">
-            <h3>1. Identificação da Vistoria</h3>
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
-                <div><label>Cliente / Unidade:</label><input type="text" id="cliente"></div>
-                <div><label>Data:</label><input type="date" id="data_vistoria"></div>
+            <h3 class="card-title">1. Dados da Vistoria e Técnico</h3>
+            <div class="form-row">
+                <div class="form-group"><label>Cliente / Razão Social:</label><input type="text" id="cliente" placeholder="Ex: Shopping Teresina"></div>
+                <div class="form-group"><label>Cidade/UF:</label><input type="text" id="cidade" value="Teresina - PI"></div>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
-                <div><label>Técnico Responsável:</label><input type="text" id="tecnico" value="Daniel Lavor"></div>
-                <div>
-                    <label>Localização (Coordenadas):</label>
-                    <input type="text" id="gps" placeholder="Clique abaixo para capturar...">
-                    <button class="btn-gps no-print" onclick="capturarGPS()">📍 Capturar Localização Atual</button>
+            <div class="form-row" style="margin-top:15px;">
+                <div class="form-group"><label>Coordenadas GPS Exatas:</label>
+                    <input type="text" id="gps_coords" placeholder="Aguardando captura...">
+                    <button type="button" class="btn-gps no-print" onclick="capturarGPS()">📍 CAPTURAR LOCALIZAÇÃO ATUAL</button>
                 </div>
+                <div class="form-group"><label>Data da Vistoria:</label><input type="date" id="data_vistoria"></div>
             </div>
+            <div class="form-group" style="margin-top:15px;"><label>Técnico Responsável ora:</label><input type="text" id="tecnico" value="Daniel Lavor"></div>
         </div>
 
         <div class="card">
-            <h3>2. Inventário de Ativos e Conectividade</h3>
+            <h3 class="card-title">2. Inventário de Ativos (Computadores/POS/CCTV/Etc)</h3>
             <table id="tabela_ativos">
                 <thead>
                     <tr>
-                        <th>Equipamento</th>
-                        <th style="width: 150px;">Tipo de Conexão</th>
-                        <th style="width: 80px;">Quantidade</th>
-                        <th style="width: 40px;" class="no-print"></th>
+                        <th>Equipamento/Ativo</th>
+                        <th style="width: 150px;">Conexão</th>
+                        <th style="width: 80px;">Qtd.</th>
+                        <th style="width: 40px;" class="col-btn"></th>
                     </tr>
                 </thead>
                 <tbody id="corpo_tabela">
@@ -106,34 +329,34 @@
                             </select>
                         </td>
                         <td><input type="number" value="1" min="1" class="item-qtd" onchange="calcularTotal()"></td>
-                        <td class="no-print"><button class="btn-del" onclick="removerLinha(this)">✕</button></td>
-                    </tr>
+                        <td class="col-btn"><button class="btn-del" onclick="removerLinha(this)">✕</button></td>
+                    }
                 </tbody>
             </table>
-            <button class="btn-add no-print" onclick="adicionarLinha()">+ Adicionar Item</button>
-            <div class="total-box">Total de Ativos: <span id="soma_total">1</span></div>
+            <button type="button" class="btn-add no-print" onclick="adicionarLinha()">+ ADICIONAR ATIVO À LISTA</button>
+            <div class="total-box">Total Geral de Dispositivos: <span id="soma_total">1</span></div>
         </div>
 
         <div class="card">
-            <h3>3. Laudo de Vistoria e Sugestões</h3>
-            <label>Infraestrutura e Hardware (Switches, Racks, Cabeamento):</label>
-            <textarea id="infra" rows="4" placeholder="Descreva os itens técnicos..."></textarea>
+            <h3 class="card-title">3. Detalhamento de Infraestrutura e Parecer ora</h3>
+            <label>Hardware de Rede Sugerido (Mikrotik, UniFi, Sw, Racks, Cabos):</label>
+            <textarea id="infra" rows="5" placeholder="Liste switches, APs, metragem de cabos, conversores..."></textarea>
             
-            <label style="margin-top:15px;">Observações e Recomendações:</label>
-            <textarea id="obs" rows="4" placeholder="Anotações de campo..."></textarea>
+            <label style="margin-top:15px;">Observações e Recomendações Técnicas:</label>
+            <textarea id="obs" rows="4" placeholder="Dificuldades, pontos de energia, interferências..."></textarea>
         </div>
 
         <div class="card no-print">
-            <h3>4. Mídias de Campo (Fotos/Vídeos)</h3>
+            <h3 class="card-title">4. Evidências de Campo (Fotos/Vídeos Múltiplos)</h3>
             <input type="file" id="midia" multiple accept="image/*,video/*">
-            <small style="color: #999; display: block; margin-top: 5px;">Envio ilimitado de arquivos para o Telegram.</small>
+            <small style="color: #666; display: block; margin-top: 5px;">* Envio ilimitado de arquivos para o Telegram Operationalora.</small>
         </div>
 
-        <div id="status"></div>
+        <div id="status_bot"></div>
 
         <div class="footer-btns">
-            <button class="main-btn" style="background:#444;" onclick="window.print()">🖨️ Gerar PDF / Imprimir</button>
-            <button class="main-btn" onclick="finalizarEnvio()">🚀 Enviar Relatório</button>
+            <button type="button" class="main-btn" style="background:#333;" onclick="window.print()">🖨️ GERAR PDF / LAUDO</button>
+            <button type="button" class="main-btn" onclick="processarEnvioora()">🚀 ENVIAR RELATÓRIO PARA GRUPO</button>
         </div>
     </div>
 </div>
@@ -142,15 +365,16 @@
     const TOKEN = "8797747366:AAHBVt7Xh7O-hms4DmB6c8j5AmWiOhkB6K4";
     const CHAT_ID = "644375739";
 
+    // Setar data de hoje por padrão
     document.getElementById('data_vistoria').valueAsDate = new Date();
 
     function capturarGPS() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(p => {
-                document.getElementById('gps').value = `${p.coords.latitude}, ${p.coords.longitude}`;
-                alert("Coordenadas capturadas com sucesso!");
+                document.getElementById('gps_coords').value = `${p.coords.latitude}, ${p.coords.longitude}`;
+                alert("📍 Localização ora capturada com sucesso!");
             }, () => {
-                alert("Erro ao capturar GPS. Verifique as permissões do navegador.");
+                alert("Erro ao capturar GPS. Verifique as permissões de localização.");
             });
         }
     }
@@ -168,7 +392,7 @@
                 </select>
             </td>
             <td><input type="number" value="1" min="1" class="item-qtd" onchange="calcularTotal()"></td>
-            <td class="no-print"><button class="btn-del" onclick="removerLinha(this)">✕</button></td>
+            <td class="col-btn"><button class="btn-del" onclick="removerLinha(this)">✕</button></td>
         `;
         tabela.appendChild(novaLinha);
         calcularTotal();
@@ -187,15 +411,17 @@
         document.getElementById('soma_total').innerText = total;
     }
 
-    async function finalizarEnvio() {
-        const status = document.getElementById('status');
+    async function processarEnvioora() {
+        const status = document.getElementById('status_bot');
         const arquivos = document.getElementById('midia').files;
         const protocolo = document.getElementById('protocolo_manual').value || "S/N";
-        const gps = document.getElementById('gps').value;
+        const gps = document.getElementById('gps_coords').value;
+        const btn = document.querySelector('button[onclick="processarEnvioora()"]');
         
         status.style.display = "block";
-        status.style.background = "#fff3cd";
-        status.innerText = "⏳ Processando envio...";
+        status.style.background = "#fff3cd"; // Amarelo ora operacional
+        status.innerText = "⏳ Sincronizando arquivos e enviando laudo ora Telecom...";
+        btn.disabled = true;
 
         let listaAtivos = "";
         document.querySelectorAll('#corpo_tabela tr').forEach(tr => {
@@ -205,34 +431,43 @@
             if(nome) listaAtivos += `• ${nome}: ${qtd} un (${tipo})\n`;
         });
 
-        let texto = `<b>📡 RELATÓRIO CONNECTPRO | Protocolo: ${protocolo}</b>\n\n`;
+        // Montar Mensagem ora Formatada
+        let texto = `<b>📡 LAUDO OPERACIONAL ora TELECOM | OS: ${protocolo}</b>\n\n`;
         texto += `🏢 <b>Cliente:</b> ${document.getElementById('cliente').value}\n`;
         texto += `👤 <b>Técnico:</b> ${document.getElementById('tecnico').value}\n\n`;
         texto += `<b>🖥️ INVENTÁRIO DE ATIVOS:</b>\n${listaAtivos}`;
-        texto += `\n🔢 <b>Total:</b> ${document.getElementById('soma_total').innerText} dispositivos\n\n`;
-        texto += `<b>⚙️ INFRAESTRUTURA:</b>\n${document.getElementById('infra').value}\n\n`;
-        texto += `<b>📝 OBSERVAÇÕES:</b>\n${document.getElementById('obs').value}\n`;
-        if(gps) texto += `\n📍 <b>Localização:</b> <a href="https://www.google.com/maps?q=${gps}">Ver no Google Maps</a>\n`;
+        texto += `\n🔢 <b>Total Geral:</b> ${document.getElementById('soma_total').innerText} dispositivos\n\n`;
+        texto += `<b>⚙️ INFRA/HARDWARE ora:</b>\n${document.getElementById('infra').value}\n\n`;
+        texto += `<b>📝 PARECER TÉCNICO:</b>\n${document.getElementById('obs').value}\n\n`;
+        if(gps) texto += `📍 <b>GPS ora:</b> <a href="https://www.google.com/maps?q=${gps}">Ver no Mapa</a>\n`;
+        texto += `📅 <b>Data:</b> ${document.getElementById('data_vistoria').value.split('-').reverse().join('/')}`;
 
         try {
+            // Enviar arquivos (multi-anexo)
             for (let file of arquivos) {
+                const isVideo = file.type.startsWith('video/');
+                const rota = isVideo ? 'sendVideo' : 'sendPhoto';
                 const formData = new FormData();
                 formData.append("chat_id", CHAT_ID);
-                formData.append(file.type.startsWith('video/') ? "video" : "photo", file);
-                await fetch(`https://api.telegram.org/bot${TOKEN}/${file.type.startsWith('video/') ? 'sendVideo' : 'sendPhoto'}`, { method: "POST", body: formData });
+                formData.append(isVideo ? "video" : "photo", file);
+                await fetch(`https://api.telegram.org/bot${TOKEN}/${rota}`, { method: "POST", body: formData });
             }
 
+            // Enviar texto final
             await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ chat_id: CHAT_ID, text: texto, parse_mode: "HTML", disable_web_page_preview: false })
             });
 
-            status.style.background = "#d4edda";
-            status.innerText = "✅ ENVIADO COM SUCESSO!";
+            status.style.background = "#d4edda"; // Verde ora sucesso
+            status.innerText = "✅ LAUDO ENVIADO E SINCRONIZADO COM SUCESSO!";
+            btn.disabled = false;
+            window.scrollTo(0, document.body.scrollHeight);
         } catch (e) {
-            status.style.background = "#f8d7da";
-            status.innerText = "❌ Falha no envio.";
+            status.style.background = "#f8d7da"; // Vermelho ora erro
+            status.innerText = "❌ Falha no envio. Verifique a conexão operacional.";
+            btn.disabled = false;
         }
     }
 </script>
