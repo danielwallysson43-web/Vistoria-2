@@ -179,14 +179,14 @@
             box-shadow: 0 0 10px rgba(100, 100, 100, 0.3);
         }
         
-        button.btn-imprimir, button.btn-ia {
+        button.btn-imprimir {
             background-color: var(--preto-fundo);
             margin-top: 10px;
             margin-bottom: 0;
             border: 1px solid var(--cor-acento-tech);
         }
 
-        button.btn-imprimir:hover, button.btn-ia:hover {
+        button.btn-imprimir:hover {
             background-color: #333;
             border-color: #007bff;
         }
@@ -256,24 +256,19 @@
             object-fit: contain;
         }
 
-        /* Estilos do Loading da IA */
-        #loading-ia {
-            display: none;
-            text-align: center;
-            color: var(--cor-acento-tech);
-            font-weight: bold;
-            margin: 15px 0;
-        }
-
-        #resposta-ia {
-            display: none;
-            background-color: #f0f8ff;
-            border-left: 5px solid #0056b3;
-            padding: 15px;
-            margin-top: 15px;
+        .btn-remover {
+            background-color: #dc3545;
+            color: white;
+            border: none;
             border-radius: 6px;
-            font-size: 14px;
-            line-height: 1.6;
+            padding: 0 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        
+        .btn-remover:hover {
+            background-color: #c82333;
         }
 
         @media print {
@@ -281,7 +276,7 @@
             .container { box-shadow: none; border: none; max-width: 100%; margin: 0; padding: 0; border-top: none; }
             #formulario_perguntas, button { display: none !important; }
             #resultado { border: none; display: block; border-left: none; }
-            .secao-res, .critico, .img-anexo, #resposta-ia { page-break-inside: avoid; border: none; }
+            .secao-res, .critico, .img-anexo { page-break-inside: avoid; border: none; }
             h2, h3 { page-break-after: avoid; }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
         }
@@ -297,16 +292,6 @@
 
     <div id="formulario_perguntas">
         
-        <div class="card">
-            <h3 class="card-title">🤖 Integração IA (Gemini Grátis)</h3>
-            <div class="form-group">
-                <label>Chave da API (Gemini):</label>
-                <input type="password" id="api_key_gemini" placeholder="Cole sua chave aqui (salva apenas no seu navegador)">
-                <small style="color: #666; font-size: 11px; display: block; margin-top: 4px;">Pegue sua chave grátis em: aistudio.google.com/app/apikey</small>
-            </div>
-            <button class="btn-secundario" onclick="salvarChave()" style="margin-top: 5px;">Salvar Chave Localmente</button>
-        </div>
-
         <div class="card">
             <h3 class="card-title">0. Dados Gerais</h3>
             <div class="form-row">
@@ -404,6 +389,25 @@
             <div class="checkbox-group"><input type="checkbox" id="tem_hotspot"><label><b>Hotspot:</b> Cliente exige portal de login (Leads).</label></div>
         </div>
 
+        <div class="card">
+            <h3 class="card-title">5. Dispositivos Cabeados</h3>
+            <div id="lista_cabeados">
+                <div class="form-row cabeado-item">
+                    <div class="form-group" style="flex: 2;">
+                        <label>Descrição do Dispositivo (Ex: Impressora, TV):</label>
+                        <input type="text" class="desc_cabeado" placeholder="Ex: Smart TV Credenciamento">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Quantidade:</label>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="number" class="qtd_cabeado" value="0" min="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn-secundario" onclick="adicionarCabeado()" style="margin-top: 10px;">+ Adicionar Dispositivo</button>
+        </div>
+
         <button onclick="gerarProjeto()">Gerar Laudo Técnico</button>
     </div>
 
@@ -411,28 +415,6 @@
 </div>
 
 <script>
-    // Carrega a chave da API salva, se houver
-    document.addEventListener("DOMContentLoaded", () => {
-        const savedKey = localStorage.getItem('danieltec_gemini_key');
-        if (savedKey) {
-            document.getElementById('api_key_gemini').value = savedKey;
-        }
-    });
-
-    function salvarChave() {
-        const key = document.getElementById('api_key_gemini').value.trim();
-        if (key) {
-            localStorage.setItem('danieltec_gemini_key', key);
-            alert('Chave salva com sucesso no navegador!');
-        } else {
-            localStorage.removeItem('danieltec_gemini_key');
-            alert('Chave removida!');
-        }
-    }
-
-    // Variável global para armazenar os dados do laudo para a IA
-    let dadosParaIA = {};
-
     function formatarData(dataISO) {
         if (!dataISO) return "Não informada";
         let partes = dataISO.split('-');
@@ -464,8 +446,7 @@
             (position) => {
                 let lat = position.coords.latitude;
                 let lon = position.coords.longitude;
-                // Corrigido para Template Literal com crases
-                let mapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+                let mapsUrl = `https://www.google.com/maps?q=$${lat},${lon}`;
                 
                 inputLink.value = mapsUrl;
                 btn.innerText = "✅ Salvo";
@@ -491,6 +472,24 @@
         let plat = document.getElementById('plataforma_gamer').value;
         let divPcs = document.getElementById('div_qtd_pcs');
         divPcs.style.display = (plat === 'pcs' || plat === 'ambos') ? 'block' : 'none';
+    }
+
+    function adicionarCabeado() {
+        const container = document.getElementById('lista_cabeados');
+        const div = document.createElement('div');
+        div.className = 'form-row cabeado-item';
+        div.innerHTML = `
+            <div class="form-group" style="flex: 2;">
+                <input type="text" class="desc_cabeado" placeholder="Ex: Totem de Autoatendimento">
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <div style="display: flex; gap: 8px;">
+                    <input type="number" class="qtd_cabeado" value="1" min="1">
+                    <button type="button" class="btn-remover" onclick="this.parentElement.parentElement.parentElement.remove()" title="Remover">X</button>
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
     }
 
     async function gerarProjeto() {
@@ -535,17 +534,29 @@
         let plat_gamer = document.getElementById('plataforma_gamer').value;
         let qtd_pcs = gamer && (plat_gamer === 'pcs' || plat_gamer === 'ambos') ? (parseInt(document.getElementById('qtd_pcs').value) || 0) : 0;
 
+        // Captura Dispositivos Cabeados
+        let total_cabeados = 0;
+        let lista_nomes_cabeados = [];
+        document.querySelectorAll('.cabeado-item').forEach(item => {
+            let desc = item.querySelector('.desc_cabeado').value.trim();
+            let qtd = parseInt(item.querySelector('.qtd_cabeado').value) || 0;
+            if (qtd > 0) {
+                total_cabeados += qtd;
+                lista_nomes_cabeados.push(`${qtd}x ${desc || 'Dispositivo(s) Cabeado(s)'}`);
+            }
+        });
+
         let eq = []; let alertas = []; let dicas = [];
         let eaps_qtd = 0;
 
         // LÓGICA DE ROTEAMENTO
-        let precisa_rb = (total > 30 || hotspot || gamer || tipo === "Transmissão Crítica" || tipo === "Grande Porte/Massa");
+        let precisa_rb = (total > 30 || hotspot || gamer || total_cabeados > 10 || tipo === "Transmissão Crítica" || tipo === "Grande Porte/Massa");
         if (!precisa_rb) {
             eq.push(divisorias === "salas" ? "01x ONU Wi-Fi AX (Roteando) + 01x Roteador Adicional" : "01x ONU Wi-Fi AX (Roteando) ou Roteador Giga");
         } else {
-            if (total <= 50) eq.push("01x ONU em Bridge + 01x Mikrotik (RB 750Gr3)");
-            else if (total < 150) eq.push("01x ONU em Bridge + 01x Mikrotik (RB 750Gr3 ou 760iGS)");
-            else if (total < 300) eq.push("01x ONU em Bridge + 01x Mikrotik (RB 760iGS ou superior)");
+            if (total + total_cabeados <= 50) eq.push("01x ONU em Bridge + 01x Mikrotik (RB 750Gr3)");
+            else if (total + total_cabeados < 150) eq.push("01x ONU em Bridge + 01x Mikrotik (RB 750Gr3 ou 760iGS)");
+            else if (total + total_cabeados < 300) eq.push("01x ONU em Bridge + 01x Mikrotik (RB 760iGS ou superior)");
             else eq.push("01x ONU em Bridge + 01x Mikrotik Alta Capacidade (RB 4011 ou CCR)");
 
             let cap = area_aberta ? 100 : 80; 
@@ -576,14 +587,23 @@
 
         // SWITCH GIGABIT GAMER
         if (qtd_pcs > 0) {
-            if (qtd_pcs <= 4) eq.push("01x Switch Gigabit 5 Portas (Rede PCs)");
-            else if (qtd_pcs <= 7) eq.push("01x Switch Gigabit 8 Portas (Rede PCs)");
-            else if (qtd_pcs <= 15) eq.push("01x Switch Gigabit 16 Portas (Rede PCs)");
-            else eq.push("01x Switch Gigabit 24 Portas (Rede PCs)");
+            if (qtd_pcs <= 4) eq.push("01x Switch Gigabit 5 Portas (Rede PCs Gamer)");
+            else if (qtd_pcs <= 7) eq.push("01x Switch Gigabit 8 Portas (Rede PCs Gamer)");
+            else if (qtd_pcs <= 15) eq.push("01x Switch Gigabit 16 Portas (Rede PCs Gamer)");
+            else eq.push("01x Switch Gigabit 24 Portas (Rede PCs Gamer)");
+        }
+
+        // SWITCH DISPOSITIVOS CABEADOS GERAIS
+        if (total_cabeados > 0) {
+            if (total_cabeados <= 4) eq.push("01x Switch Gigabit 5 Portas (Dispositivos Cabeados)");
+            else if (total_cabeados <= 7) eq.push("01x Switch Gigabit 8 Portas (Dispositivos Cabeados)");
+            else if (total_cabeados <= 15) eq.push("01x Switch Gigabit 16 Portas (Dispositivos Cabeados)");
+            else if (total_cabeados <= 23) eq.push("01x Switch Gigabit 24 Portas (Dispositivos Cabeados)");
+            else eq.push("01x Switch Gigabit 48 Portas (Dispositivos Cabeados)");
         }
 
         // INFRAESTRUTURA E RACKS
-        if (eaps_qtd > 0 || qtd_pcs > 0) {
+        if (eaps_qtd > 0 || qtd_pcs > 0 || total_cabeados > 0) {
             if (ambiente === 'ambos') {
                 eq.push("01x Rack Indoor + 01x Caixa Hermética (Para a área externa)");
             } else {
@@ -613,16 +633,14 @@
         if (tipo === "Feira de Negócios") dicas.push("Poluição de RF alta. Fixe os canais dos EAPs apenas em 5GHz e evite canalização automática.");
         if (gamer && qtd_pcs > 0) dicas.push("Crie uma VLAN exclusiva para a porta do Switch Gamer, separando totalmente o tráfego dos PCs do Wi-Fi do público (QoS ativo).");
 
-        // Salva os dados para a requisição da IA
-        dadosParaIA = {
-            evento: evt, tipo: tipo, total_conexoes: total, 
-            ambiente: ambiente, divisorias: divisorias, 
-            barreiras_metalicas: metal, live: live, energia_instavel: energia
-        };
-
         // RENDERIZAÇÃO DO LAUDO
         let txt_ambiente = ambiente === 'externo' ? 'Área Externa (Outdoor)' : (ambiente === 'interno' ? 'Área Interna (Indoor)' : 'Misto (Indoor + Outdoor)');
         let txt_divisorias = divisorias === 'salas' ? 'Com Divisórias/Salas' : 'Vão Livre';
+        
+        let html_cabeados = '';
+        if (total_cabeados > 0) {
+            html_cabeados = `<p style="margin: 8px 0 0 0; border-top: 1px dashed #ccc; padding-top: 8px;"><b>Equipamentos Cabeados:</b> ${total_cabeados} portas necessárias (${lista_nomes_cabeados.join(', ')})</p>`;
+        }
 
         let resDiv = document.getElementById('resultado');
         resDiv.innerHTML = `
@@ -635,8 +653,9 @@
                 <p style="margin: 0 0 8px 0;"><b>Data da Vistoria:</b> ${dVist}   |   <b>Data do Evento:</b> ${dEvt}</p>
                 <hr style="border: 0; border-top: 1px dashed #ccc; margin: 12px 0;">
                 <p style="margin: 0 0 8px 0;"><b>Tipo de Evento:</b> ${tipo}</p>
-                <p style="margin: 0 0 8px 0;"><b>Conexões Estimadas:</b> ${total} dispositivos (Público + Staff + POS)</p>
+                <p style="margin: 0 0 8px 0;"><b>Conexões Wi-Fi Estimadas:</b> ${total} dispositivos (Público + Staff + POS)</p>
                 <p style="margin: 0;"><b>Ambiente Físico:</b> ${txt_ambiente} - ${txt_divisorias}</p>
+                ${html_cabeados}
             </div>
 
             ${imgHTML}
@@ -655,79 +674,12 @@
             ${dicas.map(i => `<li class="dica-item">✔ ${i}</li>`).join('')}
             </ul></div>` : ''}
 
-            <div class="secao-res" id="container-ia">
-                <h3>🧠 Análise do Engenheiro (IA)</h3>
-                <button class="btn-ia" onclick="chamarIAGemini()" style="color: white;">Gerar Parecer Técnico com IA</button>
-                <div id="loading-ia">⏳ Analisando dados da vistoria... aguarde.</div>
-                <div id="resposta-ia"></div>
-            </div>
-
             <button class="btn-imprimir" onclick="window.print()" style="color: white;">🖨️ Imprimir / Salvar PDF</button>
         `;
             
         resDiv.style.display = 'block';
         resDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-
-    // Função assíncrona para chamar a API do Gemini
-async function chamarIAGemini() {
-    // Busca a chave no input ou no localstorage
-    const inputKey = document.getElementById('api_key_gemini') || document.getElementById('api_key_input');
-    const apiKey = inputKey ? inputKey.value.trim() : localStorage.getItem('danieltec_gemini_key');
-    
-    if (!apiKey) {
-        alert("Por favor, insira e salve sua chave da API primeiro.");
-        return;
-    }
-
-    const btn = document.querySelector('.btn-ia');
-    const loading = document.getElementById('loading-ia');
-    const respostaDiv = document.getElementById('resposta-ia');
-
-    if(btn) btn.style.display = 'none';
-    if(loading) loading.style.display = 'block';
-    if(respostaDiv) respostaDiv.style.display = 'none';
-
-    // Pega os dados do projeto (garantindo que não fiquem vazios)
-    const evtNome = document.getElementById('nome_evento')?.value || "Evento Teresina";
-    const conexoes = document.getElementById('publico')?.value || "0";
-
-    const promptTexto = `Aja como engenheiro de redes senior. Analise o evento ${evtNome} com ${conexoes} conexoes. Recomende RB Mikrotik e cuidados com Wi-Fi Ubiquiti. Seja curto.`;
-
-    try {
-        // Rota v1beta com o modelo flash-latest
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
-        
-        const response = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: promptTexto }] }]
-            })
-        });
-
-        const data = await response.json();
-
-        if (data.error) {
-            throw new Error(data.error.message);
-        }
-
-        if (data.candidates && data.candidates[0].content.parts[0].text) {
-            const texto = data.candidates[0].content.parts[0].text;
-            if(respostaDiv) {
-                respostaDiv.innerHTML = `<p><strong>Parecer Técnico:</strong><br>${texto.replace(/\n/g, '<br>')}</p>`;
-                respostaDiv.style.display = 'block';
-            }
-        }
-
-    } catch (error) {
-        console.error("Erro na requisição:", error);
-        alert("Erro ao gerar IA: " + error.message);
-        if(btn) btn.style.display = 'block';
-    } finally {
-        if(loading) loading.style.display = 'none';
-    }
-}
 </script>
 
 </body>
