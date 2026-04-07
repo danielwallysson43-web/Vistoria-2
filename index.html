@@ -1,49 +1,43 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vistoria Técnica - Daniel Tec</title>
     <style>
         :root {
             --cor-acento-tech: #0056b3;
-            --cor-brilho-tech: rgba(0, 123, 255, 0.5);
             --preto-fundo: #000000;
-            --preto-texto: #1A1A1A;
             --branco: #FFFFFF;
-            --cinza-borda: #E2E8F0;
-            --cinza-fundo-card: #F8FAFC;
+            --cinza-fundo: #F8FAFC;
         }
 
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--preto-fundo); padding: 20px 10px; margin: 0; color: var(--preto-texto); }
-        .container { max-width: 700px; background-color: var(--branco); margin: 0 auto; padding: 25px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 86, 179, 0.15); border-top: 8px solid var(--cor-acento-tech); }
-        .header { text-align: center; margin-bottom: 25px; border-bottom: 2px solid var(--cinza-borda); padding-bottom: 20px; }
-        h1 { color: var(--cor-acento-tech); font-size: 22px; text-transform: uppercase; font-weight: 900; }
-        .card { background: var(--cinza-fundo-card); padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--cinza-borda); border-left: 5px solid var(--cor-acento-tech); }
-        .card-title { color: var(--cor-acento-tech); font-size: 16px; margin-bottom: 15px; text-transform: uppercase; font-weight: bold; }
-        .form-group { margin-bottom: 15px; }
-        .form-row { display: flex; gap: 10px; flex-wrap: wrap; }
-        .form-row .form-group { flex: 1; min-width: 200px; }
-        label { display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 14px; box-sizing: border-box; }
-        input:focus { border-color: var(--cor-acento-tech); outline: none; box-shadow: 0 0 8px var(--cor-brilho-tech); }
-        .checkbox-group { display: flex; align-items: flex-start; background: var(--branco); padding: 12px; border: 1px solid #CBD5E1; border-radius: 6px; margin-bottom: 8px; cursor: pointer; }
-        .checkbox-group input { margin-right: 12px; width: 18px; height: 18px; accent-color: var(--cor-acento-tech); }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--preto-fundo); padding: 15px; margin: 0; color: #333; }
+        .container { max-width: 700px; background-color: var(--branco); margin: 0 auto; padding: 25px; border-radius: 12px; border-top: 8px solid var(--cor-acento-tech); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        h1 { color: var(--cor-acento-tech); font-size: 20px; text-transform: uppercase; margin: 0; }
         
-        button { width: 100%; padding: 18px; background-color: var(--cor-acento-tech); color: var(--branco); border: none; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin: 10px 0; }
-        button:hover { background-color: #007bff; transform: scale(1.01); }
-        .btn-secundario { background-color: #444; width: auto; font-size: 14px; padding: 10px 20px; }
+        .card { background: var(--cinza-fundo); padding: 18px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #E2E8F0; border-left: 5px solid var(--cor-acento-tech); }
+        label { display: block; font-weight: bold; font-size: 13px; margin-bottom: 5px; color: #444; }
         
-        #resultado { display: none; margin-top: 30px; border: 2px solid var(--cor-acento-tech); border-left-width: 10px; padding: 20px; background: #fff; }
-        .secao-res { margin-bottom: 20px; padding: 15px; border: 1px solid #eee; border-radius: 6px; }
-        .alerta-item { color: #d9534f; font-weight: bold; }
-        .img-anexo { max-width: 100%; border-radius: 8px; border: 2px solid var(--cor-acento-tech); margin-top: 10px; }
-        #status_bot { text-align: center; font-weight: bold; padding: 10px; border-radius: 5px; display: none; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 15px; box-sizing: border-box; font-family: inherit; }
+        textarea { resize: vertical; }
+        
+        .form-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+        .form-row div { flex: 1; min-width: 140px; }
 
+        button { width: 100%; padding: 18px; background-color: var(--cor-acento-tech); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        button:hover { background-color: #004494; }
+        .btn-gps { background: #444; padding: 10px; font-size: 12px; width: auto; margin-top: 5px; }
+
+        #status { text-align: center; margin-top: 15px; font-weight: bold; display: none; padding: 10px; border-radius: 5px; }
+        
+        /* Estilo do Laudo Gerado */
+        #laudo_final { display: none; background: #fff; margin-top: 20px; padding: 20px; border: 2px solid var(--cor-acento-tech); }
         @media print {
-            #formulario_perguntas, button, .btn-secundario { display: none !important; }
-            #resultado { display: block !important; border: none !important; }
-            body { background: white; }
+            #form_input, button { display: none !important; }
+            #laudo_final { display: block !important; border: none !important; }
+            body { background: white; padding: 0; }
         }
     </style>
 </head>
@@ -51,163 +45,130 @@
 
 <div class="container">
     <div class="header">
-        <h1 id="top">Daniel Tec - Vistoria Inteligente</h1>
+        <h1>Relatório de Vistoria - Daniel Tec</h1>
     </div>
 
-    <div id="formulario_perguntas">
+    <div id="form_input">
         <div class="card">
-            <h3 class="card-title">0. Dados do Técnico e Local</h3>
-            <div class="form-row">
-                <div class="form-group"><label>Técnico:</label><input type="text" id="nome_tecnico" value="Daniel Lavor"></div>
-                <div class="form-group"><label>Cidade/UF:</label><input type="text" id="cidade" value="Teresina - PI"></div>
+            <label>Técnico Responsável:</label>
+            <input type="text" id="tecnico" value="Daniel Lavor">
+            
+            <div class="form-row" style="margin-top:10px;">
+                <div><label>Cliente / Evento:</label><input type="text" id="cliente" placeholder="Ex: Condomínio Petrópolis"></div>
+                <div><label>Cidade:</label><input type="text" id="cidade" value="Teresina - PI"></div>
             </div>
-            <div class="form-group"><label>Nome do Evento/Cliente:</label><input type="text" id="nome_evento" placeholder="Ex: Shopping da Praça"></div>
-            <div class="form-group">
-                <label>📍 Localização GPS:</label>
-                <div style="display: flex; gap: 8px;">
-                    <input type="text" id="link_maps" placeholder="Aguardando GPS...">
-                    <button type="button" class="btn-secundario" onclick="capturarGPS()">GPS</button>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group"><label>Data da Vistoria:</label><input type="date" id="data_vistoria"></div>
-                <div class="form-group"><label>Data do Evento:</label><input type="date" id="data_evento"></div>
-            </div>
+
+            <label>📍 Localização GPS:</label>
+            <input type="text" id="link_maps" placeholder="Link do Google Maps">
+            <button class="btn-gps" onclick="pegarGPS()">📍 CAPTURAR MINHA POSIÇÃO</button>
         </div>
 
         <div class="card">
-            <h3 class="card-title">1. Carga e Infraestrutura</h3>
-            <div class="form-row">
-                <div class="form-group"><label>Tipo de Evento:</label>
-                    <select id="tipo_evento">
-                        <option value="Palestra/Congresso">Palestra/Workshop</option>
-                        <option value="Feira de Negócios">Feira/Stands</option>
-                        <option value="Gamer/E-sports">Gamer/E-sports</option>
-                        <option value="Grande Porte/Massa">Show/Festival</option>
-                        <option value="Transmissão Crítica">Live/TV</option>
-                    </select>
-                </div>
-                <div class="form-group"><label>Público + Staff:</label><input type="number" id="total_conexoes" value="50"></div>
-            </div>
-            <div class="form-row">
-                <div class="form-group"><label>Ambiente:</label>
-                    <select id="ambiente">
-                        <option value="interno">Interno (Indoor)</option>
-                        <option value="externo">Externo (Outdoor)</option>
-                        <option value="ambos">Misto (Indoor/Outdoor)</option>
-                    </select>
-                </div>
-                <div class="form-group"><label>Obs. Técnicas:</label><textarea id="obs_campo" rows="1" placeholder="Ex: Rack no forro..."></textarea></div>
-            </div>
+            <label>📦 Equipamentos e Infraestrutura:</label>
+            <textarea id="equipamentos" rows="5" placeholder="Liste aqui o que será necessário (Ex: 02x Unifi, 100m de cabo...)"></textarea>
+            
+            <label style="margin-top:10px;">📝 Observações Técnicas:</label>
+            <textarea id="obs" rows="4" placeholder="Detalhes da instalação, dificuldades, pontos de fixação..."></textarea>
         </div>
 
         <div class="card">
-            <h3 class="card-title">2. Fatores de Risco</h3>
-            <div class="checkbox-group"><input type="checkbox" id="tem_live"><label>Haverá Transmissão ao Vivo (Live)</label></div>
-            <div class="checkbox-group"><input type="checkbox" id="metal"><label>Obstruções Metálicas/Palco</label></div>
-            <div class="checkbox-group"><input type="checkbox" id="distancia_100m"><label>Distância > 100m (Exige Fibra)</label></div>
-            <div class="checkbox-group"><input type="checkbox" id="energia_oscila"><label>Energia Instável/Gerador</label></div>
+            <label>📷 Anexar Arquivos (Fotos e Vídeos):</label>
+            <input type="file" id="midia" accept="image/*,video/*" multiple>
+            <small style="color: #666;">Você pode selecionar mais de 10 arquivos de uma vez.</small>
         </div>
 
-        <div class="card">
-            <h3 class="card-title">3. Mídia (Fotos e Vídeos)</h3>
-            <label>Anexar fotos/vídeos do local (Múltiplos):</label>
-            <input type="file" id="arquivos_midia" accept="image/*,video/*" multiple>
-        </div>
-
-        <div id="status_bot"></div>
-        <button onclick="processarTudo()">🚀 GERAR LAUDO E ENVIAR</button>
+        <div id="status"></div>
+        <button onclick="enviarERelatar()">🚀 ENVIAR PARA O GRUPO E GERAR LAUDO</button>
     </div>
 
-    <div id="resultado"></div>
+    <div id="laudo_final"></div>
 </div>
 
 <script>
     const TOKEN = "8797747366:AAHBVt7Xh7O-hms4DmB6c8j5AmWiOhkB6K4";
-    const CHAT_ID = "644375739"; // Substitua pelo ID do Grupo se necessário
+    const CHAT_ID = "644375739"; // Se for grupo, use o ID com sinal de menos (-)
 
-    document.getElementById('data_vistoria').valueAsDate = new Date();
-
-    function capturarGPS() {
+    function pegarGPS() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(p => {
-                document.getElementById('link_maps').value = `https://www.google.com/maps?q=$${p.coords.latitude},${p.coords.longitude}`;
-                alert("📍 GPS Capturado!");
+                document.getElementById('link_maps').value = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
+                alert("Posição capturada!");
             });
         }
     }
 
-    async function processarTudo() {
-        const status = document.getElementById('status_bot');
-        const files = document.getElementById('arquivos_midia').files;
-        
-        // Dados para a lógica
-        const d = {
-            tec: document.getElementById('nome_tecnico').value,
-            cli: document.getElementById('nome_evento').value,
-            cidade: document.getElementById('cidade').value,
-            total: parseInt(document.getElementById('total_conexoes').value) || 0,
-            tipo: document.getElementById('tipo_evento').value,
+    async function enviarERelatar() {
+        const status = document.getElementById('status');
+        const arquivos = document.getElementById('midia').files;
+        const btn = document.querySelector('button[onclick="enviarERelatar()"]');
+
+        const dados = {
+            tec: document.getElementById('tecnico').value,
+            cli: document.getElementById('cliente').value,
+            cid: document.getElementById('cidade').value,
+            eq: document.getElementById('equipamentos').value,
+            obs: document.getElementById('obs').value,
             maps: document.getElementById('link_maps').value,
-            obs: document.getElementById('obs_campo').value,
-            live: document.getElementById('tem_live').checked,
-            metal: document.getElementById('metal').checked,
-            fibra: document.getElementById('distancia_100m').checked
+            data: new Date().toLocaleDateString('pt-BR')
         };
 
-        if(!d.cli) return alert("Preencha o nome do cliente!");
+        if(!dados.cli) return alert("Por favor, informe o nome do cliente.");
 
+        btn.disabled = true;
         status.style.display = "block";
-        status.innerHTML = "⏳ Enviando arquivos para o Telegram...";
-        status.style.color = "orange";
+        status.style.background = "#fff3cd";
+        status.innerText = "⏳ Enviando arquivos e gerando relatório...";
 
-        // 1. LÓGICA TÉCNICA (Hardware Sugerido)
-        let hardware = [];
-        if (d.total < 100) hardware.push("01x Mikrotik RB760iGS");
-        else hardware.push("01x Mikrotik RB4011 ou CCR");
-        
-        let aps = Math.ceil(d.total / 60);
-        hardware.push(`${aps}x Access Points UniFi (U6+ ou Outdoor)`);
-        if(d.fibra) hardware.push("01x Par de Conversores de Mídia + Fibra Drop");
-        if(d.live) hardware.push("01x Nobreak Senoidal + Cabo direto para Live");
-
-        // 2. ENVIAR MÍDIA PARA TELEGRAM
-        for (let file of files) {
-            const isVideo = file.type.startsWith('video/');
-            const formData = new FormData();
-            formData.append("chat_id", CHAT_ID);
-            formData.append(isVideo ? "video" : "photo", file);
-            await fetch(`https://api.telegram.org/bot${TOKEN}/${isVideo ? 'sendVideo' : 'sendPhoto'}`, { method: "POST", body: formData });
+        // 1. Enviar todos os arquivos para o Telegram
+        if (arquivos.length > 0) {
+            for (let i = 0; i < arquivos.length; i++) {
+                const file = arquivos[i];
+                const isVideo = file.type.startsWith('video/');
+                const formData = new FormData();
+                formData.append("chat_id", CHAT_ID);
+                formData.append(isVideo ? "video" : "photo", file);
+                
+                status.innerText = `⏳ Enviando mídia ${i+1} de ${arquivos.length}...`;
+                await fetch(`https://api.telegram.org/bot${TOKEN}/${isVideo ? 'sendVideo' : 'sendPhoto'}`, { method: "POST", body: formData });
+            }
         }
 
-        // 3. ENVIAR TEXTO PARA TELEGRAM
-        let msgTelegram = `<b>🚀 LAUDO TÉCNICO: ${d.cli}</b>\n\n`;
-        msgTelegram += `👤 <b>Técnico:</b> ${d.tec}\n`;
-        msgTelegram += `📦 <b>Hardware:</b>\n${hardware.join('\n')}\n\n`;
-        if(d.maps) msgTelegram += `📍 <a href="${d.maps}">Ver no Google Maps</a>\n`;
-        
+        // 2. Enviar a Mensagem de Texto Formatada para o Telegram
+        let msg = `<b>📋 RELATÓRIO DE VISTORIA - DANIEL TEC</b>\n\n`;
+        msg += `👤 <b>Técnico:</b> ${dados.tec}\n`;
+        msg += `🏢 <b>Cliente:</b> ${dados.cli}\n`;
+        msg += `📍 <b>Cidade:</b> ${dados.cid}\n\n`;
+        msg += `📦 <b>Equipamentos:</b>\n<i>${dados.eq}</i>\n\n`;
+        msg += `📝 <b>Observações:</b>\n${dados.obs}\n\n`;
+        if(dados.maps) msg += `🌎 <a href="${dados.maps}">Localização no Maps</a>\n`;
+        msg += `\n📅 <b>Data:</b> ${dados.data}`;
+
         await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ chat_id: CHAT_ID, text: msgTelegram, parse_mode: "HTML" })
+            body: JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: "HTML" })
         });
 
-        // 4. MOSTRAR LAUDO NA TELA (Design Original)
-        const resDiv = document.getElementById('resultado');
-        resDiv.innerHTML = `
-            <div class="secao-res">
-                <h3>📋 Detalhes da Vistoria</h3>
-                <p><b>Cliente:</b> ${d.cli} | <b>Cidade:</b> ${d.cidade}</p>
-                <p><b>Equipamentos Sugeridos:</b><br>${hardware.join('<br>')}</p>
-                <p><b>Observações:</b> ${d.obs}</p>
-                ${d.maps ? `<p><b>GPS:</b> <a href="${d.maps}">Link do Local</a></p>` : ''}
-            </div>
-            <button onclick="window.print()" class="btn-secundario">🖨️ Imprimir PDF</button>
+        // 3. Mostrar o Laudo na tela para Conferência/Print
+        const laudoDiv = document.getElementById('laudo_final');
+        laudoDiv.innerHTML = `
+            <h2 style="color:var(--cor-acento-tech); border-bottom: 2px solid #000;">LAUDO TÉCNICO DE VISTORIA</h2>
+            <p><b>CLIENTE:</b> ${dados.cli} | <b>DATA:</b> ${dados.data}</p>
+            <p><b>TÉCNICO:</b> ${dados.tec} | <b>CIDADE:</b> ${dados.cid}</p>
+            <hr>
+            <h3 style="text-transform:uppercase;">📦 Lista de Equipamentos</h3>
+            <p style="white-space: pre-wrap;">${dados.eq}</p>
+            <h3 style="text-transform:uppercase;">📝 Observações</h3>
+            <p style="white-space: pre-wrap;">${dados.obs}</p>
+            ${dados.maps ? `<p><b>LOCALIZAÇÃO:</b> <a href="${dados.maps}">${dados.maps}</a></p>` : ''}
+            <br>
+            <button onclick="window.print()" style="background:#000; font-size:12px; padding:10px;">🖨️ IMPRIMIR / SALVAR PDF</button>
         `;
-        
-        resDiv.style.display = "block";
-        status.innerHTML = "✅ ENVIADO E GERADO COM SUCESSO!";
-        status.style.color = "green";
+
+        status.style.background = "#d4edda";
+        status.innerText = "✅ TUDO ENVIADO COM SUCESSO!";
+        laudoDiv.style.display = "block";
+        btn.disabled = false;
         window.scrollTo(0, document.body.scrollHeight);
     }
 </script>
