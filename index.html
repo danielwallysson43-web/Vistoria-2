@@ -30,7 +30,7 @@
             background-color: var(--branco);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(10, 64, 135, 0.2); /* Sombra suave azulada */
+            box-shadow: 0 20px 40px rgba(10, 64, 135, 0.2);
             border-top: 10px solid var(--ora-azul);
         }
 
@@ -48,9 +48,9 @@
             gap: 15px;
         }
 
-        /* Usando a imagem real do logo que você enviou */
+        /* Logo Placeholder - Substitua pela URL da imagem real se preferir */
         .brand-logo {
-            width: 150px; /* Largura ajustada para o header */
+            width: 150px;
             height: auto;
         }
 
@@ -59,7 +59,7 @@
             font-size: 14px;
             text-transform: uppercase;
             font-weight: 800;
-            margin-top: -10px; /* Ajuste fino */
+            margin-top: -10px;
         }
 
         .protocol-box {
@@ -82,7 +82,7 @@
             font-family: monospace;
             font-size: 18px;
             font-weight: bold;
-            color: var(--ora-laranja); /* Destaque para o número */
+            color: var(--ora-laranja);
             border: 2px solid var(--cinza-borda);
             border-radius: 6px;
             padding: 8px;
@@ -100,12 +100,8 @@
             border-radius: 10px;
             padding: 25px;
             margin-bottom: 25px;
-            border-left: 6px solid var(--ora-azul); /* Borda esquerda azul ora */
+            border-left: 6px solid var(--ora-azul);
             transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
 
         .card-title {
@@ -126,7 +122,7 @@
             color: #333;
         }
 
-        input[type="text"], input[type="date"], input[type="number"], select, textarea, input[type="url"] {
+        input[type="text"], input[type="date"], input[type="number"], select, textarea {
             width: 100%;
             padding: 12px;
             border: 1.5px solid #cbd5e1;
@@ -137,7 +133,6 @@
             transition: 0.2s ease;
         }
 
-        /* Foco tecnológico: brilho laranja nos campos */
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--ora-laranja);
@@ -151,7 +146,6 @@
             margin-bottom: 15px;
         }
 
-        /* Tabela de Ativos Dinâmica */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -186,9 +180,8 @@
             margin-top: 15px;
         }
 
-        /* Botões de Mídia/Tabela */
         .btn-add {
-            background: #28a745; /* Verde para adicionar */
+            background: #28a745;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -199,7 +192,7 @@
         }
 
         .btn-del {
-            background: #dc3545; /* Vermelho para remover */
+            background: #dc3545;
             color: white;
             border: none;
             padding: 5px 10px;
@@ -207,7 +200,6 @@
             cursor: pointer;
         }
 
-        /* Botão GPS Laranja ora */
         .btn-gps {
             background: var(--ora-laranja);
             color: white;
@@ -222,24 +214,9 @@
             margin-top: 8px;
         }
 
-        /* Mídia Anexo */
-        input[type="file"] {
-            padding: 8px;
-            cursor: pointer;
-            border-dashed: 2px var(--cinza-borda);
-        }
-
-        /* Botões Principais */
-        .footer-btns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        button.main-btn {
+        #btn_finalizar {
             width: 100%;
-            padding: 18px;
+            padding: 20px;
             background-color: var(--ora-azul);
             color: white;
             border: none;
@@ -248,12 +225,17 @@
             font-weight: 800;
             cursor: pointer;
             text-transform: uppercase;
-            transition: background-color 0.3s, transform 0.2s;
+            transition: 0.3s;
         }
 
-        button.main-btn:hover {
+        #btn_finalizar:hover {
             background-color: #0d4a96;
             transform: scale(1.02);
+        }
+
+        #btn_finalizar:disabled {
+            background-color: #666;
+            cursor: not-allowed;
         }
 
         #status_bot {
@@ -265,14 +247,15 @@
             display: none;
         }
 
-        /* Estilo de Impressão Corrigido */
+        /* Estilo de Impressão (Gerar PDF) */
         @media print {
             body { background: white; padding: 0; color: black; }
             .container { box-shadow: none; border: none; max-width: 100%; margin: 0; padding: 0; border-top: none; }
-            .header, .footer-btns, #status_bot, .btn-add, .btn-del, .btn-gps, input[type="file"], .col-btn, .no-print { display: none !important; }
+            .main-header, .footer-btns, #status_bot, .btn-add, .btn-del, .btn-gps, input[type="file"], .col-btn, .no-print { display: none !important; }
             input, select, textarea { border: none !important; background: transparent !important; padding: 0; font-size: 14px; }
             table { width: 100%; border: 1px solid black; }
             table th { background: #eee !important; color: black; border-bottom: 1px solid black; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
         }
     </style>
 </head>
@@ -291,72 +274,70 @@
     </header>
 
     <div class="content-padding">
-        <div class="card">
-            <h3 class="card-title">1. Dados da Vistoria e Técnico</h3>
-            <div class="form-row">
-                <div class="form-group"><label>Cliente / Razão Social:</label><input type="text" id="cliente" placeholder="Ex: Shopping Teresina"></div>
-                <div class="form-group"><label>Cidade/UF:</label><input type="text" id="cidade" value="Teresina - PI"></div>
-            </div>
-            <div class="form-row" style="margin-top:15px;">
-                <div class="form-group"><label>Coordenadas GPS Exatas:</label>
-                    <input type="text" id="gps_coords" placeholder="Aguardando captura...">
-                    <button type="button" class="btn-gps no-print" onclick="capturarGPS()">📍 CAPTURAR LOCALIZAÇÃO ATUAL</button>
+        <div id="formulario_perguntas">
+            <div class="card">
+                <h3 class="card-title">1. Dados da Vistoria e Técnico</h3>
+                <div class="form-row">
+                    <div class="form-group"><label>Cliente / Razão Social:</label><input type="text" id="cliente" placeholder="Ex: Shopping Teresina"></div>
+                    <div class="form-group"><label>Cidade/UF:</label><input type="text" id="cidade" value="Teresina - PI"></div>
                 </div>
-                <div class="form-group"><label>Data da Vistoria:</label><input type="date" id="data_vistoria"></div>
+                <div class="form-row" style="margin-top:15px;">
+                    <div class="form-group"><label>Coordenadas GPS Exatas:</label>
+                        <input type="text" id="gps_coords" placeholder="Aguardando captura...">
+                        <button type="button" class="btn-gps no-print" onclick="capturarGPS()">📍 CAPTURAR LOCALIZAÇÃO ATUAL</button>
+                    </div>
+                    <div class="form-group"><label>Data da Vistoria:</label><input type="date" id="data_vistoria"></div>
+                </div>
+                <div class="form-group" style="margin-top:15px;"><label>Técnico Responsável ora:</label><input type="text" id="tecnico" value="Daniel Lavor"></div>
             </div>
-            <div class="form-group" style="margin-top:15px;"><label>Técnico Responsável ora:</label><input type="text" id="tecnico" value="Daniel Lavor"></div>
-        </div>
 
-        <div class="card">
-            <h3 class="card-title">2. Inventário de Ativos (Computadores/POS/CCTV/Etc)</h3>
-            <table id="tabela_ativos">
-                <thead>
-                    <tr>
-                        <th>Equipamento/Ativo</th>
-                        <th style="width: 150px;">Conexão</th>
-                        <th style="width: 80px;">Qtd.</th>
-                        <th style="width: 40px;" class="col-btn"></th>
-                    </tr>
-                </thead>
-                <tbody id="corpo_tabela">
-                    <tr>
-                        <td><input type="text" placeholder="Ex: Computador / DVR" class="item-nome"></td>
-                        <td>
-                            <select class="item-tipo">
-                                <option value="Cabo">Cabo (RJ45)</option>
-                                <option value="Wi-Fi">Wi-Fi (Wireless)</option>
-                                <option value="Fibra">Fibra Óptica</option>
-                            </select>
-                        </td>
-                        <td><input type="number" value="1" min="1" class="item-qtd" onchange="calcularTotal()"></td>
-                        <td class="col-btn"><button class="btn-del" onclick="removerLinha(this)">✕</button></td>
-                    }
-                </tbody>
-            </table>
-            <button type="button" class="btn-add no-print" onclick="adicionarLinha()">+ ADICIONAR ATIVO À LISTA</button>
-            <div class="total-box">Total Geral de Dispositivos: <span id="soma_total">1</span></div>
-        </div>
+            <div class="card">
+                <h3 class="card-title">2. Inventário de Ativos (Cenário Atual)</h3>
+                <table id="tabela_ativos">
+                    <thead>
+                        <tr>
+                            <th>Equipamento/Ativo</th>
+                            <th style="width: 150px;">Conexão</th>
+                            <th style="width: 80px;">Qtd.</th>
+                            <th style="width: 40px;" class="col-btn no-print"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo_tabela">
+                        <tr>
+                            <td><input type="text" placeholder="Ex: Computador / DVR" class="item-nome"></td>
+                            <td>
+                                <select class="item-tipo">
+                                    <option value="Cabo">Cabo (RJ45)</option>
+                                    <option value="Wi-Fi">Wi-Fi (Wireless)</option>
+                                    <option value="Fibra">Fibra Óptica</option>
+                                </select>
+                            </td>
+                            <td><input type="number" value="1" min="1" class="item-qtd" onchange="calcularTotal()"></td>
+                            <td class="col-btn no-print"><button type="button" class="btn-del" onclick="removerLinha(this)">✕</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn-add no-print" onclick="adicionarLinha()">+ ADICIONAR ATIVO À LISTA</button>
+                <div class="total-box">Total Geral de Dispositivos: <span id="soma_total">1</span></div>
+            </div>
 
-        <div class="card">
-            <h3 class="card-title">3. Detalhamento de Infraestrutura e Parecer ora</h3>
-            <label>Hardware de Rede Sugerido (Mikrotik, UniFi, Sw, Racks, Cabos):</label>
-            <textarea id="infra" rows="5" placeholder="Liste switches, APs, metragem de cabos, conversores..."></textarea>
-            
-            <label style="margin-top:15px;">Observações e Recomendações Técnicas:</label>
-            <textarea id="obs" rows="4" placeholder="Dificuldades, pontos de energia, interferências..."></textarea>
-        </div>
+            <div class="card">
+                <h3 class="card-title">3. Detalhamento de Infraestrutura e Parecer ora</h3>
+                <label>Hardware de Rede Sugerido (Mikrotik, UniFi, Switches, Racks, Cabos):</label>
+                <textarea id="infra" rows="5" placeholder="Liste switches, APs, metragem de cabos, conversores..."></textarea>
+                
+                <label style="margin-top:15px;">Observações e Recomendações Técnicas:</label>
+                <textarea id="obs" rows="4" placeholder="Dificuldades de passagem, pontos de energia, interferências..."></textarea>
+            </div>
 
-        <div class="card no-print">
-            <h3 class="card-title">4. Evidências de Campo (Fotos/Vídeos Múltiplos)</h3>
-            <input type="file" id="midia" multiple accept="image/*,video/*">
-            <small style="color: #666; display: block; margin-top: 5px;">* Envio ilimitado de arquivos para o Telegram Operationalora.</small>
-        </div>
+            <div class="card no-print">
+                <h3 class="card-title">4. Evidências de Campo (Fotos/Vídeos Múltiplos)</h3>
+                <input type="file" id="midia" multiple accept="image/*,video/*">
+                <small style="color: #666; display: block; margin-top: 5px;">* Envio ilimitado de arquivos para o Telegram Operationalora.</small>
+            </div>
 
-        <div id="status_bot"></div>
-
-        <div class="footer-btns">
-            <button type="button" class="main-btn" style="background:#333;" onclick="window.print()">🖨️ GERAR PDF / LAUDO</button>
-            <button type="button" class="main-btn" onclick="processarEnvioora()">🚀 ENVIAR RELATÓRIO PARA GRUPO</button>
+            <div id="status_bot"></div>
+            <button type="button" id="btn_finalizar" onclick="processarEnviooraEGerarPDF()">🚀 ENVIAR RELATÓRIO E GERAR PDF AUTOMÁTICO</button>
         </div>
     </div>
 </div>
@@ -392,7 +373,7 @@
                 </select>
             </td>
             <td><input type="number" value="1" min="1" class="item-qtd" onchange="calcularTotal()"></td>
-            <td class="col-btn"><button class="btn-del" onclick="removerLinha(this)">✕</button></td>
+            <td class="col-btn no-print"><button type="button" class="btn-del" onclick="removerLinha(this)">✕</button></td>
         `;
         tabela.appendChild(novaLinha);
         calcularTotal();
@@ -411,12 +392,13 @@
         document.getElementById('soma_total').innerText = total;
     }
 
-    async function processarEnvioora() {
+    // FUNÇÃO UNIFICADA: ENVIA TUDO E ABRE O PDF AUTOMATICAMENTE
+    async function processarEnviooraEGerarPDF() {
         const status = document.getElementById('status_bot');
         const arquivos = document.getElementById('midia').files;
         const protocolo = document.getElementById('protocolo_manual').value || "S/N";
         const gps = document.getElementById('gps_coords').value;
-        const btn = document.querySelector('button[onclick="processarEnvioora()"]');
+        const btn = document.getElementById('btn_finalizar');
         
         status.style.display = "block";
         status.style.background = "#fff3cd"; // Amarelo ora operacional
@@ -434,6 +416,7 @@
         // Montar Mensagem ora Formatada
         let texto = `<b>📡 LAUDO OPERACIONAL ora TELECOM | OS: ${protocolo}</b>\n\n`;
         texto += `🏢 <b>Cliente:</b> ${document.getElementById('cliente').value}\n`;
+        texto += `📍 <b>Cidade:</b> ${document.getElementById('cidade').value}\n`;
         texto += `👤 <b>Técnico:</b> ${document.getElementById('tecnico').value}\n\n`;
         texto += `<b>🖥️ INVENTÁRIO DE ATIVOS:</b>\n${listaAtivos}`;
         texto += `\n🔢 <b>Total Geral:</b> ${document.getElementById('soma_total').innerText} dispositivos\n\n`;
@@ -443,30 +426,42 @@
         texto += `📅 <b>Data:</b> ${document.getElementById('data_vistoria').value.split('-').reverse().join('/')}`;
 
         try {
-            // Enviar arquivos (multi-anexo)
-            for (let file of arquivos) {
-                const isVideo = file.type.startsWith('video/');
-                const rota = isVideo ? 'sendVideo' : 'sendPhoto';
-                const formData = new FormData();
-                formData.append("chat_id", CHAT_ID);
-                formData.append(isVideo ? "video" : "photo", file);
-                await fetch(`https://api.telegram.org/bot${TOKEN}/${rota}`, { method: "POST", body: formData });
+            // 1. Enviar arquivos (multi-anexo)
+            if (arquivos.length > 0) {
+                for (let i = 0; i < arquivos.length; i++) {
+                    const file = arquivos[i];
+                    const isVideo = file.type.startsWith('video/');
+                    const rota = isVideo ? 'sendVideo' : 'sendPhoto';
+                    const formData = new FormData();
+                    formData.append("chat_id", CHAT_ID);
+                    formData.append(isVideo ? "video" : "photo", file);
+                    status.innerText = `⏳ Enviando mídia ${i+1} de ${arquivos.length}...`;
+                    await fetch(`https://api.telegram.org/bot${TOKEN}/${rota}`, { method: "POST", body: formData });
+                }
             }
 
-            // Enviar texto final
+            status.innerText = "⏳ Mídias enviadas. Processando texto final...";
+
+            // 2. Enviar texto final
             await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ chat_id: CHAT_ID, text: texto, parse_mode: "HTML", disable_web_page_preview: false })
             });
 
+            // 3. Sucesso no Envio
             status.style.background = "#d4edda"; // Verde ora sucesso
-            status.innerText = "✅ LAUDO ENVIADO E SINCRONIZADO COM SUCESSO!";
-            btn.disabled = false;
-            window.scrollTo(0, document.body.scrollHeight);
+            status.innerText = "✅ LAUDO ENVIADO COM SUCESSO! ABRINDO PDF AUTOMÁTICO...";
+            
+            // 4. MÁGICA AUTOMÁTICA: ABRE A TELA DE PDF (PRINT)
+            setTimeout(() => {
+                window.print();
+                btn.disabled = false; // Reativa o botão após abrir o print
+            }, 1000); // Pequeno delay de 1 segundo para o usuário ler o sucesso
+
         } catch (e) {
             status.style.background = "#f8d7da"; // Vermelho ora erro
-            status.innerText = "❌ Falha no envio. Verifique a conexão operacional.";
+            status.innerText = "❌ Falha no envio operacional. O PDF não será gerado automaticamente.";
             btn.disabled = false;
         }
     }
