@@ -3,11 +3,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vistoria Técnica - Daniel Tec (Grandstream Edition)</title>
-    <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#0056b3">
+    <title>Vistoria Técnica - Daniel Tec (Grandstream Expert)</title>
     <style>
-        /* TEMA DANIEL TEC - VERSÃO TECH: LATERAIS PRETAS, MIOLO BRANCO, DETALHES AZUL ELÉTRICO */
+        /* TEMA DANIEL TEC - VERSÃO TECH */
         :root {
             --cor-acento-tech: #0056b3;
             --cor-brilho-tech: rgba(0, 123, 255, 0.5);
@@ -36,27 +34,8 @@
             border-top: 8px solid var(--cor-acento-tech);
         }
         
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--cinza-borda);
-        }
-
-        .logo {
-            max-width: 200px;
-            height: auto;
-        }
-
-        h1 {
-            color: var(--cor-acento-tech);
-            font-size: 22px;
-            text-transform: uppercase;
-            font-weight: 900;
-            margin-top: 15px;
-            letter-spacing: 1.5px;
-            text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
-        }
+        .header { text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid var(--cinza-borda); }
+        h1 { color: var(--cor-acento-tech); font-size: 22px; text-transform: uppercase; font-weight: 900; margin-top: 15px; letter-spacing: 1.5px; }
 
         .card {
             background: var(--cinza-fundo-card);
@@ -74,37 +53,22 @@
             margin-bottom: 15px;
             text-transform: uppercase;
             font-weight: bold;
-            letter-spacing: 0.5px;
         }
 
         .form-group { margin-bottom: 15px; }
         .form-row { display: flex; gap: 10px; }
         .form-row .form-group { flex: 1; }
         
-        label {
-            display: block;
-            font-weight: bold;
-            font-size: 13px;
-            margin-bottom: 6px;
-            color: #333;
-        }
+        label { display: block; font-weight: bold; font-size: 13px; margin-bottom: 6px; }
 
-        input[type="text"], input[type="date"], input[type="number"], input[type="password"], select, input[type="file"], input[type="url"] {
+        input, select {
             width: 100%;
             padding: 12px;
             border: 1px solid #CBD5E1;
             border-radius: 6px;
             font-size: 14px;
             box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.3s, box-shadow 0.3s;
-            font-family: inherit;
             background: var(--branco);
-        }
-
-        input:focus, select:focus {
-            border-color: var(--cor-brilho-tech);
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
         }
 
         .checkbox-group {
@@ -115,24 +79,9 @@
             border: 1px solid #CBD5E1;
             border-radius: 6px;
             margin-bottom: 8px;
-            cursor: pointer;
         }
 
-        .checkbox-group input {
-            margin-right: 12px;
-            width: 18px;
-            height: 18px;
-            accent-color: var(--cor-acento-tech);
-            margin-top: 2px;
-        }
-
-        .checkbox-group label {
-            margin-bottom: 0;
-            font-weight: normal;
-            font-size: 13px;
-            cursor: pointer;
-            line-height: 1.4;
-        }
+        .checkbox-group input { margin-right: 12px; width: 18px; height: 18px; margin-top: 2px; }
 
         button {
             width: 100%;
@@ -145,57 +94,23 @@
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
-            transition: 0.3s;
             margin-top: 10px;
-            margin-bottom: 20px;
         }
 
-        button:hover { background-color: #007bff; transform: scale(1.01); }
-        
-        button.btn-secundario {
-            background-color: #444;
-            margin: 0;
-            padding: 0 15px;
-            width: auto;
-            font-size: 14px;
-            white-space: nowrap;
-        }
+        button.btn-secundario { background-color: #444; width: auto; font-size: 13px; padding: 10px 15px; }
 
-        #resultado { display: none; background: #fdfdfd; border: 2px solid var(--cor-acento-tech); border-left: 10px solid var(--cor-acento-tech); }
-        
+        #resultado { display: none; border: 2px solid var(--cor-acento-tech); border-left: 10px solid var(--cor-acento-tech); }
         .secao-res { margin-bottom: 20px; padding: 15px; background: var(--branco); border-radius: 6px; border: 1px solid #eee; }
         .secao-res h3 { color: var(--cor-acento-tech); font-size: 16px; border-bottom: 2px solid var(--cor-acento-tech); padding-bottom: 5px; text-transform: uppercase; }
         
-        ul { padding-left: 20px; }
-        li { margin-bottom: 10px; font-size: 14px; line-height: 1.5; color: #333; }
-
-        .alerta-item { color: #007bff; font-weight: bold; }
-        .dica-item { color: #1a1a1a; font-weight: bold; }
-
-        .critico {
-            background: var(--cor-acento-tech);
-            color: var(--branco);
-            padding: 15px;
-            border-radius: 6px;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 20px;
-            font-size: 15px;
-            text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(0, 123, 255, 0.6);
-        }
-
-        #div_gamer_opcoes { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc; }
-        
-        .img-anexo { max-width: 100%; max-height: 400px; border-radius: 8px; border: 2px solid var(--cor-acento-tech); margin-top: 15px; object-fit: contain; }
+        .alerta-item { color: #0056b3; font-weight: bold; list-style: none; margin-bottom: 5px; }
+        .img-anexo { max-width: 100%; max-height: 400px; border-radius: 8px; border: 2px solid var(--cor-acento-tech); margin-top: 15px; display: block; margin-left: auto; margin-right: auto; }
 
         @media print {
-            body { background-color: white; padding: 0; color: black; }
-            .container { box-shadow: none; border: none; max-width: 100%; margin: 0; padding: 0; }
+            body { background-color: white; }
+            .container { box-shadow: none; border: none; max-width: 100%; }
             #formulario_perguntas, button { display: none !important; }
-            #resultado { border: none; display: block; border-left: none; }
-            .secao-res, .critico, .img-anexo { page-break-inside: avoid; border: none; }
-            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            #resultado { display: block !important; border: none; }
         }
     </style>
 </head>
@@ -203,176 +118,81 @@
 
 <div class="container">
     <div class="header">
-        <img src="https://via.placeholder.com/200x80/000000/007BFF?text=DANIEL+TEC" alt="Daniel Tec" class="logo">
-        <h1>Laudo Técnico de Vistoria</h1>
+        <h1>Laudo Técnico - Daniel Tec</h1>
     </div>
 
     <div id="formulario_perguntas">
-        
         <div class="card">
-            <h3 class="card-title">0. Dados Gerais</h3>
+            <h3 class="card-title">0. Identificação</h3>
             <div class="form-row">
-                <div class="form-group"><label>Nome do Técnico:</label><input type="text" id="nome_tecnico" value="Daniel Lavor"></div>
-                <div class="form-group"><label>Cidade / UF:</label><input type="text" id="cidade" placeholder="Ex: Teresina - PI"></div>
+                <div class="form-group"><label>Técnico:</label><input type="text" id="nome_tecnico" value="Daniel Lavor"></div>
+                <div class="form-group"><label>Cidade/UF:</label><input type="text" id="cidade" placeholder="Ex: Teresina - PI"></div>
             </div>
-            
-            <div class="form-group"><label>Nome do Evento / Cliente:</label><input type="text" id="nome_evento" placeholder="Ex: Feira Agro 2026"></div>
-            
+            <div class="form-group"><label>Cliente/Evento:</label><input type="text" id="nome_evento"></div>
             <div class="form-group">
-                <label>📍 Localização Exata (Maps):</label>
+                <label>📍 Localização (Maps):</label>
                 <div style="display: flex; gap: 8px;">
-                    <input type="url" id="link_maps" placeholder="Cole o link ou clique em Capturar GPS ->">
-                    <button type="button" class="btn-secundario" id="btn_gps" onclick="capturarLocalizacao()">Capturar GPS</button>
+                    <input type="url" id="link_maps" placeholder="Cole o link ou use GPS ->">
+                    <button type="button" class="btn-secundario" onclick="capturarGPS()">GPS</button>
                 </div>
             </div>
-
             <div class="form-row">
-                <div class="form-group"><label>Data da Vistoria:</label><input type="date" id="data_vistoria"></div>
-                <div class="form-group"><label>Data do Evento:</label><input type="date" id="data_evento"></div>
+                <div class="form-group"><label>Vistoria:</label><input type="date" id="data_vistoria"></div>
+                <div class="form-group"><label>Evento:</label><input type="date" id="data_evento"></div>
             </div>
-
-            <div class="form-group" style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 15px;">
-                <label>📷 Anexar Foto ou Planta do Local (Opcional):</label>
-                <input type="file" id="imagem_local" accept="image/*">
-            </div>
+            <div class="form-group"><label>📷 Foto do Local:</label><input type="file" id="imagem_local" accept="image/*"></div>
         </div>
 
         <div class="card">
-            <h3 class="card-title">1. Perfil e Criticidade</h3>
+            <h3 class="card-title">1. Perfil e Carga</h3>
             <div class="form-group">
-                <select id="tipo_evento" onchange="verificarGamer()">
-                    <option value="Palestra/Congresso">Palestra / Congresso / Workshop</option>
-                    <option value="Feira de Negócios">Feira de Negócios / Stands</option>
-                    <option value="Gamer/E-sports">Gamer / E-sports (Campeonato)</option>
-                    <option value="Grande Porte/Massa">Show / Festival / Evento de Massa</option>
-                    <option value="Transmissão Crítica">Transmissão Crítica (Live / TV)</option>
+                <label>Tipo de Evento:</label>
+                <select id="tipo_evento">
+                    <option value="Palestra">Palestra / Workshop</option>
+                    <option value="Gamer">Gamer / E-sports</option>
+                    <option value="Massa">Grande Porte / Massa</option>
+                    <option value="Transmissao">Transmissão Crítica (Live)</option>
                 </select>
             </div>
-
-            <div id="div_gamer_opcoes">
-                <div class="form-group">
-                    <label>Plataforma da Competição:</label>
-                    <select id="plataforma_gamer" onchange="verificarQtdPcs()">
-                        <option value="mobiles">Apenas Mobiles (Wi-Fi)</option>
-                        <option value="pcs">Apenas PCs/Consoles (Cabo)</option>
-                        <option value="ambos">Ambos (PCs e Mobiles)</option>
-                    </select>
-                </div>
-                <div class="form-group" id="div_qtd_pcs" style="display: none;">
-                    <label>Qtd. de PCs/Consoles (Cabo):</label>
-                    <input type="number" id="qtd_pcs" value="0" min="0">
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <h3 class="card-title">2. Estimativa de Carga</h3>
             <div class="form-row">
-                <div class="form-group"><label>Público Geral:</label><input type="number" id="publico" value="0" min="0"></div>
-                <div class="form-group"><label>Staff/Equipe:</label><input type="number" id="staff" value="0" min="0"></div>
+                <div class="form-group"><label>Público Wi-Fi:</label><input type="number" id="publico" value="0"></div>
+                <div class="form-group"><label>Maquininhas (POS):</label><input type="number" id="maquininhas" value="0"></div>
             </div>
-            <div class="form-group"><label>Maquininhas de Cartão (POS):</label><input type="number" id="maquininhas" value="0" min="0"></div>
         </div>
 
         <div class="card">
-            <h3 class="card-title">3. Infraestrutura e Barreiras</h3>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Ambiente:</label>
-                    <select id="ambiente">
-                        <option value="interno">Interno (Indoor)</option>
-                        <option value="externo">Externo (Outdoor)</option>
-                        <option value="ambos">Ambos (Indoor e Outdoor)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Barreiras:</label>
-                    <select id="divisorias">
-                        <option value="amplo">Vão Livre</option>
-                        <option value="salas">Muitas Salas</option>
-                    </select>
-                </div>
-            </div>
-            <div class="checkbox-group"><input type="checkbox" id="metal"><label><b>Obstrução Metálica:</b> Food Trucks, tendas de metal ou palcos.</label></div>
-            <div class="checkbox-group"><input type="checkbox" id="fixacao" checked=""><label><b>Fixação Alta:</b> Existe local para APs acima de 2.5m.</label></div>
-            <div class="checkbox-group"><input type="checkbox" id="distancia_100m"><label><b>Distância > 100m:</b> Equipamento muito distante do Rack.</label></div>
-        </div>
-
-        <div class="card">
-            <h3 class="card-title">4. Fatores Críticos</h3>
-            <div class="checkbox-group"><input type="checkbox" id="tem_live"><label><b>Transmissão:</b> Haverá Live ou captação por Imprensa.</label></div>
-            <div class="checkbox-group"><input type="checkbox" id="sinal_ruim_4g"><label><b>Rede Móvel Ruim:</b> A internet das operadoras falha no local.</label></div>
-            <div class="checkbox-group"><input type="checkbox" id="energia_oscila"><label><b>Energia Instável:</b> Quedas ou uso de gerador oscilante.</label></div>
-            <div class="checkbox-group"><input type="checkbox" id="tem_hotspot"><label><b>Hotspot:</b> Cliente exige portal de login (Leads).</label></div>
-        </div>
-
-        <div class="card">
-            <h3 class="card-title">5. Dispositivos Cabeados</h3>
+            <h3 class="card-title">2. Dispositivos Cabeados</h3>
             <div id="lista_cabeados">
                 <div class="form-row cabeado-item">
-                    <div class="form-group" style="flex: 2;">
-                        <label>Descrição do Dispositivo:</label>
-                        <input type="text" class="desc_cabeado" placeholder="Ex: Smart TV Credenciamento">
-                    </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label>Quantidade:</label>
-                        <input type="number" class="qtd_cabeado" value="0" min="0">
-                    </div>
+                    <div class="form-group" style="flex: 2;"><label>Descrição:</label><input type="text" class="desc_cabeado" placeholder="Ex: PC Transmissão"></div>
+                    <div class="form-group" style="flex: 1;"><label>Qtd:</label><input type="number" class="qtd_cabeado" value="0" min="0"></div>
                 </div>
             </div>
-            <button type="button" class="btn-secundario" onclick="adicionarCabeado()" style="margin-top: 10px;">+ Adicionar Dispositivo</button>
+            <button type="button" class="btn-secundario" onclick="adicionarCabeado()">+ Adicionar Item</button>
         </div>
 
-        <button onclick="gerarProjeto()">Gerar Laudo Grandstream</button>
+        <div class="card">
+            <h3 class="card-title">3. Infraestrutura</h3>
+            <div class="form-group">
+                <label>Ambiente:</label>
+                <select id="ambiente">
+                    <option value="interno">Interno (Indoor)</option>
+                    <option value="externo">Externo (Outdoor)</option>
+                    <option value="misto">Misto (Indoor/Outdoor)</option>
+                </select>
+            </div>
+            <div class="checkbox-group"><input type="checkbox" id="metal"><label>Obstruções Metálicas (Tendas/Metal)</label></div>
+            <div class="checkbox-group"><input type="checkbox" id="longa_distancia"><label>Distância > 100m (Exige Fibra)</label></div>
+            <div class="checkbox-group"><input type="checkbox" id="energia_ruim"><label>Energia Instável / Gerador</label></div>
+        </div>
+
+        <button onclick="gerarLaudo()">Gerar Laudo Grandstream</button>
     </div>
 
     <div id="resultado" class="card"></div>
 </div>
 
 <script>
-    function formatarData(dataISO) {
-        if (!dataISO) return "Não informada";
-        let partes = dataISO.split('-');
-        return `${partes[2]}/${partes[1]}/${partes[0]}`;
-    }
-
-    async function lerImagemAsBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-            reader.readAsDataURL(file);
-        });
-    }
-
-    function capturarLocalizacao() {
-        let btn = document.getElementById('btn_gps');
-        let inputLink = document.getElementById('link_maps');
-        if (!navigator.geolocation) { alert("GPS não suportado."); return; }
-        btn.innerText = "⏳ Buscando...";
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                let url = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-                inputLink.value = url;
-                btn.innerText = "✅ Salvo";
-                btn.style.backgroundColor = "#28a745";
-            },
-            () => { alert("Erro no GPS."); btn.innerText = "Capturar GPS"; },
-            { enableHighAccuracy: true }
-        );
-    }
-
-    function verificarGamer() {
-        let tipo = document.getElementById('tipo_evento').value;
-        document.getElementById('div_gamer_opcoes').style.display = (tipo === 'Gamer/E-sports') ? 'block' : 'none';
-        verificarQtdPcs();
-    }
-
-    function verificarQtdPcs() {
-        let plat = document.getElementById('plataforma_gamer').value;
-        document.getElementById('div_qtd_pcs').style.display = (plat === 'pcs' || plat === 'ambos') ? 'block' : 'none';
-    }
-
     function adicionarCabeado() {
         const container = document.getElementById('lista_cabeados');
         const div = document.createElement('div');
@@ -385,114 +205,121 @@
         container.appendChild(div);
     }
 
-    async function gerarProjeto() {
-        let tec = document.getElementById('nome_tecnico').value || 'Não preenchido';
-        let evt = document.getElementById('nome_evento').value || 'Não preenchido';
-        let cidade = document.getElementById('cidade').value || 'Não preenchida';
-        let locUrl = document.getElementById('link_maps').value;
-        let htmlLocal = locUrl ? `<a href="${locUrl}" target="_blank" style="color:var(--cor-acento-tech); font-weight:bold; text-decoration:none;">📍 Ver no Google Maps</a>` : 'Não informada';
-        
-        let dVist = formatarData(document.getElementById('data_vistoria').value);
-        let dEvt = formatarData(document.getElementById('data_evento').value);
+    function capturarGPS() {
+        if (!navigator.geolocation) return alert("GPS não suportado.");
+        navigator.geolocation.getCurrentPosition(pos => {
+            document.getElementById('link_maps').value = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+        });
+    }
 
-        let imgHTML = '';
-        let fileInput = document.getElementById('imagem_local');
-        if (fileInput.files && fileInput.files[0]) {
-            let imgDataUrl = await lerImagemAsBase64(fileInput.files[0]);
-            imgHTML = `<div style="text-align: center;"><img src="${imgDataUrl}" class="img-anexo"></div>`;
-        }
+    function formatarData(data) {
+        if (!data) return "Não informada";
+        const partes = data.split('-');
+        return `${partes[2]}/${partes[1]}/${partes[0]}`;
+    }
 
-        let tipo = document.getElementById('tipo_evento').value;
-        let pub = parseInt(document.getElementById('publico').value) || 0;
-        let stf = parseInt(document.getElementById('staff').value) || 0;
-        let maq = parseInt(document.getElementById('maquininhas').value) || 0;
-        let total_wifi = pub + stf + maq;
-        
-        let ambiente = document.getElementById('ambiente').value;
-        let area_aberta = (ambiente === 'externo' || ambiente === 'ambos');
-        let divisorias = document.getElementById('divisorias').value;
-        let metal = document.getElementById('metal').checked;
-        let fixacao = document.getElementById('fixacao').checked;
-        let longa_distancia = document.getElementById('distancia_100m').checked;
-        
-        let live = document.getElementById('tem_live').checked;
-        let sinal_rede_movel = document.getElementById('sinal_ruim_4g').checked;
-        let energia = document.getElementById('energia_oscila').checked;
-        let hotspot = document.getElementById('tem_hotspot').checked;
+    async function gerarLaudo() {
+        const tec = document.getElementById('nome_tecnico').value;
+        const evt = document.getElementById('nome_evento').value;
+        const tipo = document.getElementById('tipo_evento').value;
+        const pub = parseInt(document.getElementById('publico').value) || 0;
+        const maq = parseInt(document.getElementById('maquininhas').value) || 0;
+        const cidade = document.getElementById('cidade').value;
+        const maps = document.getElementById('link_maps').value;
+        const total_wifi = pub + maq;
 
-        let gamer = (tipo === 'Gamer/E-sports');
-        let qtd_pcs = gamer ? (parseInt(document.getElementById('qtd_pcs').value) || 0) : 0;
-
-        // Dispositivos Cabeados
+        // Cabeados
         let total_cabeados = 0;
-        let lista_nomes_cabeados = [];
+        let lista_cabeados_nomes = [];
         document.querySelectorAll('.cabeado-item').forEach(item => {
-            let desc = item.querySelector('.desc_cabeado').value.trim();
-            let qtd = parseInt(item.querySelector('.qtd_cabeado').value) || 0;
-            if (qtd > 0) { total_cabeados += qtd; lista_nomes_cabeados.push(`${qtd}x ${desc || 'Item'}`); }
+            let q = parseInt(item.querySelector('.qtd_cabeado').value) || 0;
+            let d = item.querySelector('.desc_cabeado').value || "Dispositivo";
+            if (q > 0) { total_cabeados += q; lista_cabeados_nomes.push(`${q}x ${d}`); }
         });
 
-        let eq = []; let alertas = []; let dicas = [];
-        
-        // 1. ROTEAMENTO MIKROTIK
-        if (total_wifi + total_cabeados + qtd_pcs > 250 || tipo === "Grande Porte/Massa") {
-            eq.push("01x Mikrotik RB4011 ou CCR2004 (Core Router)");
+        let eq = []; let alertas = [];
+
+        // 1. ROTEAMENTO
+        if (total_wifi + total_cabeados > 250) {
+            eq.push("01x Mikrotik RB4011 ou CCR2004 (Core da Rede)");
+            alertas.push("DENSIDADE ALTA: Configurar sub-rede /23 ou /22 no Mikrotik.");
         } else {
             eq.push("01x Mikrotik RB760iGS (hEX S)");
         }
 
-        // 2. WIRELESS GRANDSTREAM
-        let cap = area_aberta ? 100 : 80;
-        if (gamer) cap = 50; 
-        let eaps_qtd = Math.max(1, Math.ceil(total_wifi / cap));
-        if (divisorias === "salas" && eaps_qtd < 2) eaps_qtd = 2;
+        // 2. WIRELESS (Grandstream)
+        let cap = (document.getElementById('ambiente').value === 'externo') ? 100 : 80;
+        if (tipo === "Gamer") cap = 50;
+        let qtd_ap = Math.max(1, Math.ceil(total_wifi / cap));
 
-        if (ambiente === 'externo') {
-            eq.push(`${eaps_qtd}x Grandstream GWN7660LR (Outdoor IP66)`);
-        } else if (tipo === "Gamer/E-sports" || total_wifi > 200) {
-            eq.push(`${eaps_qtd}x Grandstream GWN7664 (High-End 4x4 MU-MIMO)`);
+        if (document.getElementById('ambiente').value === 'externo') {
+            eq.push(`${qtd_ap}x Grandstream GWN7660LR (Outdoor IP66)`);
+        } else if (tipo === "Gamer" || total_wifi > 200) {
+            eq.push(`${qtd_ap}x Grandstream GWN7664 (4x4 MU-MIMO)`);
         } else {
-            eq.push(`${eaps_qtd}x Grandstream GWN7660 (Wi-Fi 6 Indoor)`);
+            eq.push(`${qtd_ap}x Grandstream GWN7660 (Wi-Fi 6 Indoor)`);
         }
 
-        // 3. SWITCHING GRANDSTREAM (Soma Portas Cabeadas + APs + Roteador + Uplinks)
-        let portas_necessarias = total_cabeados + qtd_pcs + eaps_qtd + 2;
-        if (portas_necessarias <= 5) eq.push("01x Switch Grandstream GWN7700 (05 Portas Gigabit)");
-        else if (portas_necessarias <= 8) eq.push("01x Switch Grandstream GWN7701 (08 Portas Gigabit)");
-        else if (portas_necessarias <= 16) eq.push("01x Switch Grandstream GWN7702 (16 Portas Gigabit)");
-        else if (portas_necessarias <= 24) eq.push("01x Switch Grandstream GWN7703 (24 Portas Gigabit)");
-        else eq.push("01x Switch Grandstream GWN7704 (48 Portas Gigabit)");
+        // 3. SWITCHING (Lógica de Expansão para 60+ dispositivos)
+        let portas_uso = total_cabeados + qtd_ap + 2; 
+        if (portas_uso <= 5) eq.push("01x Switch Grandstream GWN7700 (5 Portas)");
+        else if (portas_uso <= 8) eq.push("01x Switch Grandstream GWN7701 (8 Portas)");
+        else if (portas_uso <= 16) eq.push("01x Switch Grandstream GWN7702 (16 Portas)");
+        else if (portas_uso <= 24) eq.push("01x Switch Grandstream GWN7703 (24 Portas)");
+        else if (portas_uso <= 48) eq.push("01x Switch Grandstream GWN7704 (48 Portas)");
+        else {
+            let sw48 = Math.floor(portas_uso / 48);
+            let sobra = portas_uso % 48;
+            eq.push(`${sw48}x Switch Grandstream GWN7704 (48 Portas Gigabit)`);
+            if (sobra > 0) {
+                let modeloSobra = (sobra <= 24) ? "GWN7703 (24 Portas)" : "GWN7704 (48 Portas)";
+                eq.push(`01x Switch Grandstream ${modeloSobra} adicional para expansão`);
+            }
+            alertas.push(`EXPANSÃO: Demanda de ${portas_uso} portas exige cascateamento de switches.`);
+        }
 
-        // 4. INFRA ADICIONAL
-        if (longa_distancia) eq.push("01x Par de Conversores de Mídia Gigabit + Bobina Fibra Drop");
-        if (energia || total_wifi > 50) eq.push("01x Nobreak Senoidal Profissional");
-        if (live || gamer) eq.push("01x Antena Starlink V2 (Link de Contingência / Failover)");
+        // 4. INFRA
+        if (document.getElementById('longa_distancia').checked) eq.push("01x Par de Conversores de Mídia Gigabit + Fibra");
+        if (document.getElementById('energia_ruim').checked) eq.push("01x Nobreak Senoidal Profissional");
+        if (document.getElementById('metal').checked) alertas.push("OBSTRUÇÃO METÁLICA: Afastar APs de estruturas de metal.");
 
-        // 5. ALERTAS E DICAS
-        if (total_wifi > 250) alertas.push("DENSIDADE ALTA: Configurar sub-rede /23 para evitar falta de IPs no DHCP.");
-        if (metal) alertas.push("OBSTRUÇÃO METÁLICA: Evite APs colados em estruturas de metal para reduzir reflexão.");
-        if (live) alertas.push("LIVE: É obrigatório o uso de CABO para a máquina de streaming.");
-        if (hotspot) dicas.push("HOTSPOT: Isole o tráfego de convidados em uma VLAN separada das maquininhas POS.");
+        // Processamento de Imagem
+        const fileInput = document.getElementById('imagem_local');
+        let imgHTML = '';
+        if (fileInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('img_res').src = e.target.result;
+                document.getElementById('img_res').style.display = 'block';
+            }
+            reader.readAsDataURL(fileInput.files[0]);
+            imgHTML = `<img id="img_res" class="img-anexo" style="display:none;">`;
+        }
 
-        let resDiv = document.getElementById('resultado');
-        resDiv.innerHTML = `
-            <h2 style="color:var(--cor-acento-tech); border-bottom:2px solid var(--cor-acento-tech);">📋 Laudo Técnico de Vistoria</h2>
-            <div class="secao-res" style="border-left:5px solid var(--cor-acento-tech);">
-                <p><b>Evento:</b> ${evt} | <b>Técnico:</b> ${tec}</p>
-                <p><b>Cidade:</b> ${cidade} | <b>Local:</b> ${htmlLocal}</p>
-                <p><b>Data:</b> ${dVist} | <b>Público Est.:</b> ${total_wifi} dispositivos</p>
-                ${total_cabeados > 0 ? `<p><b>Cabeados:</b> ${total_cabeados} portas (${lista_nomes_cabeados.join(', ')})</p>` : ''}
+        // Render Resultado
+        const res = document.getElementById('resultado');
+        res.innerHTML = `
+            <h2 style="text-align:center; color:var(--cor-acento-tech);">📋 LAUDO DE VISTORIA TÉCNICA</h2>
+            <div class="secao-res">
+                <p><b>Técnico:</b> ${tec} | <b>Evento:</b> ${evt}</p>
+                <p><b>Local:</b> ${cidade} | <b>GPS:</b> <a href="${maps}" target="_blank">Ver no Maps</a></p>
+                <p><b>Vistoria:</b> ${formatarData(document.getElementById('data_vistoria').value)}</p>
+                <p><b>Carga Wi-Fi:</b> ${total_wifi} dispositivos | <b>Cabeados:</b> ${total_cabeados} portas</p>
+                ${lista_cabeados_nomes.length ? `<p><b>Itens Cabeados:</b> ${lista_cabeados_nomes.join(', ')}</p>` : ''}
             </div>
             ${imgHTML}
-            <div class="secao-res"><h3>📦 Hardware Recomendado (Grandstream / Mikrotik)</h3><ul>
-            ${eq.map(i => `<li><b>${i}</b></li>`).join('')}
+            <div class="secao-res"><h3>📦 Hardware Sugerido (Grandstream / Mikrotik)</h3><ul>
+                ${eq.map(e => `<li><b>${e}</b></li>`).join('')}
             </ul></div>
-            ${alertas.length ? `<div class="secao-res"><h3>🚨 Alertas Críticos</h3><ul>${alertas.map(i => `<li class="alerta-item">⚠️ ${i}</li>`).join('')}</ul></div>` : ''}
-            ${dicas.length ? `<div class="secao-res"><h3>💡 Recomendações</h3><ul>${dicas.map(i => `<li class="dica-item">✔ ${i}</li>`).join('')}</ul></div>` : ''}
-            <button onclick="window.print()" style="background:black;">🖨️ Salvar em PDF</button>
+            ${alertas.length ? `<div class="secao-res"><h3>🚨 Checklist de Engenharia</h3><ul>
+                ${alertas.map(a => `<li class="alerta-item">⚠️ ${a}</li>`).join('')}
+            </ul></div>` : ''}
+            <button onclick="window.print()" style="background:#000;">Gerar PDF</button>
+            <button onclick="location.reload()" style="background:#666; margin-top:5px;">Novo Laudo</button>
         `;
-        resDiv.style.display = 'block';
-        resDiv.scrollIntoView({ behavior: 'smooth' });
+        res.style.display = 'block';
+        document.getElementById('formulario_perguntas').style.display = 'none';
+        res.scrollIntoView({ behavior: 'smooth' });
     }
 </script>
 
