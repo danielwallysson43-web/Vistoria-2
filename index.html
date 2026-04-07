@@ -6,6 +6,7 @@
     <title>Vistoria ora Telecom</title>
     <style>
         :root {
+            /* DESIGN SYSTEM - ORA TELECOM */
             --ora-azul: #0a4087;
             --ora-laranja: #f7941d;
             --preto-fundo: #0d0d0d;
@@ -21,17 +22,19 @@
         .brand-logo span { color: var(--ora-laranja); }
         
         .protocol-box { text-align: right; border-left: 2px solid var(--cinza-borda); padding-left: 20px; }
+        .protocol-box label { display: block; font-size: 10px; font-weight: 800; color: var(--ora-azul); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
         .protocol-input { font-family: monospace; font-size: 20px; font-weight: bold; color: var(--ora-laranja); border: 2px solid var(--cinza-borda); padding: 8px; text-align: center; width: 160px; border-radius: 6px; }
 
         .content { padding: 30px; }
-        .card { background: #f8fafc; border: 1px solid var(--cinza-borda); border-radius: 10px; padding: 25px; margin-bottom: 25px; border-left: 6px solid var(--ora-azul); }
+        .card { background: #f8fafc; border: 1px solid var(--cinza-borda); border-radius: 10px; padding: 25px; margin-bottom: 25px; border-left: 6px solid var(--ora-azul); transition: all 0.3s ease; }
         h3 { font-size: 14px; color: var(--ora-azul); text-transform: uppercase; margin-top: 0; margin-bottom: 20px; letter-spacing: 1px; }
 
         label { display: block; font-weight: 700; font-size: 13px; margin-bottom: 8px; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1.5px solid var(--cinza-borda); border-radius: 8px; font-size: 14px; box-sizing: border-box; margin-bottom: 15px; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1.5px solid var(--cinza-borda); border-radius: 8px; font-size: 14px; box-sizing: border-box; margin-bottom: 15px; transition: 0.2s ease; }
+        input:focus, select:focus, textarea:focus { border-color: var(--ora-laranja); outline: none; box-shadow: 0 0 0 3px rgba(247,148,29,0.2); }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; border: 1px solid var(--cinza-borda); }
-        table th { background: var(--ora-azul); color: white; font-size: 12px; padding: 12px; text-align: left; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; border-radius: 8px; overflow: hidden; border: 1px solid var(--cinza-borda); }
+        table th { background: var(--ora-azul); color: white; font-size: 12px; padding: 12px; text-align: left; text-transform: uppercase; }
         table td { padding: 10px; border-bottom: 1px solid var(--cinza-borda); }
 
         .btn-add { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; }
@@ -42,15 +45,18 @@
         
         #btn-executar { width: 100%; padding: 22px; background: var(--ora-azul); color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
         #btn-executar:hover { background: #0d4a96; transform: translateY(-2px); }
+        #btn-executar:disabled { background: #666; cursor: not-allowed; }
 
         #status_log { display: none; text-align: center; padding: 15px; margin-top: 15px; border-radius: 8px; font-weight: bold; }
 
         @media print {
             body { background: white; padding: 0; }
             .container { box-shadow: none; border: none; width: 100%; max-width: 100%; margin: 0; }
-            .no-print, button, input[type="file"] { display: none !important; }
-            input, textarea { border: none !important; background: transparent !important; padding: 0; }
+            .main-header, .no-print, button, input[type="file"], .col-btn { display: none !important; }
+            input, select, textarea { border: none !important; background: transparent !important; padding: 0; }
             .card { border: 1px solid #eee; border-left: 5px solid var(--ora-azul); }
+            table { border: 1px solid black; }
+            table th { background: #eee !important; color: black; border-bottom: 1px solid black; }
         }
     </style>
 </head>
@@ -61,7 +67,7 @@
         <div class="brand-logo">ora<span>Telecom</span></div>
         <div class="protocol-box">
             <label>Nº PROTOCOLO / OS</label>
-            <input type="text" id="os_num" class="protocol-input" placeholder="0000">
+            <input type="text" id="os_num" class="protocol-input" placeholder="000000">
         </div>
     </header>
 
@@ -69,14 +75,17 @@
         <div class="card">
             <h3>1. Informações Básicas</h3>
             <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
-                <div><label>Cliente / Unidade:</label><input type="text" id="cliente"></div>
+                <div><label>Cliente / Unidade:</label><input type="text" id="cliente" placeholder="Ex: Shopping Teresina"></div>
                 <div><label>Data:</label><input type="date" id="data_v"></div>
             </div>
-            <label>Técnico Responsável:</label>
-            <input type="text" id="tecnico" value="Daniel Lavor">
-            <label>Localização (GPS):</label>
-            <input type="text" id="gps" placeholder="Clique abaixo para capturar...">
-            <button class="btn-gps no-print" onclick="pegarLocal()">📍 CAPTURAR LOCALIZAÇÃO ORA</button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                <div><label>Técnico Responsável:</label><input type="text" id="tecnico" value="Daniel Lavor"></div>
+                <div>
+                    <label>Localização (GPS):</label>
+                    <input type="text" id="gps" placeholder="Aguardando captura...">
+                    <button class="btn-gps no-print" onclick="pegarLocal()">📍 CAPTURAR LOCALIZAÇÃO ORA</button>
+                </div>
+            </div>
         </div>
 
         <div class="card">
@@ -87,7 +96,7 @@
                         <th>Equipamento</th>
                         <th style="width: 140px;">Conexão</th>
                         <th style="width: 80px;">Qtd</th>
-                        <th style="width: 40px;" class="no-print"></th>
+                        <th style="width: 40px;" class="col-btn no-print"></th>
                     </tr>
                 </thead>
                 <tbody id="corpo">
@@ -101,7 +110,7 @@
                             </select>
                         </td>
                         <td><input type="number" value="1" class="item-q" onchange="atualizarTotal()"></td>
-                        <td class="no-print"><button class="btn-del" onclick="this.parentElement.parentElement.remove(); atualizarTotal();">✕</button></td>
+                        <td class="col-btn no-print"><button class="btn-del" onclick="this.parentElement.parentElement.remove(); atualizarTotal();">✕</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -110,33 +119,34 @@
         </div>
 
         <div class="card">
-            <h3>3. Laudo Técnico ora</h3>
-            <label>Infraestrutura Sugerida:</label>
-            <textarea id="infra" rows="5" placeholder="Liste o hardware necessário..."></textarea>
-            <label>Parecer / Observações:</label>
-            <textarea id="obs" rows="4"></textarea>
+            <h3>3. Parecer Técnico ora</h3>
+            <label>Infraestrutura e Hardware Sugerido:</label>
+            <textarea id="infra" rows="5" placeholder="Liste o hardware necessário (Switches, APs, cabos...)"></textarea>
+            <label style="margin-top: 15px;">Parecer / Observações:</label>
+            <textarea id="obs" rows="4" placeholder="Dificuldades, passagens de cabo, energia..."></textarea>
         </div>
 
         <div class="card no-print">
             <h3>4. Mídias de Campo</h3>
-            <input type="file" id="midias" multiple accept="image/*,video/*">
+            <input type="file" id="midias" multiple accept="image/*,video/*" style="border: 2px dashed var(--cinza-borda); padding: 10px;">
+            <small style="color: #666; display: block; margin-top: 5px;">* Envio de fotos/vídeos para o Grupo de Teste.</small>
         </div>
 
         <div id="status_log"></div>
-        <button id="btn-executar" onclick="enviarEGeraPDF()">🚀 ENVIAR PARA O GRUPO E GERAR PDF</button>
+        <button id="btn-executar" onclick="enviarEGeraPDF()" class="no-print">🚀 ENVIAR PARA O GRUPO E GERAR PDF</button>
     </div>
 </div>
 
 <script>
-    // --- INSIRA O ID DO GRUPO (COM SINAL DE MENOS) ABAIXO ---
+    // --- CONFIGURAÇÃO CONECTADA AO GRUPO DE TESTES ---
     const TOKEN = "8797747366:AAHBVt7Xh7O-hms4DmB6c8j5AmWiOhkB6K4";
-    const CHAT_ID = "SUBSTITUA_PELO_ID_DO_GRUPO_AQUI"; 
+    const CHAT_ID = "-5263060753"; // ID do "Grupo teste de bot vistoria"
 
     document.getElementById('data_v').valueAsDate = new Date();
 
     function addNovaLinha() {
         const row = document.getElementById('corpo').insertRow();
-        row.innerHTML = `<td><input type="text" class="item-n"></td><td><select class="item-c"><option value="Cabo">Cabo</option><option value="Wi-Fi">Wi-Fi</option><option value="Fibra">Fibra</option></select></td><td><input type="number" value="1" class="item-q" onchange="atualizarTotal()"></td><td class="no-print"><button class="btn-del" onclick="this.parentElement.parentElement.remove(); atualizarTotal();">✕</button></td>`;
+        row.innerHTML = `<td><input type="text" class="item-n" placeholder="Equipamento"></td><td><select class="item-c"><option value="Cabo">Cabo</option><option value="Wi-Fi">Wi-Fi</option><option value="Fibra">Fibra</option></select></td><td><input type="number" value="1" min="1" class="item-q" onchange="atualizarTotal()"></td><td class="col-btn no-print"><button class="btn-del" onclick="this.parentElement.parentElement.remove(); atualizarTotal();">✕</button></td>`;
         atualizarTotal();
     }
 
@@ -151,6 +161,8 @@
             navigator.geolocation.getCurrentPosition(p => {
                 document.getElementById('gps').value = `${p.coords.latitude}, ${p.coords.longitude}`;
                 alert("📍 Coordenadas ora capturadas!");
+            }, () => {
+                alert("Erro ao capturar GPS. Verifique as permissões.");
             });
         }
     }
@@ -162,8 +174,8 @@
         
         btn.disabled = true;
         log.style.display = "block";
-        log.style.background = "#fff3cd";
-        log.innerText = "⏳ Enviando dados para o grupo ora...";
+        log.style.background = "#fff3cd"; // Amarelo ora
+        log.innerText = "⏳ Enviando dados para o grupo de vistoria...";
 
         let itensStr = "";
         document.querySelectorAll('#corpo tr').forEach(tr => {
@@ -173,42 +185,49 @@
             if(n) itensStr += `• ${n}: ${q} un (${c})\n`;
         });
 
-        let msg = `<b>📡 RELATÓRIO OPERACIONAL ora | Protocolo: ${document.getElementById('os_num').value}</b>\n\n`;
+        let msg = `<b>📡 RELATÓRIO OPERACIONAL ora | OS: ${document.getElementById('os_num').value || 'S/N'}</b>\n\n`;
         msg += `🏢 <b>Cliente:</b> ${document.getElementById('cliente').value}\n`;
         msg += `👤 <b>Técnico:</b> ${document.getElementById('tecnico').value}\n\n`;
         msg += `<b>🖥️ INVENTÁRIO:</b>\n${itensStr}`;
         msg += `🔢 <b>Total:</b> ${document.getElementById('soma_fim').innerText} ativos\n\n`;
-        msg += `<b>⚙️ INFRA:</b>\n${document.getElementById('infra').value}\n\n`;
-        msg += `<b>📝 OBS:</b>\n${document.getElementById('obs').value}\n`;
-        if(document.getElementById('gps').value) msg += `📍 <b>GPS:</b> <a href="https://www.google.com/maps?q=${document.getElementById('gps').value}">Abrir Maps</a>`;
+        msg += `<b>⚙️ INFRA/HARDWARE:</b>\n${document.getElementById('infra').value}\n\n`;
+        msg += `<b>📝 PARECER TÉCNICO:</b>\n${document.getElementById('obs').value}\n`;
+        if(document.getElementById('gps').value) msg += `\n📍 <b>GPS:</b> <a href="https://www.google.com/maps?q=${document.getElementById('gps').value}">Abrir Maps</a>`;
 
         try {
-            // Enviar Mídias
-            for (let f of files) {
-                const fd = new FormData();
-                fd.append("chat_id", CHAT_ID);
-                fd.append(f.type.startsWith('video/') ? "video" : "photo", f);
-                await fetch(`https://api.telegram.org/bot${TOKEN}/${f.type.startsWith('video/') ? 'sendVideo' : 'sendPhoto'}`, { method: "POST", body: fd });
+            // Enviar Mídias (Fotos/Vídeos)
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const f = files[i];
+                    const fd = new FormData();
+                    fd.append("chat_id", CHAT_ID);
+                    fd.append(f.type.startsWith('video/') ? "video" : "photo", f);
+                    log.innerText = `⏳ Enviando mídia ${i+1} de ${files.length}...`;
+                    await fetch(`https://api.telegram.org/bot${TOKEN}/${f.type.startsWith('video/') ? 'sendVideo' : 'sendPhoto'}`, { method: "POST", body: fd });
+                }
             }
 
-            // Enviar Texto
+            log.innerText = "⏳ Mídias enviadas. Processando laudo técnico...";
+
+            // Enviar Texto do Laudo
             await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: "HTML" })
+                body: JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: "HTML", disable_web_page_preview: false })
             });
 
-            log.style.background = "#d4edda";
-            log.innerText = "✅ SUCESSO! Abrindo PDF...";
+            log.style.background = "#d4edda"; // Verde Sucesso
+            log.innerText = "✅ SUCESSO! Abrindo PDF Automático...";
             
+            // Gerar o PDF na tela
             setTimeout(() => {
                 window.print();
                 btn.disabled = false;
             }, 1000);
 
         } catch (e) {
-            log.style.background = "#f8d7da";
-            log.innerText = "❌ Falha no envio.";
+            log.style.background = "#f8d7da"; // Vermelho Erro
+            log.innerText = "❌ Falha no envio. Verifique a conexão.";
             btn.disabled = false;
         }
     }
