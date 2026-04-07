@@ -3,9 +3,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vistoria Técnica - Daniel Tec (Grandstream Expert)</title>
+    <title>Vistoria Técnica - Daniel Tec (Grandstream Edition)</title>
     <style>
-        /* TEMA DANIEL TEC - VERSÃO TECH */
+        /* TEMA DANIEL TEC - MANTIDO EXATAMENTE COMO O ORIGINAL */
         :root {
             --cor-acento-tech: #0056b3;
             --cor-brilho-tech: rgba(0, 123, 255, 0.5);
@@ -97,13 +97,13 @@
             margin-top: 10px;
         }
 
-        button.btn-secundario { background-color: #444; width: auto; font-size: 13px; padding: 10px 15px; }
+        button.btn-secundario { background-color: #444; width: auto; font-size: 13px; padding: 10px 15px; margin: 0; }
 
         #resultado { display: none; border: 2px solid var(--cor-acento-tech); border-left: 10px solid var(--cor-acento-tech); }
         .secao-res { margin-bottom: 20px; padding: 15px; background: var(--branco); border-radius: 6px; border: 1px solid #eee; }
         .secao-res h3 { color: var(--cor-acento-tech); font-size: 16px; border-bottom: 2px solid var(--cor-acento-tech); padding-bottom: 5px; text-transform: uppercase; }
         
-        .alerta-item { color: #0056b3; font-weight: bold; list-style: none; margin-bottom: 5px; }
+        .alerta-item { color: #d9534f; font-weight: bold; list-style: none; margin-bottom: 5px; }
         .img-anexo { max-width: 100%; max-height: 400px; border-radius: 8px; border: 2px solid var(--cor-acento-tech); margin-top: 15px; display: block; margin-left: auto; margin-right: auto; }
 
         @media print {
@@ -118,7 +118,7 @@
 
 <div class="container">
     <div class="header">
-        <h1>Laudo Técnico - Daniel Tec</h1>
+        <h1>Vistoria Técnica - Daniel Tec</h1>
     </div>
 
     <div id="formulario_perguntas">
@@ -132,7 +132,7 @@
             <div class="form-group">
                 <label>📍 Localização (Maps):</label>
                 <div style="display: flex; gap: 8px;">
-                    <input type="url" id="link_maps" placeholder="Cole o link ou use GPS ->">
+                    <input type="url" id="link_maps" placeholder="Link do Google Maps">
                     <button type="button" class="btn-secundario" onclick="capturarGPS()">GPS</button>
                 </div>
             </div>
@@ -164,8 +164,8 @@
             <h3 class="card-title">2. Dispositivos Cabeados</h3>
             <div id="lista_cabeados">
                 <div class="form-row cabeado-item">
-                    <div class="form-group" style="flex: 2;"><label>Descrição:</label><input type="text" class="desc_cabeado" placeholder="Ex: PC Transmissão"></div>
-                    <div class="form-group" style="flex: 1;"><label>Qtd:</label><input type="number" class="qtd_cabeado" value="0" min="0"></div>
+                    <div class="form-group" style="flex: 2;"><input type="text" class="desc_cabeado" placeholder="Ex: PC Transmissão"></div>
+                    <div class="form-group" style="flex: 1;"><input type="number" class="qtd_cabeado" value="0" min="0"></div>
                 </div>
             </div>
             <button type="button" class="btn-secundario" onclick="adicionarCabeado()">+ Adicionar Item</button>
@@ -219,27 +219,26 @@
     }
 
     async function gerarLaudo() {
+        // COLETA DE DADOS
         const tec = document.getElementById('nome_tecnico').value;
         const evt = document.getElementById('nome_evento').value;
         const tipo = document.getElementById('tipo_evento').value;
         const pub = parseInt(document.getElementById('publico').value) || 0;
         const maq = parseInt(document.getElementById('maquininhas').value) || 0;
-        const cidade = document.getElementById('cidade').value;
-        const maps = document.getElementById('link_maps').value;
         const total_wifi = pub + maq;
 
-        // Cabeados
+        // CÁLCULO CABEADOS
         let total_cabeados = 0;
-        let lista_cabeados_nomes = [];
+        let lista_nomes = [];
         document.querySelectorAll('.cabeado-item').forEach(item => {
             let q = parseInt(item.querySelector('.qtd_cabeado').value) || 0;
-            let d = item.querySelector('.desc_cabeado').value || "Dispositivo";
-            if (q > 0) { total_cabeados += q; lista_cabeados_nomes.push(`${q}x ${d}`); }
+            let d = item.querySelector('.desc_cabeado').value || "Item";
+            if (q > 0) { total_cabeados += q; lista_nomes.push(`${q}x ${d}`); }
         });
 
         let eq = []; let alertas = [];
 
-        // 1. ROTEAMENTO
+        // 1. ROTEAMENTO (PADRÃO DANIEL TEC)
         if (total_wifi + total_cabeados > 250) {
             eq.push("01x Mikrotik RB4011 ou CCR2004 (Core da Rede)");
             alertas.push("DENSIDADE ALTA: Configurar sub-rede /23 ou /22 no Mikrotik.");
@@ -247,7 +246,7 @@
             eq.push("01x Mikrotik RB760iGS (hEX S)");
         }
 
-        // 2. WIRELESS (Grandstream)
+        // 2. WIRELESS (GRANDSTREAM EQUIVALENTES)
         let cap = (document.getElementById('ambiente').value === 'externo') ? 100 : 80;
         if (tipo === "Gamer") cap = 50;
         let qtd_ap = Math.max(1, Math.ceil(total_wifi / cap));
@@ -255,12 +254,12 @@
         if (document.getElementById('ambiente').value === 'externo') {
             eq.push(`${qtd_ap}x Grandstream GWN7660LR (Outdoor IP66)`);
         } else if (tipo === "Gamer" || total_wifi > 200) {
-            eq.push(`${qtd_ap}x Grandstream GWN7664 (4x4 MU-MIMO)`);
+            eq.push(`${qtd_ap}x Grandstream GWN7664 (4x4 MU-MIMO High-End)`);
         } else {
             eq.push(`${qtd_ap}x Grandstream GWN7660 (Wi-Fi 6 Indoor)`);
         }
 
-        // 3. SWITCHING (Lógica de Expansão para 60+ dispositivos)
+        // 3. SWITCHING (LÓGICA PARA 60+ DISPOSITIVOS)
         let portas_uso = total_cabeados + qtd_ap + 2; 
         if (portas_uso <= 5) eq.push("01x Switch Grandstream GWN7700 (5 Portas)");
         else if (portas_uso <= 8) eq.push("01x Switch Grandstream GWN7701 (8 Portas)");
@@ -273,17 +272,16 @@
             eq.push(`${sw48}x Switch Grandstream GWN7704 (48 Portas Gigabit)`);
             if (sobra > 0) {
                 let modeloSobra = (sobra <= 24) ? "GWN7703 (24 Portas)" : "GWN7704 (48 Portas)";
-                eq.push(`01x Switch Grandstream ${modeloSobra} adicional para expansão`);
+                eq.push(`01x Switch Grandstream ${modeloSobra} para expansão`);
             }
-            alertas.push(`EXPANSÃO: Demanda de ${portas_uso} portas exige cascateamento de switches.`);
+            alertas.push(`CHECKLIST: A demanda de ${portas_uso} portas exige o uso de mais de um switch interligado.`);
         }
 
         // 4. INFRA
         if (document.getElementById('longa_distancia').checked) eq.push("01x Par de Conversores de Mídia Gigabit + Fibra");
         if (document.getElementById('energia_ruim').checked) eq.push("01x Nobreak Senoidal Profissional");
-        if (document.getElementById('metal').checked) alertas.push("OBSTRUÇÃO METÁLICA: Afastar APs de estruturas de metal.");
 
-        // Processamento de Imagem
+        // FOTO
         const fileInput = document.getElementById('imagem_local');
         let imgHTML = '';
         if (fileInput.files[0]) {
@@ -296,32 +294,30 @@
             imgHTML = `<img id="img_res" class="img-anexo" style="display:none;">`;
         }
 
-        // Render Resultado
+        // RENDER
         const res = document.getElementById('resultado');
         res.innerHTML = `
             <h2 style="text-align:center; color:var(--cor-acento-tech);">📋 LAUDO DE VISTORIA TÉCNICA</h2>
             <div class="secao-res">
                 <p><b>Técnico:</b> ${tec} | <b>Evento:</b> ${evt}</p>
-                <p><b>Local:</b> ${cidade} | <b>GPS:</b> <a href="${maps}" target="_blank">Ver no Maps</a></p>
+                <p><b>Local:</b> ${document.getElementById('cidade').value} | <a href="${document.getElementById('link_maps').value}" target="_blank">Ver no Maps</a></p>
                 <p><b>Vistoria:</b> ${formatarData(document.getElementById('data_vistoria').value)}</p>
-                <p><b>Carga Wi-Fi:</b> ${total_wifi} dispositivos | <b>Cabeados:</b> ${total_cabeados} portas</p>
-                ${lista_cabeados_nomes.length ? `<p><b>Itens Cabeados:</b> ${lista_cabeados_nomes.join(', ')}</p>` : ''}
+                <p><b>Dispositivos Wi-Fi:</b> ${total_wifi} | <b>Cabeados:</b> ${total_cabeados}</p>
             </div>
             ${imgHTML}
-            <div class="secao-res"><h3>📦 Hardware Sugerido (Grandstream / Mikrotik)</h3><ul>
+            <div class="secao-res"><h3>📦 Hardware Recomendado (Grandstream)</h3><ul>
                 ${eq.map(e => `<li><b>${e}</b></li>`).join('')}
             </ul></div>
             ${alertas.length ? `<div class="secao-res"><h3>🚨 Checklist de Engenharia</h3><ul>
                 ${alertas.map(a => `<li class="alerta-item">⚠️ ${a}</li>`).join('')}
             </ul></div>` : ''}
-            <button onclick="window.print()" style="background:#000;">Gerar PDF</button>
-            <button onclick="location.reload()" style="background:#666; margin-top:5px;">Novo Laudo</button>
+            <button onclick="window.print()" style="background:#000;">GERAR PDF</button>
+            <button onclick="location.reload()" style="background:#666; margin-top:5px;">NOVO LAUDO</button>
         `;
         res.style.display = 'block';
         document.getElementById('formulario_perguntas').style.display = 'none';
         res.scrollIntoView({ behavior: 'smooth' });
     }
 </script>
-
 </body>
 </html>
