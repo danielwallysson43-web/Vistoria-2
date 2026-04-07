@@ -3,143 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vistoria Técnica v3.0 - Daniel Tec (Grandstream Expert)</title>
+    <title>Vistoria Técnica v3.5 - Daniel Tec</title>
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#0056b3">
     <style>
-        /* DESIGN SYSTEM - DANIEL TEC CYBER VIBE */
+        /* DESIGN SYSTEM - DANIEL TEC (BLACK & ELECTRIC BLUE) */
         :root {
             --primary: #0056b3;
-            --primary-glow: rgba(0, 86, 179, 0.3);
-            --secondary: #334155;
-            --danger: #dc3545;
-            --success: #198754;
-            --bg-dark: #0f172a;
+            --primary-glow: rgba(0, 86, 179, 0.4);
+            --secondary: #1e293b;
+            --bg-dark: #000000;
             --bg-card: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
+            --text-main: #1a1a1a;
             --border: #e2e8f0;
+            --accent-tech: #007bff;
         }
 
         * { box-sizing: border-box; transition: all 0.2s ease; }
 
         body {
-            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
-            line-height: 1.6;
             margin: 0;
             padding: 40px 15px;
         }
 
         .container {
-            max-width: 850px;
+            max-width: 800px;
             margin: 0 auto;
             background: var(--bg-card);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 86, 179, 0.2);
+            border-top: 10px solid var(--primary);
         }
 
         /* HEADER */
         .main-header {
-            background: linear-gradient(135deg, #000 0%, var(--primary) 100%);
-            color: white;
-            padding: 40px 20px;
             text-align: center;
-            border-bottom: 5px solid var(--primary);
+            padding: 30px;
+            border-bottom: 2px solid var(--border);
         }
 
-        .main-header h1 {
-            margin: 0;
-            font-size: 28px;
+        .logo-placeholder {
+            font-size: 24px;
             font-weight: 900;
+            color: #000;
+            letter-spacing: -1px;
+        }
+
+        .logo-placeholder span { color: var(--primary); }
+
+        h1 {
+            color: var(--primary);
+            font-size: 22px;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            font-weight: 900;
+            margin-top: 10px;
+            letter-spacing: 1px;
         }
 
-        .main-header p {
-            margin: 10px 0 0;
-            opacity: 0.8;
-            font-size: 14px;
-            font-weight: 500;
-        }
+        /* CARDS E FORMULÁRIO */
+        .content-padding { padding: 30px; }
 
-        /* FORMULÁRIO */
-        .content-padding { padding: 35px; }
-
-        .section-card {
+        .card {
             background: #f8fafc;
             border: 1px solid var(--border);
-            border-left: 8px solid var(--primary);
+            border-left: 6px solid var(--primary);
             border-radius: 10px;
             padding: 25px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
-        .section-title {
-            font-size: 16px;
-            font-weight: 800;
+        .card-title {
             color: var(--primary);
+            font-size: 15px;
+            font-weight: 800;
             text-transform: uppercase;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .form-group { margin-bottom: 18px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-group { margin-bottom: 15px; }
 
-        label {
-            display: block;
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 8px;
-        }
+        label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
 
         input, select, textarea {
             width: 100%;
-            padding: 12px 16px;
-            border: 2px solid var(--border);
+            padding: 12px;
+            border: 1.5px solid #cbd5e1;
             border-radius: 8px;
             font-size: 14px;
-            color: var(--text-main);
-            background: white;
+            background: #fff;
         }
 
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--primary-glow);
-        }
+        input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-glow); }
 
-        /* CHECKBOX CUSTOM */
-        .check-container {
+        .checkbox-group {
             display: flex;
             align-items: center;
+            background: #fff;
             padding: 12px;
-            background: white;
             border: 1px solid var(--border);
             border-radius: 8px;
-            cursor: pointer;
             margin-bottom: 10px;
-        }
-
-        .check-container:hover { border-color: var(--primary); background: #f0f7ff; }
-
-        .check-container input {
-            width: 20px;
-            height: 20px;
-            margin-right: 15px;
             cursor: pointer;
         }
+
+        .checkbox-group input { width: 18px; height: 18px; margin-right: 12px; accent-color: var(--primary); }
 
         /* BOTÕES */
         .btn-main {
             width: 100%;
-            padding: 20px;
+            padding: 18px;
             background: var(--primary);
             color: white;
             border: none;
@@ -148,362 +128,330 @@
             font-weight: 800;
             text-transform: uppercase;
             cursor: pointer;
-            box-shadow: 0 10px 15px -3px var(--primary-glow);
+            box-shadow: 0 10px 20px var(--primary-glow);
         }
 
-        .btn-main:hover { background: #004494; transform: translateY(-2px); }
+        .btn-main:hover { background: var(--accent-tech); transform: translateY(-2px); }
 
-        .btn-add {
-            background: var(--secondary);
+        .btn-gps {
+            background: #444;
             color: white;
-            padding: 8px 15px;
-            border: none;
+            padding: 0 15px;
             border-radius: 6px;
+            border: none;
+            cursor: pointer;
             font-size: 12px;
             font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
         }
 
         /* RESULTADO */
-        #resultado { display: none; padding: 40px; animation: fadeIn 0.6s ease; }
+        #resultado { display: none; padding: 40px; }
 
-        .res-header { text-align: center; border-bottom: 2px solid var(--primary); margin-bottom: 30px; padding-bottom: 20px; }
-
-        .hw-card {
+        .secao-res {
             background: #fff;
             border: 1px solid var(--border);
+            padding: 20px;
             border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin-bottom: 20px;
+            border-left: 6px solid var(--primary);
         }
 
-        .badge-qty {
+        .secao-res h3 {
+            color: var(--primary);
+            font-size: 16px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 5px;
+            margin-top: 0;
+            text-transform: uppercase;
+        }
+
+        .critico {
             background: var(--primary);
             color: white;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 12px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 900;
+            margin: 20px 0;
+            text-transform: uppercase;
+            animation: pulse 2s infinite;
         }
 
-        .checklist-item {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
-            color: #475569;
-            font-size: 14px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .checklist-item.alerta { color: var(--danger); font-weight: bold; }
-
-        .img-preview {
+        .img-anexo {
             max-width: 100%;
             border-radius: 12px;
-            border: 4px solid var(--primary);
+            border: 3px solid var(--primary);
             margin: 20px 0;
             display: block;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; } }
 
         @media print {
             body { background: white; padding: 0; }
             .container { box-shadow: none; border: none; max-width: 100%; }
-            #formulario_corpo, .btn-main, .btn-add { display: none !important; }
+            #formulario_corpo, .btn-main { display: none !important; }
             #resultado { display: block !important; padding: 0; }
+            .btn-imprimir { display: none !important; }
         }
 
-        @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header class="main-header">
-        <p>TECNOLOGIA E INFRAESTRUTURA DE REDES</p>
-        <h1>Laudo de Vistoria Daniel Tec</h1>
+        <div class="logo-placeholder">DANIEL <span>TEC</span></div>
+        <h1>Laudo Técnico de Vistoria</h1>
     </header>
 
     <div id="formulario_corpo" class="content-padding">
-        <div class="section-card">
-            <div class="section-title"><span>0.</span> Identificação do Profissional</div>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>Engenheiro/Técnico:</label>
-                    <input type="text" id="tec_nome" value="Daniel Lavor">
-                </div>
-                <div class="form-group">
-                    <label>Cidade / UF:</label>
-                    <input type="text" id="cidade_uf" value="Teresina - PI">
-                </div>
+        
+        <div class="card">
+            <h3 class="card-title"><span>0.</span> Dados Gerais</h3>
+            <div class="form-row">
+                <div class="form-group"><label>Nome do Técnico:</label><input type="text" id="tec_nome" value="Daniel Lavor"></div>
+                <div class="form-group"><label>Cidade / UF:</label><input type="text" id="cidade" value="Teresina - PI"></div>
             </div>
+            <div class="form-group"><label>Cliente / Evento:</label><input type="text" id="cli_nome" placeholder="Ex: Shopping da Praça"></div>
+            
             <div class="form-group">
-                <label>Cliente / Nome do Evento:</label>
-                <input type="text" id="cliente_nome" placeholder="Ex: Condomínio Petrópolis">
-            </div>
-            <div class="form-group">
-                <label>📍 Localização (Google Maps):</label>
+                <label>📍 Localização Exata (GPS):</label>
                 <div style="display: flex; gap: 10px;">
-                    <input type="url" id="gps_link" placeholder="Cole o link ou clique em obter">
-                    <button type="button" class="btn-add" onclick="getGPS()">OBTER</button>
+                    <input type="url" id="link_maps" placeholder="Link do Maps ou Capturar ->">
+                    <button type="button" class="btn-gps" id="btn_gps" onclick="capturarLocalizacao()">Capturar</button>
                 </div>
             </div>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>Data da Vistoria:</label>
-                    <input type="date" id="data_vis">
-                </div>
-                <div class="form-group">
-                    <label>Data do Evento:</label>
-                    <input type="date" id="data_evt">
-                </div>
+
+            <div class="form-row">
+                <div class="form-group"><label>Data da Vistoria:</label><input type="date" id="data_vis"></div>
+                <div class="form-group"><label>Data do Evento:</label><input type="date" id="data_evt"></div>
             </div>
             <div class="form-group">
-                <label>📷 Anexo (Planta ou Foto do Local):</label>
-                <input type="file" id="foto_local" accept="image/*">
+                <label>📷 Planta ou Foto do Local:</label>
+                <input type="file" id="img_local" accept="image/*">
             </div>
         </div>
 
-        <div class="section-card">
-            <div class="section-title"><span>1.</span> Perfil e Criticidade</div>
+        <div class="card">
+            <h3 class="card-title"><span>1.</span> Perfil e Criticidade</h3>
             <div class="form-group">
-                <label>Natureza da Operação:</label>
-                <select id="projeto_tipo" onchange="checkGamer()">
-                    <option value="Comercial">Escritório / Comercial</option>
-                    <option value="Massa">Evento de Massa (Show/Público)</option>
-                    <option value="Gamer">E-sports / Arena Gamer</option>
-                    <option value="Live">Transmissão Crítica / Live Streaming</option>
-                    <option value="Condominio">Segurança / CFTV Condominial</option>
+                <label>Tipo de Evento:</label>
+                <select id="tipo_evt" onchange="verificarGamer()">
+                    <option value="Palestra/Congresso">Palestra / Congresso</option>
+                    <option value="Feira de Negócios">Feira / Stands</option>
+                    <option value="Gamer/E-sports">Gamer / E-sports</option>
+                    <option value="Grande Porte/Massa">Grande Porte / Massa</option>
+                    <option value="Transmissão Crítica">Live / Transmissão</option>
                 </select>
             </div>
-            <div id="gamer_extra" style="display:none; background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px dashed var(--primary);">
+
+            <div id="div_gamer" style="display:none; border-top: 1px dashed #ccc; padding-top: 15px; margin-top: 10px;">
                 <div class="form-group">
-                    <label>Quantidade de Estações de Jogo (Cabo):</label>
-                    <input type="number" id="qtd_estacoes" value="0">
+                    <label>Plataforma Gamer:</label>
+                    <select id="plat_gamer" onchange="verificarQtdPcs()">
+                        <option value="mobiles">Wi-Fi (Celulares)</option>
+                        <option value="pcs">Cabo (PCs/Consoles)</option>
+                        <option value="ambos">Ambos (Misto)</option>
+                    </select>
                 </div>
-            </div>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>Estimativa de Público Wi-Fi:</label>
-                    <input type="number" id="estimativa_wifi" value="0">
-                </div>
-                <div class="form-group">
-                    <label>Dispositivos de Staff/Maquininhas:</label>
-                    <input type="number" id="estimativa_staff" value="0">
+                <div id="div_pcs" style="display:none">
+                    <label>Qtd. de Estações no Cabo:</label>
+                    <input type="number" id="qtd_pcs" value="0">
                 </div>
             </div>
         </div>
 
-        <div class="section-card">
-            <div class="section-title"><span>2.</span> Infraestrutura Cabeada Extra</div>
-            <div id="lista_cabeados">
-                <div class="form-row" style="display: flex; gap: 10px; margin-bottom: 10px;">
-                    <div style="flex: 2;"><input type="text" class="cabo_desc" placeholder="Ex: DVR, Totem, TV"></div>
-                    <div style="flex: 1;"><input type="number" class="cabo_qtd" value="0"></div>
+        <div class="card">
+            <h3 class="card-title"><span>2.</span> Estimativa de Carga</h3>
+            <div class="form-row">
+                <div class="form-group"><label>Público:</label><input type="number" id="pub" value="0"></div>
+                <div class="form-group"><label>Staff:</label><input type="number" id="stf" value="0"></div>
+            </div>
+            <div class="form-group"><label>Maquininhas (POS):</label><input type="number" id="maq" value="0"></div>
+        </div>
+
+        <div class="card">
+            <h3 class="card-title"><span>3.</span> Ambiente e Fatores</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Ambiente:</label>
+                    <select id="amb">
+                        <option value="interno">Indoor</option>
+                        <option value="externo">Outdoor</option>
+                        <option value="misto">Misto</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Divisórias:</label>
+                    <select id="div">
+                        <option value="amplo">Vão Livre</option>
+                        <option value="salas">Muitas Salas</option>
+                    </select>
                 </div>
             </div>
-            <button class="btn-add" onclick="addCabo()">+ ADICIONAR DISPOSITIVO</button>
+            <div class="checkbox-group"><input type="checkbox" id="chk_metal"><label>Obstrução Metálica (Tendas/Palco)</label></div>
+            <div class="checkbox-group"><input type="checkbox" id="chk_distancia"><label>Distância > 100m (Exige Fibra)</label></div>
+            <div class="checkbox-group"><input type="checkbox" id="chk_energia"><label>Energia Instável / Gerador</label></div>
+            <div class="checkbox-group"><input type="checkbox" id="chk_hotspot"><label>Exige Hotspot (Leads)</label></div>
         </div>
 
-        <div class="section-card">
-            <div class="section-title"><span>3.</span> Fatores de Ambiente</div>
-            <div class="form-group">
-                <label>Tipo de Cobertura:</label>
-                <select id="ambiente_tipo">
-                    <option value="Indoor">Totalmente Interno (Indoor)</option>
-                    <option value="Outdoor">Totalmente Externo (Outdoor)</option>
-                    <option value="Misto">Área Mista (Indoor/Outdoor)</option>
-                </select>
-            </div>
-            <label class="check-container"><input type="checkbox" id="check_metal"> Obstruções Metálicas (Tendas / Palcos)</label>
-            <label class="check-container"><input type="checkbox" id="check_fibra"> Distância > 100m (Exige Fibra Óptica)</label>
-            <label class="check-container"><input type="checkbox" id="check_ups"> Energia Instável / Uso de Gerador</label>
-            <label class="check-container"><input type="checkbox" id="check_lead"> Exige Hotspot com Cadastro de Leads</label>
-        </div>
-
-        <button class="btn-main" onclick="gerarRelatorio()">Gerar Laudo Profissional</button>
+        <button class="btn-main" onclick="gerarLaudo()">Gerar Laudo de Engenharia</button>
     </div>
 
     <div id="resultado">
-        <div class="res-header">
-            <h1 id="res_cliente">NOME DO PROJETO</h1>
-            <p>Laudo Técnico de Infraestrutura - Daniel Tec</p>
-        </div>
+        <div id="laudo_header"></div>
+        <div id="img_preview_div"></div>
+        <div id="hardware_list"></div>
+        <div id="alertas_div"></div>
+        <div id="dicas_div"></div>
 
-        <div id="res_dados" style="margin-bottom: 30px;">
-            </div>
-
-        <div id="foto_container"></div>
-
-        <div class="section-title">Hardware Recomendado (Grandstream/Mikrotik)</div>
-        <div id="res_hardware">
-            </div>
-
-        <div class="section-title" style="margin-top: 30px;">Checklist de Engenharia e Orientações</div>
-        <div id="res_checklist" style="background: #f1f5f9; border-radius: 8px;">
-            </div>
-
-        <div style="margin-top: 50px; display: flex; gap: 10px;">
-            <button class="btn-main" onclick="window.print()" style="flex: 1; background: #000;">IMPRIMIR / PDF</button>
-            <button class="btn-main" onclick="location.reload()" style="flex: 1; background: #64748b;">NOVA VISTORIA</button>
+        <div style="margin-top: 30px; display: flex; gap: 10px;">
+            <button class="btn-main btn-imprimir" onclick="window.print()" style="background:#000">🖨️ IMPRIMIR / PDF</button>
+            <button class="btn-main btn-imprimir" onclick="location.reload()" style="background:#64748b">NOVA VISTORIA</button>
         </div>
     </div>
 </div>
 
 <script>
-    function getGPS() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(p => {
-                document.getElementById('gps_link').value = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
-            });
-        }
-    }
-
-    function checkGamer() {
-        const extra = document.getElementById('gamer_extra');
-        extra.style.display = (document.getElementById('projeto_tipo').value === 'Gamer') ? 'block' : 'none';
-    }
-
-    function addCabo() {
-        const div = document.createElement('div');
-        div.className = 'form-row';
-        div.style = "display: flex; gap: 10px; margin-bottom: 10px;";
-        div.innerHTML = `<div style="flex: 2;"><input type="text" class="cabo_desc" placeholder="Descrição"></div>
-                         <div style="flex: 1; display: flex; gap: 5px;"><input type="number" class="cabo_qtd" value="1">
-                         <button type="button" style="background:red; color:white; border:none; border-radius:4px; cursor:pointer;" onclick="this.parentElement.parentElement.remove()">X</button></div>`;
-        document.getElementById('lista_cabeados').appendChild(div);
-    }
-
-    function formatDate(d) { return d ? d.split('-').reverse().join('/') : '--/--/----'; }
-
-    async function gerarRelatorio() {
-        const tec = document.getElementById('tec_nome').value;
-        const cli = document.getElementById('cliente_nome').value || "Cliente Não Informado";
-        const cid = document.getElementById('cidade_uf').value;
-        const maps = document.getElementById('gps_link').value;
-        const tipo = document.getElementById('projeto_tipo').value;
-        const w_estimado = parseInt(document.getElementById('estimativa_wifi').value) || 0;
-        const s_estimado = parseInt(document.getElementById('estimativa_staff').value) || 0;
-        const total_wifi = w_estimado + s_estimado;
-
-        // Cálculos Cabeados
-        let total_cabo = 0;
-        let nomes_cabo = [];
-        document.querySelectorAll('#lista_cabeados .form-row').forEach(r => {
-            let q = parseInt(r.querySelector('.cabo_qtd').value) || 0;
-            let d = r.querySelector('.cabo_desc').value || "Item";
-            if (q > 0) { total_cabo += q; nomes_cabo.push(`${q}x ${d}`); }
+    // 1. UTILITÁRIOS (DATA E IMAGEM)
+    function fmtData(d) { return d ? d.split('-').reverse().join('/') : '--/--/----'; }
+    
+    function readImg(file) {
+        return new Promise((res) => {
+            const reader = new FileReader();
+            reader.onload = () => res(reader.result);
+            reader.readAsDataURL(file);
         });
+    }
 
-        if (tipo === 'Gamer') {
-            let g = parseInt(document.getElementById('qtd_estacoes').value) || 0;
-            total_cabo += g;
-            if (g > 0) nomes_cabo.push(`${g}x Estações Gamer`);
-        }
+    // 2. GPS (Lógica Original)
+    function capturarLocalizacao() {
+        const btn = document.getElementById('btn_gps');
+        if (!navigator.geolocation) return alert("GPS não suportado.");
+        btn.innerText = "⏳...";
+        navigator.geolocation.getCurrentPosition(p => {
+            document.getElementById('link_maps').value = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
+            btn.innerText = "✅ OK";
+        }, () => { alert("Erro no GPS"); btn.innerText = "Capturar"; }, { enableHighAccuracy: true });
+    }
 
-        // LÓGICA DE HARDWARE
-        let hardware = [];
-        let checklist = [];
+    // 3. UI DINÂMICA
+    function verificarGamer() {
+        document.getElementById('div_gamer').style.display = (document.getElementById('tipo_evt').value === 'Gamer/E-sports') ? 'block' : 'none';
+        verificarQtdPcs();
+    }
+    function verificarQtdPcs() {
+        const p = document.getElementById('plat_gamer').value;
+        document.getElementById('div_pcs').style.display = (p === 'pcs' || p === 'ambos') ? 'block' : 'none';
+    }
 
-        // 1. Roteamento
-        if (total_wifi + total_cabo > 250 || tipo === 'Massa' || tipo === 'Live') {
-            hardware.push({ nome: "Mikrotik RB4011 ou CCR2004 (Core Router)", qtd: 1 });
-            checklist.push({ texto: "REDE /22 ou /23: Necessário configurar sub-rede para suportar mais de 254 endereços IP.", classe: "alerta" });
+    // 4. LÓGICA DE ENGENHARIA (O CORAÇÃO DO SEU CÓDIGO)
+    async function gerarLaudo() {
+        const total = (parseInt(document.getElementById('pub').value)||0) + (parseInt(document.getElementById('stf').value)||0) + (parseInt(document.getElementById('maq').value)||0);
+        const tipo = document.getElementById('tipo_evt').value;
+        const hotspot = document.getElementById('chk_hotspot').checked;
+        const gamer = (tipo === 'Gamer/E-sports');
+        const amb = document.getElementById('amb').value;
+        const metal = document.getElementById('chk_metal').checked;
+
+        let eq = []; let alertas = []; let dicas = [];
+
+        // LÓGICA MIKROTIK
+        if (total > 30 || hotspot || gamer || tipo === "Transmissão Crítica") {
+            if (total <= 50) eq.push("01x Mikrotik RB 750Gr3 (hEX)");
+            else if (total < 150) eq.push("01x Mikrotik RB 760iGS (hEX S)");
+            else if (total < 350) eq.push("01x Mikrotik RB 4011 ou RB 5009");
+            else eq.push("01x Mikrotik CCR Series (Alta Performance)");
+            eq.push("01x ONU em modo BRIDGE (Obrigatório)");
         } else {
-            hardware.push({ nome: "Mikrotik RB760iGS (hEX S)", qtd: 1 });
+            eq.push("01x ONU Wi-Fi AX (Roteando) ou Roteador Giga");
         }
 
-        // 2. Wireless (Grandstream)
-        let cap_ap = 80;
-        let amb = document.getElementById('ambiente_tipo').value;
-        if (amb === 'Outdoor') cap_ap = 100;
-        if (tipo === 'Gamer') cap_ap = 40;
+        // LÓGICA ACCESS POINTS
+        let cap = (amb === 'externo') ? 100 : 80;
+        if (metal) cap *= 0.8;
+        let qtd_ap = Math.max(1, Math.ceil(total / cap));
         
-        let qtd_ap = Math.max(1, Math.ceil(total_wifi / cap_ap));
-        
-        if (amb === 'Outdoor') {
-            hardware.push({ nome: "Grandstream GWN7660LR (Outdoor IP66 Wi-Fi 6)", qtd: qtd_ap });
-        } else if (tipo === 'Gamer' || total_wifi > 200) {
-            hardware.push({ nome: "Grandstream GWN7664 (High-Performance 4x4 MU-MIMO)", qtd: qtd_ap });
-        } else {
-            hardware.push({ nome: "Grandstream GWN7660 (Indoor Wi-Fi 6 AX)", qtd: qtd_ap });
+        if (tipo === "Grande Porte/Massa" && qtd_ap < 3) qtd_ap = 3;
+
+        if (qtd_ap > 0) {
+            let mod = (amb === 'externo') ? 'EAP 610 Outdoor' : 'EAP 620/650 Indoor';
+            eq.push(`${qtd_ap}x Access Points ${mod}`);
+            
+            // Lógica Switch PoE
+            if (qtd_ap === 1) eq.push("01x Fonte PoE Gigabit");
+            else if (qtd_ap <= 4) eq.push("01x Switch PoE 5 Portas");
+            else if (qtd_ap <= 7) eq.push("01x Switch PoE 8 Portas");
+            else eq.push("01x Switch PoE 16 Portas");
         }
 
-        // 3. SWITCHING (LÓGICA PEDIDA: 60+ PORTAS)
-        let portas_totais = total_cabo + qtd_ap + 2; // +2 para uplink e servidor
-        
-        if (portas_totais <= 8) hardware.push({ nome: "Switch Grandstream GWN7701 (8 Portas Giga)", qtd: 1 });
-        else if (portas_totais <= 16) hardware.push({ nome: "Switch Grandstream GWN7702 (16 Portas Giga)", qtd: 1 });
-        else if (portas_totais <= 24) hardware.push({ nome: "Switch Grandstream GWN7703 (24 Portas Giga)", qtd: 1 });
-        else if (portas_totais <= 48) hardware.push({ nome: "Switch Grandstream GWN7704 (48 Portas Giga)", qtd: 1 });
-        else {
-            // Lógica de Expansão para Daniel Tec
-            let n48 = Math.floor(portas_totais / 48);
-            let rem = portas_totais % 48;
-            hardware.push({ nome: "Switch Grandstream GWN7704 (48 Portas Gigabit)", qtd: n48 });
-            if (rem > 0) {
-                let modelo_rem = (rem <= 24) ? "GWN7703 (24P)" : "GWN7704 (48P)";
-                hardware.push({ nome: `Switch Grandstream ${modelo_rem} (Expansão de Malha)`, qtd: 1 });
+        // LÓGICA SWITCH GAMER / CABEADO (60+ portas inclusa)
+        let qtd_cabo = gamer ? (parseInt(document.getElementById('qtd_pcs').value)||0) : 0;
+        if (qtd_cabo > 0) {
+            if (qtd_cabo <= 7) eq.push("01x Switch Gigabit 8 Portas");
+            else if (qtd_cabo <= 15) eq.push("01x Switch Gigabit 16 Portas");
+            else if (qtd_cabo <= 40) eq.push("01x Switch Gigabit 48 Portas");
+            else {
+                let s48 = Math.floor(qtd_cabo / 48);
+                eq.push(`${s48}x Switch Gigabit 48 Portas`);
+                eq.push(`01x Switch Gigabit Expansão (Cascateamento)`);
             }
-            checklist.push({ texto: "RECOMENDAÇÃO FINAL: A demanda de " + portas_totais + " portas exige múltiplos switches. Utilize cabos CAT6 para Uplink ou Fibra entre eles.", classe: "alerta" });
         }
 
-        // 4. INFRA
-        if (document.getElementById('check_fibra').checked) hardware.push({ nome: "Par de Conversores de Mídia Giga + Bobina de Fibra", qtd: 1 });
-        if (document.getElementById('check_ups').checked) hardware.push({ nome: "Nobreak Senoidal Profissional (Mín. 1500VA)", qtd: 1 });
-        if (document.getElementById('check_metal').checked) checklist.push({ texto: "ATENÇÃO: Estruturas metálicas detectadas. Instalar APs a pelo menos 2 metros de distância de vigas e tendas.", classe: "alerta" });
-        if (tipo === 'Live') checklist.push({ texto: "SEGURANÇA: Dispositivos de Live devem estar obrigatoriamente no CABO.", classe: "alerta" });
+        // INFRA EXTRA
+        if (document.getElementById('chk_distancia').checked) {
+            eq.push("01x Par de Conversores de Mídia Giga + Fibra");
+            alertas.push("LIMITE DE COBRE: Distância superior a 100m. Uso obrigatório de fibra óptica.");
+        }
+        if (document.getElementById('chk_energia').checked || total > 100) {
+            eq.push("01x Nobreak Senoidal Profissional");
+        }
+        if (tipo === "Transmissão Crítica" || (total > 500)) {
+            eq.push("01x Antena Starlink (Backup/Failover)");
+            alertas.push("ALTA CRITICIDADE: Configurar Starlink como Link Secundário (Porta WAN2).");
+        }
+
+        // ALERTAS TÉCNICOS
+        if (total > 250) alertas.push("DHCP OVERFLOW: Rede /24 insuficiente. Configure a sub-rede para /23 ou /22.");
+        if (hotspot) dicas.push("VLAN SEPARADA: Crie um SSID exclusivo sem Hotspot para as maquininhas (POS).");
+        if (tipo === "Transmissão Crítica") alertas.push("PROIBIDO WI-FI: Equipamentos de Live devem estar 100% no CABO.");
 
         // RENDERIZAÇÃO
-        document.getElementById('res_cliente').innerText = cli.toUpperCase();
-        document.getElementById('res_dados').innerHTML = `
-            <div class="grid-2" style="background:#f8fafc; padding:20px; border-radius:8px;">
-                <div>
-                    <p><b>Responsável:</b> ${tec}</p>
-                    <p><b>Cidade:</b> ${cid}</p>
-                    <p><b>Localização:</b> <a href="${maps}" target="_blank">Abrir Google Maps</a></p>
-                </div>
-                <div>
-                    <p><b>Vistoria:</b> ${formatDate(document.getElementById('data_vis').value)}</p>
-                    <p><b>Data Evento:</b> ${formatDate(document.getElementById('data_evt').value)}</p>
-                    <p><b>Carga Wi-Fi:</b> ${total_wifi} dispositivos</p>
-                </div>
+        const cli = document.getElementById('cli_nome').value || "PROJETO TÉCNICO";
+        const loc = document.getElementById('link_maps').value;
+        
+        document.getElementById('laudo_header').innerHTML = `
+            <div class="secao-res">
+                <h2 style="margin:0; color:var(--primary)">${cli.toUpperCase()}</h2>
+                <p><b>Responsável:</b> ${document.getElementById('tec_nome').value} | <b>Cidade:</b> ${document.getElementById('cidade').value}</p>
+                <p><b>Data:</b> ${fmtData(document.getElementById('data_vis').value)} | <b>Local:</b> <a href="${loc}" target="_blank">Google Maps</a></p>
+                <p><b>Carga:</b> ${total} dispositivos | <b>Tipo:</b> ${tipo}</p>
             </div>
-            <p style="margin-top:15px;"><b>Detalhamento de Cabeamento:</b> ${nomes_cabo.length ? nomes_cabo.join(' | ') : 'Nenhum dispositivo extra.'}</p>
+            ${(total > 400 ? '<div class="critico">PROJETO DE ALTA DENSIDADE - REQUER SITE SURVEY</div>' : '')}
         `;
 
-        // Imagem
-        const foto = document.getElementById('foto_local').files[0];
-        if (foto) {
-            const reader = new FileReader();
-            reader.onload = e => { 
-                document.getElementById('foto_container').innerHTML = `<img src="${e.target.result}" class="img-preview">`; 
-            };
-            reader.readAsDataURL(foto);
+        const file = document.getElementById('img_local').files[0];
+        if (file) {
+            const b64 = await readImg(file);
+            document.getElementById('img_preview_div').innerHTML = `<img src="${b64}" class="img-anexo">`;
         }
 
-        document.getElementById('res_hardware').innerHTML = hardware.map(h => `
-            <div class="hw-card">
-                <span>${h.nome}</span>
-                <span class="badge-qty">${h.qtd} UNID</span>
-            </div>
-        `).join('');
-
-        document.getElementById('res_checklist').innerHTML = checklist.map(c => `
-            <div class="checklist-item ${c.classe || ''}">
-                <span>${c.classe === 'alerta' ? '🚨' : '✅'}</span>
-                <span>${c.texto}</span>
-            </div>
-        `).join('') || '<div class="checklist-item">Nenhum alerta crítico para este cenário.</div>';
+        document.getElementById('hardware_list').innerHTML = `<div class="secao-res"><h3>📦 Hardware Exigido</h3><ul>${eq.map(i => `<li>${i}</li>`).join('')}</ul></div>`;
+        document.getElementById('alertas_div').innerHTML = alertas.length ? `<div class="secao-res"><h3>🚨 Alertas de Engenharia</h3><ul>${alertas.map(i => `<li style="color:#dc3545; font-weight:bold">⚠️ ${i}</li>`).join('')}</ul></div>` : '';
+        document.getElementById('dicas_div').innerHTML = dicas.length ? `<div class="secao-res"><h3>💡 Recomendações</h3><ul>${dicas.map(i => `<li>✔ ${i}</li>`).join('')}</ul></div>` : '';
 
         document.getElementById('formulario_corpo').style.display = 'none';
         document.getElementById('resultado').style.display = 'block';
         window.scrollTo(0,0);
+    }
+</script>
+
+<script>
+    // REGISTRO DO SERVICE WORKER (Para funcionar Offline)
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').then(() => console.log('PWA Pronto!'));
     }
 </script>
 
