@@ -66,9 +66,19 @@
             align-items: center;
         }
 
-        .brand-logo {
-            width: 140px;
-            height: auto;
+        /* LOGO EM CSS/TEXTO PARA NÃO TRAVAR O PDF */
+        .brand-logo-safe {
+            font-size: 38px;
+            font-weight: 900;
+            color: var(--ora-dark);
+            letter-spacing: -1.5px;
+            margin: 0;
+            line-height: 1;
+        }
+        
+        .brand-logo-safe span {
+            color: var(--ora-cyan);
+            font-weight: 800;
         }
 
         .protocol-box {
@@ -315,7 +325,7 @@
         #backup_box {
             display: none;
             border-left-color: var(--ora-cyan);
-            background: #f0fdfa; /* Verde/Ciano clarinho */
+            background: #f0fdfa;
             border: 1px solid #ccfbf1;
             animation: fadeIn 0.5s ease;
         }
@@ -345,7 +355,7 @@
 <div class="container" id="conteudo_laudo">
     <header class="main-header">
         <div class="brand-box">
-            <img src="org-17663-f8e55cb4.png" alt="ora Telecom" class="brand-logo" onerror="this.src='https://via.placeholder.com/200x80/ffffff/0a4087?text=ora+TELECOM'">
+            <p class="brand-logo-safe">ora<span>Telecom</span></p>
         </div>
         <div class="protocol-box">
             <label>Protocolo / OS</label>
@@ -500,17 +510,24 @@
         document.getElementById('soma_total').innerText = total;
     }
 
-    // Função do Botão de Copiar
     function copiarTextoBackup() {
         const caixaTexto = document.getElementById('texto_copia');
         caixaTexto.select();
-        caixaTexto.setSelectionRange(0, 99999); // Suporte mobile
+        caixaTexto.setSelectionRange(0, 99999); 
         navigator.clipboard.writeText(caixaTexto.value).then(() => {
             alert("✅ Relatório copiado para a área de transferência!");
         }).catch(err => {
             alert("Erro ao copiar automaticamente. Por favor, selecione e copie o texto.");
         });
     }
+
+    // FUNÇÃO ENVOLVIDA COM TIMEOUT PARA NUNCA TRAVAR
+    const fetchComTimeout = (url, options, timeout = 15000) => {
+        return Promise.race([
+            fetch(url, options),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeout))
+        ]);
+    };
 
     async function processarEnvioEGerarPDFApi() {
         const status = document.getElementById('status_bot');
@@ -536,7 +553,6 @@
             if(nome) listaAtivos += `• ${nome}: ${qtd} un (${tipo})\n`;
         });
 
-        // 1. Mensagem Formatada HTML para o Bot
         let texto = `<b>📡 LAUDO OPERACIONAL | OS: ${protocolo}</b>\n\n`;
         texto += `🏢 <b>Cliente:</b> ${document.getElementById('cliente').value}\n`;
         texto += `📍 <b>Unidade:</b> ${document.getElementById('cidade').value}\n`;
@@ -547,17 +563,15 @@
         texto += `<b>📝 PARECER TÉCNICO:</b>\n${document.getElementById('obs').value}\n\n`;
         if(gps) texto += `📍 <b>GPS:</b> <a href="https://maps.google.com/?q=${gps}">Ver no Mapa</a>\n`;
 
-        // 2. Gerar versão texto limpo (Whatsapp / ERP) para o Backup e exibir imediatamente
         let textoLimpo = texto
             .replace(/<b>/g, '*')
             .replace(/<\/b>/g, '*')
             .replace(/<a href="[^"]*">([^<]*)<\/a>/g, `https://maps.google.com/?q=${gps}`);
         
         textoCopia.value = textoLimpo;
-        backupBox.style.display = 'block'; // Mostra a caixa de backup antes mesmo de tentar enviar
+        backupBox.style.display = 'block'; 
 
         try {
-            // Transmissão de Mídia
             if (arquivos.length > 0) {
                 for (let i = 0; i < arquivos.length; i++) {
                     const file = arquivos[i];
@@ -565,50 +579,46 @@
                     const formData = new FormData();
                     formData.append("chat_id", CHAT_ID);
                     formData.append(isVideo ? "video" : "photo", file);
-                    status.innerText = `⏳ Fazendo upload da evidência ${i+1} de ${arquivos.length}...`;
-                    await fetch(`https://api.telegram.org/bot${TOKEN}/${isVideo ? 'sendVideo' : 'sendPhoto'}`, { method: "POST", body: formData });
+                    status.innerText = `⏳ Upload da evidência ${i+1} de ${arquivos.length}...`;
+                    await fetchComTimeout(`https://api.telegram.org/bot${TOKEN}/${isVideo ? 'sendVideo' : 'sendPhoto'}`, { method: "POST", body: formData }, 60000);
                 }
             }
 
             status.innerText = "⏳ Processando relatório de texto...";
-            
-            // Transmissão de Texto
-            await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+            await fetchComTimeout(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ chat_id: CHAT_ID, text: texto, parse_mode: "HTML", disable_web_page_preview: false })
-            });
+            }, 10000);
 
-            status.innerText = "⏳ Montando e enviando arquivo PDF...";
+            status.innerText = "⏳ Gerando arquivo PDF oficial instantâneo...";
 
             // Preparar Tela para o PDF
             elementosNoPrint.forEach(el => el.classList.add('pdf-hide'));
             
-            // Motor do PDF com Otimização
+            // PDF SEM IMAGENS EXTERNAS = NÃO TRAVA
             const elementoLaudo = document.getElementById('conteudo_laudo');
             const opt = {
                 margin:       [10, 10, 10, 10],
                 filename:     `Vistoria_ora_OS_${protocolo}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, windowWidth: 800, backgroundColor: "#ffffff" },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak:    { mode: ['css', 'legacy'], avoid: ['.card', 'tr'] } 
+                html2canvas:  { scale: 2, useCORS: false, windowWidth: 800, backgroundColor: "#ffffff", logging: false },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
             const pdfBlob = await html2pdf().set(opt).from(elementoLaudo).output('blob');
 
-            // Enviar PDF para o Telegram
             const fdPdf = new FormData();
             fdPdf.append("chat_id", CHAT_ID);
             fdPdf.append("document", pdfBlob, `Vistoria_ora_OS_${protocolo}.pdf`);
             fdPdf.append("caption", `📄 Laudo PDF Consolidado - OS: ${protocolo}`);
 
-            await fetch(`https://api.telegram.org/bot${TOKEN}/sendDocument`, {
+            await fetchComTimeout(`https://api.telegram.org/bot${TOKEN}/sendDocument`, {
                 method: "POST",
                 body: fdPdf
-            });
+            }, 20000);
 
-            // Download Seguro
+            // Força o Download Local Instantâneo
             const blobUrl = URL.createObjectURL(pdfBlob);
             const downloadLink = document.createElement('a');
             downloadLink.href = blobUrl;
@@ -618,19 +628,18 @@
             document.body.removeChild(downloadLink);
             URL.revokeObjectURL(blobUrl);
 
-            // Restaurar Layout Original
             elementosNoPrint.forEach(el => el.classList.remove('pdf-hide'));
             
             status.style.background = "#dcfce7";
             status.style.color = "#166534";
-            status.innerText = "✅ SUCESSO! Dados sincronizados, enviados e PDF salvo.";
+            status.innerText = "✅ SUCESSO! Dados sincronizados e PDF gerado.";
             btn.disabled = false;
 
         } catch (e) {
             console.error(e);
             status.style.background = "#fee2e2";
             status.style.color = "#991b1b";
-            status.innerText = "❌ Erro de conexão na transmissão. Seu backup está salvo na caixa acima!";
+            status.innerText = "❌ Erro ou lentidão na rede. O seu backup está salvo na caixa acima.";
             btn.disabled = false;
             elementosNoPrint.forEach(el => el.classList.remove('pdf-hide'));
         }
