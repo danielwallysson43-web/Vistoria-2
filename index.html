@@ -810,6 +810,15 @@
         }
     }
 </script>
-
+<script>
+    // Registra o Service Worker do PWA
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('PWA ativado com sucesso!', reg))
+                .catch(err => console.error('Erro ao ativar PWA', err));
+        });
+    }
+</script>
 </body>
 </html>
