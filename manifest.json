@@ -1,0 +1,20 @@
+{
+  "name": "Vistoria Pro - ora Telecom",
+  "short_name": "ora Vistoria",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0a4087",
+  "icons": [
+    {
+      "src": "org-17663-f8e55cb4.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "org-17663-f8e55cb4.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
