@@ -15,8 +15,8 @@
     <style>
         :root {
             /* PALETA ROXA (MODERN TECH) */
-            --ora-dark: #4c1d95;   /* Roxo Escuro Profundo */
-            --ora-cyan: #8b5cf6;   /* Roxo Vibrante (Destaque) */
+            --ora-dark: #4c1d95;   
+            --ora-cyan: #8b5cf6;   
             --bg-body: #0f172a;    
             --bg-container: #ffffff;
             --bg-input: #f8fafc;
@@ -24,7 +24,7 @@
             --text-muted: #64748b;
             --border-soft: #e2e8f0;
             --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-            --shadow-glow: 0 0 0 4px rgba(139, 92, 246, 0.15); /* Brilho roxo */
+            --shadow-glow: 0 0 0 4px rgba(139, 92, 246, 0.15); 
         }
 
         body {
@@ -287,6 +287,36 @@
             text-align: center;
         }
 
+        /* ESTILO PARA A LISTA DE ARQUIVOS ADICIONADOS */
+        .lista-arquivos {
+            margin-top: 10px;
+            font-size: 13px;
+            color: var(--text-main);
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-soft);
+            display: none;
+        }
+        .item-arquivo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px dashed #cbd5e1;
+        }
+        .item-arquivo:last-child {
+            border-bottom: none;
+        }
+        .btn-remover-arquivo {
+            color: #dc2626;
+            font-weight: bold;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0 5px;
+        }
+
         button#btn_finalizar {
             width: 100%;
             padding: 22px;
@@ -356,42 +386,15 @@
 
         /* --- AJUSTES PARA CELULAR (RESPONSIVIDADE) --- */
         @media (max-width: 600px) {
-            body {
-                padding: 15px 10px;
-            }
-            .main-header {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 20px;
-                gap: 15px;
-            }
-            .protocol-box {
-                width: 100%;
-                text-align: left;
-                box-sizing: border-box;
-            }
-            .protocol-input {
-                text-align: left;
-                width: 100%;
-            }
-            .content-padding {
-                padding: 20px 15px;
-            }
-            .card {
-                padding: 20px 15px;
-            }
-            .form-group {
-                min-width: 100%; 
-            }
-            .btn-gps {
-                width: 100%;
-                text-align: center;
-            }
-            table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
+            body { padding: 15px 10px; }
+            .main-header { flex-direction: column; align-items: flex-start; padding: 20px; gap: 15px; }
+            .protocol-box { width: 100%; text-align: left; box-sizing: border-box; }
+            .protocol-input { text-align: left; width: 100%; }
+            .content-padding { padding: 20px 15px; }
+            .card { padding: 20px 15px; }
+            .form-group { min-width: 100%; }
+            .btn-gps { width: 100%; text-align: center; }
+            table { display: block; overflow-x: auto; white-space: nowrap; }
         }
     </style>
 </head>
@@ -484,7 +487,11 @@
             <div class="card no-print">
                 <h3 class="card-title">4. Evidências de Campo (Fotos/Vídeos)</h3>
                 <input type="file" id="midia" multiple accept="image/*,video/*">
-                <small style="color: #64748b; display: block; margin-top: 8px; font-weight: 500;">* As mídias e o laudo PDF serão enviados ao Grupo Oficial.</small>
+                <small style="color: #64748b; display: block; margin-top: 8px; font-weight: 500;">
+                    * No aplicativo, selecione um arquivo de cada vez. Eles serão acumulados na lista abaixo.
+                </small>
+                
+                <div id="lista_arquivos_selecionados" class="lista-arquivos"></div>
             </div>
 
             <div id="backup_box" class="card no-print">
@@ -514,20 +521,24 @@
 
     document.getElementById('data_vistoria').valueAsDate = new Date();
 
-    // NOVA FUNÇÃO DE GPS COM TRATAMENTO DE ERROS
+    // ==========================================
+    // NOVA FUNÇÃO DE GPS (SOLUÇÃO PARA O TIMEOUT)
+    // ==========================================
     function capturarGPS() {
         const inputGps = document.getElementById('gps_coords');
-        inputGps.value = "⏳ Buscando satélite..."; 
+        inputGps.value = "⏳ Buscando localização..."; 
 
         if (!navigator.geolocation) {
-            alert("❌ Seu navegador ou aplicativo não suporta a função de GPS.");
+            alert("❌ Seu aplicativo não suporta a função de GPS.");
             inputGps.value = "";
             return;
         }
 
         const opcoesGPS = {
-            enableHighAccuracy: true,
-            timeout: 15000,
+            // MUDANÇA: false faz ele usar as torres de celular/wifi. É mais rápido e não trava no app.
+            enableHighAccuracy: false, 
+            // MUDANÇA: Aumentado para 30 segundos de tolerância
+            timeout: 30000,
             maximumAge: 0
         };
 
@@ -540,21 +551,69 @@
                 inputGps.value = "";
                 switch(erro.code) {
                     case erro.PERMISSION_DENIED:
-                        alert("🚫 Permissão negada! Você precisa autorizar o aplicativo a acessar sua localização nas configurações do celular.");
+                        alert("🚫 Permissão negada! Autorize o aplicativo a acessar sua localização.");
                         break;
                     case erro.POSITION_UNAVAILABLE:
-                        alert("📡 Sinal de GPS indisponível. Tente ir para um local mais aberto (fora do prédio).");
+                        alert("📡 Sinal indisponível. Verifique se o GPS está ligado no celular.");
                         break;
                     case erro.TIMEOUT:
-                        alert("⏱️ O tempo para buscar o GPS esgotou. Tente clicar novamente.");
+                        alert("⏱️ O tempo esgotou de novo. Tente reiniciar o aplicativo ou ligar o Wi-Fi para ajudar na localização.");
                         break;
                     default:
-                        alert("❌ Ocorreu um erro desconhecido ao tentar acessar o GPS.");
+                        alert("❌ Erro desconhecido de GPS.");
                 }
             },
             opcoesGPS
         );
     }
+
+    // ==========================================
+    // SISTEMA DE ACÚMULO DE ARQUIVOS (SOLUÇÃO 1 POR VEZ)
+    // ==========================================
+    let arquivosAcumulados = [];
+
+    document.getElementById('midia').addEventListener('change', function(e) {
+        // Pega os arquivos selecionados (mesmo que seja 1 só) e guarda no nosso array
+        for (let i = 0; i < this.files.length; i++) {
+            arquivosAcumulados.push(this.files[i]);
+        }
+        
+        atualizarVisualDaLista();
+        
+        // Limpa o input original para permitir que você clique e escolha outro arquivo
+        this.value = ''; 
+    });
+
+    function atualizarVisualDaLista() {
+        const divLista = document.getElementById('lista_arquivos_selecionados');
+        
+        if (arquivosAcumulados.length === 0) {
+            divLista.style.display = 'none';
+            divLista.innerHTML = '';
+            return;
+        }
+
+        divLista.style.display = 'block';
+        let html = `<strong>Arquivos prontos para envio (${arquivosAcumulados.length}):</strong><br>`;
+        
+        arquivosAcumulados.forEach((arquivo, index) => {
+            html += `
+                <div class="item-arquivo">
+                    <span>${index + 1}. ${arquivo.name}</span>
+                    <button type="button" class="btn-remover-arquivo" onclick="removerArquivoDaLista(${index})">✕</button>
+                </div>
+            `;
+        });
+        
+        divLista.innerHTML = html;
+    }
+
+    function removerArquivoDaLista(index) {
+        arquivosAcumulados.splice(index, 1);
+        atualizarVisualDaLista();
+    }
+    // ==========================================
+
 
     function adicionarLinha() {
         const tabela = document.getElementById('corpo_tabela');
@@ -610,7 +669,10 @@
         const status = document.getElementById('status_bot');
         const backupBox = document.getElementById('backup_box');
         const textoCopia = document.getElementById('texto_copia');
-        const arquivos = document.getElementById('midia').files;
+        
+        // MUDANÇA AQUI: Agora ele pega os arquivos da nossa lista acumulada
+        const arquivos = arquivosAcumulados; 
+        
         const protocolo = document.getElementById('protocolo_manual').value || "S_N";
         const gps = document.getElementById('gps_coords').value;
         const btn = document.getElementById('btn_finalizar');
@@ -618,8 +680,8 @@
         const elementoLaudo = document.getElementById('conteudo_laudo');
         
         status.style.display = "block";
-        status.style.background = "#f5f3ff"; /* Roxo clarinho */
-        status.style.color = "#4c1d95"; /* Roxo escuro */
+        status.style.background = "#f5f3ff";
+        status.style.color = "#4c1d95";
         status.innerText = "⏳ Iniciando sincronização segura...";
         btn.disabled = true;
 
@@ -643,7 +705,7 @@
         textoBot += `\n🔢 <b>Total Geral:</b> ${document.getElementById('soma_total').innerText} dispositivos\n\n`;
         textoBot += `<b>⚙️ INFRA/HARDWARE:</b>\n${document.getElementById('infra').value}\n\n`;
         textoBot += `<b>📝 PARECER TÉCNICO:</b>\n${document.getElementById('obs').value}\n\n`;
-        if(gps) textoBot += `📍 <b>GPS:</b> <a href="http://googleusercontent.com/maps.google.com/2{gps}">Ver no Mapa</a>\n`;
+        if(gps) textoBot += `📍 <b>GPS:</b> <a href="http://googleusercontent.com/maps.google.com/3{gps}">Ver no Mapa</a>\n`;
 
         let textoBackup = `📡 LAUDO OPERACIONAL | OS: ${protocolo}\n\n`;
         textoBackup += `🏢 Cliente: ${document.getElementById('cliente').value}\n`;
@@ -653,7 +715,7 @@
         textoBackup += `\n🔢 Total Geral: ${document.getElementById('soma_total').innerText} dispositivos\n\n`;
         textoBackup += `⚙️ INFRA/HARDWARE:\n${document.getElementById('infra').value}\n\n`;
         textoBackup += `📝 PARECER TÉCNICO:\n${document.getElementById('obs').value}\n\n`;
-        if(gps) textoBackup += `📍 GPS: http://googleusercontent.com/maps.google.com/2{gps}\n`;
+        if(gps) textoBackup += `📍 GPS: http://googleusercontent.com/maps.google.com/3{gps}\n`;
         
         textoCopia.value = textoBackup;
         backupBox.style.display = 'block'; 
@@ -728,6 +790,10 @@
             status.style.background = "#dcfce7";
             status.style.color = "#166534";
             status.innerText = "✅ SUCESSO! Dados sincronizados e PDF gerado corretamente.";
+            
+            // Limpa a lista de arquivos após o sucesso
+            arquivosAcumulados = [];
+            atualizarVisualDaLista();
             btn.disabled = false;
 
         } catch (e) {
