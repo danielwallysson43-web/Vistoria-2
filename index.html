@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vistoria Pro - ora Telecom</title>
+    <title>Vistoria Pro - Ora Empresas</title>
     <link rel="manifest" href="manifest.json">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,9 +14,9 @@
     
     <style>
         :root {
-            /* PALETA ROXA (MODERN TECH) */
-            --ora-dark: #4c1d95;   
-            --ora-cyan: #8b5cf6;   
+            /* PALETA AZUL ESCURO (MODERN TECH) */
+            --ora-dark: #0a2540;   /* Azul Escuro (Navy) Profundo */
+            --ora-cyan: #0284c7;   /* Azul Vibrante Moderno */
             --bg-body: #0f172a;    
             --bg-container: #ffffff;
             --bg-input: #f8fafc;
@@ -24,7 +24,7 @@
             --text-muted: #64748b;
             --border-soft: #e2e8f0;
             --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-            --shadow-glow: 0 0 0 4px rgba(139, 92, 246, 0.15); 
+            --shadow-glow: 0 0 0 4px rgba(2, 132, 199, 0.15); /* Brilho azul */
         }
 
         body {
@@ -237,9 +237,9 @@
         }
 
         .btn-add {
-            background: #f5f3ff;
-            color: #6d28d9;
-            border: 1px solid #ddd6fe;
+            background: #f0f9ff;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
             padding: 12px 20px;
             border-radius: 10px;
             cursor: pointer;
@@ -248,7 +248,7 @@
             margin-top: 15px;
             transition: 0.2s;
         }
-        .btn-add:hover { background: #ede9fe; }
+        .btn-add:hover { background: #e0f2fe; }
 
         .btn-del {
             background: #fef2f2;
@@ -263,9 +263,9 @@
         .btn-del:hover { background: #fee2e2; }
 
         .btn-gps {
-            background: #f5f3ff;
-            color: #6d28d9;
-            border: 1px solid #ddd6fe;
+            background: #f0f9ff;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
             padding: 12px 16px;
             border-radius: 10px;
             cursor: pointer;
@@ -276,7 +276,7 @@
             margin-top: 10px;
             transition: 0.2s;
         }
-        .btn-gps:hover { background: #ede9fe; }
+        .btn-gps:hover { background: #e0f2fe; }
 
         input[type="file"] {
             padding: 15px;
@@ -320,7 +320,7 @@
         button#btn_finalizar {
             width: 100%;
             padding: 22px;
-            background: linear-gradient(135deg, var(--ora-dark) 0%, #6d28d9 100%);
+            background: linear-gradient(135deg, var(--ora-dark) 0%, var(--ora-cyan) 100%);
             color: white;
             border: none;
             border-radius: 14px;
@@ -330,13 +330,13 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(76, 29, 149, 0.2);
+            box-shadow: 0 10px 20px rgba(2, 132, 199, 0.2);
             margin-top: 10px;
         }
 
         button#btn_finalizar:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 25px rgba(76, 29, 149, 0.3);
+            box-shadow: 0 15px 25px rgba(2, 132, 199, 0.35);
         }
 
         button#btn_finalizar:disabled {
@@ -359,8 +359,8 @@
         #backup_box {
             display: none;
             border-left-color: var(--ora-cyan);
-            background: #f5f3ff;
-            border: 1px solid #ede9fe;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
             animation: fadeIn 0.5s ease;
         }
 
@@ -403,7 +403,7 @@
 <div class="container" id="conteudo_laudo">
     <header class="main-header">
         <div class="brand-box">
-            <p class="brand-logo-safe">ora<span>Telecom</span></p>
+            <p class="brand-logo-safe">Ora<span>Empresas</span></p>
         </div>
         <div class="protocol-box">
             <label>Protocolo / OS</label>
@@ -439,8 +439,8 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Técnico Responsável ora</label>
-                        <input type="text" id="tecnico" value="Daniel Lavor">
+                        <label>Técnico Responsável Ora Empresas</label>
+                        <input type="text" id="tecnico" value="Ronaldo">
                     </div>
                 </div>
             </div>
@@ -499,8 +499,8 @@
                 <p style="font-size: 13px; color: var(--text-muted); margin-top: -15px; margin-bottom: 15px;">
                     Este texto está limpo e formatado para você colar no Telegram ou em qualquer outro chat sem erros.
                 </p>
-                <textarea id="texto_copia" rows="14" style="font-family: monospace; font-size: 13px; border: 1px solid #ddd6fe; background: #fff;" readonly></textarea>
-                <button type="button" onclick="copiarTextoBackup()" style="width: 100%; padding: 15px; background: #6d28d9; color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 15px; text-transform: uppercase;">
+                <textarea id="texto_copia" rows="14" style="font-family: monospace; font-size: 13px; border: 1px solid #bae6fd; background: #fff;" readonly></textarea>
+                <button type="button" onclick="copiarTextoBackup()" style="width: 100%; padding: 15px; background: var(--ora-cyan); color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 15px; text-transform: uppercase;">
                     📋 Copiar Relatório
                 </button>
             </div>
@@ -535,9 +535,7 @@
         }
 
         const opcoesGPS = {
-            // MUDANÇA: false faz ele usar as torres de celular/wifi. É mais rápido e não trava no app.
             enableHighAccuracy: false, 
-            // MUDANÇA: Aumentado para 30 segundos de tolerância
             timeout: 30000,
             maximumAge: 0
         };
@@ -573,14 +571,12 @@
     let arquivosAcumulados = [];
 
     document.getElementById('midia').addEventListener('change', function(e) {
-        // Pega os arquivos selecionados (mesmo que seja 1 só) e guarda no nosso array
         for (let i = 0; i < this.files.length; i++) {
             arquivosAcumulados.push(this.files[i]);
         }
         
         atualizarVisualDaLista();
         
-        // Limpa o input original para permitir que você clique e escolha outro arquivo
         this.value = ''; 
     });
 
@@ -670,7 +666,6 @@
         const backupBox = document.getElementById('backup_box');
         const textoCopia = document.getElementById('texto_copia');
         
-        // MUDANÇA AQUI: Agora ele pega os arquivos da nossa lista acumulada
         const arquivos = arquivosAcumulados; 
         
         const protocolo = document.getElementById('protocolo_manual').value || "S_N";
@@ -680,8 +675,8 @@
         const elementoLaudo = document.getElementById('conteudo_laudo');
         
         status.style.display = "block";
-        status.style.background = "#f5f3ff";
-        status.style.color = "#4c1d95";
+        status.style.background = "#f0f9ff";
+        status.style.color = "#0a2540";
         status.innerText = "⏳ Iniciando sincronização segura...";
         btn.disabled = true;
 
@@ -754,7 +749,7 @@
 
             const opt = {
                 margin:       [10, 10, 10, 10],
-                filename:     `Vistoria_ora_OS_${protocolo}.pdf`,
+                filename:     `Vistoria_Ora_Empresas_OS_${protocolo}.pdf`,
                 image:        { type: 'jpeg', quality: 1 },
                 html2canvas:  { scale: 2, useCORS: false, backgroundColor: "#ffffff" },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -764,7 +759,7 @@
 
             const fdPdf = new FormData();
             fdPdf.append("chat_id", CHAT_ID);
-            fdPdf.append("document", pdfBlob, `Vistoria_ora_OS_${protocolo}.pdf`);
+            fdPdf.append("document", pdfBlob, `Vistoria_Ora_Empresas_OS_${protocolo}.pdf`);
             fdPdf.append("caption", `📄 Laudo PDF Consolidado - OS: ${protocolo}`);
 
             await fetchComTimeout(`https://api.telegram.org/bot${TOKEN}/sendDocument`, {
@@ -775,7 +770,7 @@
             const blobUrl = URL.createObjectURL(pdfBlob);
             const downloadLink = document.createElement('a');
             downloadLink.href = blobUrl;
-            downloadLink.download = `Vistoria_ora_OS_${protocolo}.pdf`;
+            downloadLink.download = `Vistoria_Ora_Empresas_OS_${protocolo}.pdf`;
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);
