@@ -1,11 +1,11 @@
 {
-  "name": "Vistoria Pro - ora Telecom",
+  "name": "Vistoria Pro - Ora Empresas",
   "short_name": "Vistoria Pro",
   "description": "Aplicativo de vistoria técnica e geração de laudos em PDF.",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#0f172a",
-  "theme_color": "#4c1d95",
+  "theme_color": "#0a2540",
   "orientation": "portrait",
   "icons": [
     {
