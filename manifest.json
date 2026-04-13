@@ -1,22 +1,16 @@
 {
   "name": "Vistoria Pro - Ora Empresas",
   "short_name": "Vistoria Pro",
-  "description": "Aplicativo de vistoria técnica e geração de laudos em PDF.",
-  "start_url": "./",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0a2540",
-  "orientation": "portrait",
+  "description": "Aplicativo de vistoria técnica offline",
   "icons": [
     {
-      "src": "icone-192.png",
+      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%230a2540' width='100' height='100'/><text fill='%230284c7' font-size='60' font-family='Arial' x='50' y='70' text-anchor='middle'>O</text></svg>",
       "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icone-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/svg+xml"
     }
   ]
 }
