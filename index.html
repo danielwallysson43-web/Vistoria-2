@@ -417,9 +417,19 @@
             <div class="card">
                 <h3 class="card-title">1. Dados da Vistoria e Técnico</h3>
                 <div class="form-row">
+                    <div class="form-group" style="flex: 100%;">
+                        <label>Tipo de Vistoria</label>
+                        <select id="tipo_vistoria" onchange="alternarCamposVistoria()" style="background-color: #f0f9ff; border-color: var(--ora-cyan);">
+                            <option value="mista">Mista (Infra de Rede + Câmeras)</option>
+                            <option value="rede">Somente Rede / Internet</option>
+                            <option value="cftv">Somente Câmeras de Segurança (CFTV)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group">
                         <label>Cliente / Razão Social</label>
-                        <input type="text" id="cliente" placeholder="Ex: Shopping Teresina">
+                        <input type="text" id="cliente" placeholder="Ex: Condomínio Petrópolis">
                     </div>
                     <div class="form-group">
                         <label>Cidade/UF</label>
@@ -445,8 +455,44 @@
                 </div>
             </div>
 
+            <div class="card" id="card_cftv">
+                <h3 class="card-title">🎥 Requisitos Específicos para CFTV</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tempo de Gravação Exigido (Dias)</label>
+                        <input type="number" id="cftv_dias" placeholder="Ex: 30" value="30">
+                    </div>
+                    <div class="form-group">
+                        <label>Tecnologia de Visão Noturna</label>
+                        <select id="cftv_noturna">
+                            <option value="ColorHunter/FullColor (Colorido 24h)">ColorHunter / FullColor (Colorido 24h)</option>
+                            <option value="IR Padrão (Preto e Branco no escuro)">IR Padrão (Preto e Branco no escuro)</option>
+                            <option value="Mista (IR e ColorHunter)">Mista (Depende do Setor)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Altura Média de Instalação</label>
+                        <select id="cftv_altura">
+                            <option value="Padrão (Até 3m - Acessível via escada simples)">Padrão (Até 3m - Escada simples)</option>
+                            <option value="Alta (3 a 5m - Escada Extensiva/Andaime)">Alta (3 a 5m - Escada Extensiva)</option>
+                            <option value="Muito Alta (Acima 5m - Requer Plataforma)">Muito Alta (Acima 5m - Plataforma Elevatória)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Alimentação das Câmeras IP</label>
+                        <select id="cftv_poe">
+                            <option value="Via Switch PoE (Recomendado)">Via Switch PoE centralizado</option>
+                            <option value="Fontes Individuais na ponta (Bivolt)">Fontes Individuais na ponta</option>
+                            <option value="Fontes Chaveadas + Balun (CFTV Analógico)">Fontes Chaveadas (Cabo Coaxial/UTP)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
             <div class="card">
-                <h3 class="card-title">2. Inventário de Ativos (Cenário Atual)</h3>
+                <h3 class="card-title">3. Inventário de Ativos (Cenário Atual)</h3>
                 <table id="tabela_ativos">
                     <thead>
                         <tr>
@@ -458,12 +504,13 @@
                     </thead>
                     <tbody id="corpo_tabela">
                         <tr>
-                            <td><input type="text" placeholder="Ex: Câmera CFTV / PC" class="item-nome"></td>
+                            <td><input type="text" placeholder="Ex: Câmera Dome Uniview" class="item-nome"></td>
                             <td>
                                 <select class="item-tipo">
                                     <option value="Cabo">Cabo (RJ45)</option>
                                     <option value="Wi-Fi">Wi-Fi (Wireless)</option>
                                     <option value="Fibra">Fibra Óptica</option>
+                                    <option value="Coaxial">Cabo Coaxial</option>
                                 </select>
                             </td>
                             <td><input type="number" value="1" min="1" class="item-qtd" onchange="calcularTotal()"></td>
@@ -476,19 +523,19 @@
             </div>
 
             <div class="card">
-                <h3 class="card-title">3. Detalhamento de Infra e Parecer</h3>
-                <label>Hardware de Rede Sugerido (Mikrotik, UniFi, Switches, Racks):</label>
-                <textarea id="infra" rows="5" placeholder="Liste os equipamentos necessários e metragem aproximada..."></textarea>
+                <h3 class="card-title">4. Detalhamento de Infra e Parecer</h3>
+                <label>Hardware Sugerido (MikroTik, UniFi, Uniview, Switches PoE, NVR, Rack):</label>
+                <textarea id="infra" rows="5" placeholder="Ex: NVR 16 canais Uniview, Switch PoE Gigabit, Roteador Mikrotik hEX..."></textarea>
                 
                 <label style="margin-top:20px;">Observações e Recomendações Técnicas:</label>
-                <textarea id="obs" rows="4" placeholder="Anote dificuldades de passagem, necessidade de elétrica, etc..."></textarea>
+                <textarea id="obs" rows="4" placeholder="Detalhes sobre passagem de cabos, tubulação existente, necessidade de elétrica, etc..."></textarea>
             </div>
 
             <div class="card no-print">
-                <h3 class="card-title">4. Evidências de Campo (Fotos/Vídeos)</h3>
+                <h3 class="card-title">5. Evidências de Campo (Fotos/Vídeos)</h3>
                 <input type="file" id="midia" multiple accept="image/*,video/*">
                 <small style="color: #64748b; display: block; margin-top: 8px; font-weight: 500;">
-                    * No aplicativo, selecione um arquivo de cada vez. Eles serão acumulados na lista abaixo.
+                    * Selecione um arquivo de cada vez. Eles serão acumulados na lista abaixo.
                 </small>
                 
                 <div id="lista_arquivos_selecionados" class="lista-arquivos"></div>
@@ -520,6 +567,22 @@
     const CHAT_ID = "-5263060753"; 
 
     document.getElementById('data_vistoria').valueAsDate = new Date();
+
+    // ==========================================
+    // LOGICA PARA MOSTRAR/ESCONDER PERGUNTAS DE CFTV
+    // ==========================================
+    function alternarCamposVistoria() {
+        const tipo = document.getElementById('tipo_vistoria').value;
+        const cardCftv = document.getElementById('card_cftv');
+        
+        if (tipo === 'cftv' || tipo === 'mista') {
+            cardCftv.style.display = 'block';
+        } else {
+            cardCftv.style.display = 'none';
+        }
+    }
+    // Executa ao carregar para garantir a exibição correta inicial
+    document.addEventListener("DOMContentLoaded", alternarCamposVistoria);
 
     // ==========================================
     // NOVA FUNÇÃO DE GPS (SOLUÇÃO PARA O TIMEOUT)
@@ -610,7 +673,6 @@
     }
     // ==========================================
 
-
     function adicionarLinha() {
         const tabela = document.getElementById('corpo_tabela');
         const novaLinha = document.createElement('tr');
@@ -621,6 +683,7 @@
                     <option value="Cabo">Cabo (RJ45)</option>
                     <option value="Wi-Fi">Wi-Fi (Wireless)</option>
                     <option value="Fibra">Fibra Óptica</option>
+                    <option value="Coaxial">Cabo Coaxial</option>
                 </select>
             </td>
             <td><input type="number" value="1" min="1" class="item-qtd" onchange="calcularTotal()"></td>
@@ -673,6 +736,9 @@
         const btn = document.getElementById('btn_finalizar');
         const elementosNoPrint = document.querySelectorAll('.no-print');
         const elementoLaudo = document.getElementById('conteudo_laudo');
+        const tipoSelect = document.getElementById('tipo_vistoria');
+        const tipoVistoriaTexto = tipoSelect.options[tipoSelect.selectedIndex].text;
+        const tipoVistoriaValor = tipoSelect.value;
         
         status.style.display = "block";
         status.style.background = "#f0f9ff";
@@ -692,25 +758,50 @@
             }
         });
 
-        let textoBot = `<b>📡 LAUDO OPERACIONAL | OS: ${protocolo}</b>\n\n`;
+        // ================= MONTAGEM DO TEXTO DO TELEGRAM E BACKUP =================
+        let textoBot = `<b>📡 LAUDO OPERACIONAL | OS: ${protocolo}</b>\n`;
+        textoBot += `📋 <b>Tipo:</b> ${tipoVistoriaTexto}\n\n`;
         textoBot += `🏢 <b>Cliente:</b> ${document.getElementById('cliente').value}\n`;
         textoBot += `📍 <b>Unidade:</b> ${document.getElementById('cidade').value}\n`;
         textoBot += `👤 <b>Técnico:</b> ${document.getElementById('tecnico').value}\n\n`;
+
+        let textoBackup = `📡 LAUDO OPERACIONAL | OS: ${protocolo}\n`;
+        textoBackup += `📋 Tipo: ${tipoVistoriaTexto}\n\n`;
+        textoBackup += `🏢 Cliente: ${document.getElementById('cliente').value}\n`;
+        textoBackup += `📍 Unidade: ${document.getElementById('cidade').value}\n`;
+        textoBackup += `👤 Técnico: ${document.getElementById('tecnico').value}\n\n`;
+
+        // Se for Câmeras ou Mista, adiciona as métricas de CFTV no relatório
+        if (tipoVistoriaValor === 'cftv' || tipoVistoriaValor === 'mista') {
+            const cftvDias = document.getElementById('cftv_dias').value;
+            const cftvNoturna = document.getElementById('cftv_noturna').options[document.getElementById('cftv_noturna').selectedIndex].text;
+            const cftvAltura = document.getElementById('cftv_altura').options[document.getElementById('cftv_altura').selectedIndex].text;
+            const cftvPoe = document.getElementById('cftv_poe').options[document.getElementById('cftv_poe').selectedIndex].text;
+
+            textoBot += `<b>🎥 PARÂMETROS DE CFTV:</b>\n`;
+            textoBot += `• Gravação: ${cftvDias} dias\n`;
+            textoBot += `• Visão Noturna: ${cftvNoturna}\n`;
+            textoBot += `• Altura Instalação: ${cftvAltura}\n`;
+            textoBot += `• Alimentação: ${cftvPoe}\n\n`;
+
+            textoBackup += `🎥 PARÂMETROS DE CFTV:\n`;
+            textoBackup += `• Gravação: ${cftvDias} dias\n`;
+            textoBackup += `• Visão Noturna: ${cftvNoturna}\n`;
+            textoBackup += `• Altura Instalação: ${cftvAltura}\n`;
+            textoBackup += `• Alimentação: ${cftvPoe}\n\n`;
+        }
+
         textoBot += `<b>🖥️ INVENTÁRIO DE ATIVOS:</b>\n${listaAtivos}`;
         textoBot += `\n🔢 <b>Total Geral:</b> ${document.getElementById('soma_total').innerText} dispositivos\n\n`;
         textoBot += `<b>⚙️ INFRA/HARDWARE:</b>\n${document.getElementById('infra').value}\n\n`;
         textoBot += `<b>📝 PARECER TÉCNICO:</b>\n${document.getElementById('obs').value}\n\n`;
-        if(gps) textoBot += `📍 <b>GPS:</b> <a href="http://googleusercontent.com/maps.google.com/3{gps}">Ver no Mapa</a>\n`;
+        if(gps) textoBot += `📍 <b>GPS:</b> <a href="http://googleusercontent.com/maps.google.com/3${gps}">Ver no Mapa</a>\n`;
 
-        let textoBackup = `📡 LAUDO OPERACIONAL | OS: ${protocolo}\n\n`;
-        textoBackup += `🏢 Cliente: ${document.getElementById('cliente').value}\n`;
-        textoBackup += `📍 Unidade: ${document.getElementById('cidade').value}\n`;
-        textoBackup += `👤 Técnico: ${document.getElementById('tecnico').value}\n\n`;
         textoBackup += `🖥️ INVENTÁRIO DE ATIVOS:\n${listaAtivosLimpa}`;
         textoBackup += `\n🔢 Total Geral: ${document.getElementById('soma_total').innerText} dispositivos\n\n`;
         textoBackup += `⚙️ INFRA/HARDWARE:\n${document.getElementById('infra').value}\n\n`;
         textoBackup += `📝 PARECER TÉCNICO:\n${document.getElementById('obs').value}\n\n`;
-        if(gps) textoBackup += `📍 GPS: http://googleusercontent.com/maps.google.com/3{gps}\n`;
+        if(gps) textoBackup += `📍 GPS: http://googleusercontent.com/maps.google.com/3${gps}\n`;
         
         textoCopia.value = textoBackup;
         backupBox.style.display = 'block'; 
