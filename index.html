@@ -427,8 +427,10 @@
         const cftv = document.getElementById('card_cftv');
         const wifi = document.getElementById('card_wifi');
         
-        cftv.style.display = (tipo === 'CFTV' || tipo === 'Projeto Misto' || tipo === 'Infra de Rede' || tipo === 'Outro') ? 'block' : 'none';
-        wifi.style.display = (tipo === 'Wi-Fi' || tipo === 'Projeto Misto' || tipo === 'Infra de Rede' || tipo === 'Outro') ? 'block' : 'none';
+        // CFTV só aparece quando o projeto selecionado for CFTV.
+        cftv.style.display = (tipo === 'CFTV') ? 'block' : 'none';
+        // Para os demais tipos, mantém a tela única de Wi-Fi / Cabeado.
+        wifi.style.display = (tipo === 'CFTV') ? 'none' : 'block';
     }
     document.addEventListener("DOMContentLoaded", alternarMódulos);
 
@@ -493,101 +495,121 @@
         const btn = document.getElementById('btn_finalizar');
         btn.disabled = true;
 
-        // Montagem da String no formato EXATO solicitado pelo usuário
-        let t = `📡 LAUDO OPERACIONAL | OS: ${document.getElementById('protocolo_manual').value || "___________"}\n\n`;
-        t += `📋 Tipo de Projeto:\n(X) ${document.getElementById('tipo_projeto').value}\n\n`;
+        const escapeHtml = (valor) => String(valor ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
 
-        t += `━━━━━━━━━━━━━━━━━━\n🏢 DADOS DO CLIENTE\n━━━━━━━━━━━━━━━━━━\n\n`;
-        t += `• Cliente: ${document.getElementById('cliente').value || "__________________________________"}\n\n`;
-        t += `• Endereço: ${document.getElementById('endereco').value || "__________________________________"}\n\n`;
-        
-        t += `• Cidade/UF: ${document.getElementById('cidade').value || "_______________________________"}\n\n`;
-        t += `• Responsável no Local: ${document.getElementById('responsavel_local').value || "_____________________"}\n\n`;
-        
-        t += `• Técnico Responsável pela Vistoria: ${document.getElementById('tecnico').value || "________________________"}\n\n`;
-        t += `---\n\n`;
+        const campo = (id, padrao = 'Não informado') => {
+            const el = document.getElementById(id);
+            const valor = el ? String(el.value || '').trim() : '';
+            return escapeHtml(valor || padrao);
+        };
+
+        const linha = (titulo, valor) => `• <b>${titulo}:</b> ${valor}\n`;
+        const secao = (icone, titulo) => `\n━━━━━━━━━━━━━━━━━━━━\n<b>${icone} ${titulo}</b>\n━━━━━━━━━━━━━━━━━━━━\n`;
+
         let dData = document.getElementById('data_vistoria').value;
         if(dData) {
-            let partes = dData.split('-'); dData = `${partes[2]}/${partes[1]}/${partes[0]}`;
+            let partes = dData.split('-');
+            dData = `${partes[2]}/${partes[1]}/${partes[0]}`;
         }
-        t += `• Data da Vistoria: ${dData || "****/****/________"}\n\n`;
 
-        if(document.getElementById('card_cftv').style.display !== 'none') {
-            t += `━━━━━━━━━━━━━━━━━━\n🎥 PARÂMETROS DE CFTV\n(preencher apenas se aplicável)\n━━━━━━━━━━━━━━━━━━\n\n`;
-            t += `• Quantidade de câmeras previstas: ${document.getElementById('cftv_qtd').value}\n\n`;
-            t += `• Tipo das câmeras:\n(X) ${document.getElementById('cftv_tipo').value}\n\n`;
-            t += `• Tecnologia:\n(X) ${document.getElementById('cftv_tech').value}\n\n`;
-            t += `• Gravação desejada:\n(X) ${document.getElementById('cftv_gravacao').value}\n\n`;
-            t += `• Visão Noturna:\n(X) ${document.getElementById('cftv_noturna').value}\n\n`;
-            t += `• Altura média de instalação:\n(X) ${document.getElementById('cftv_altura').value}\n\n`;
-            t += `• Alimentação:\n(X) ${document.getElementById('cftv_alimentacao').value}\n\n`;
-            t += `• Armazenamento:\n(X) ${document.getElementById('cftv_armazenamento').value}\n\n`;
-            t += `• Cliente deseja acesso remoto?\n(X) ${document.getElementById('cftv_remoto').value}\n\n`;
+        let t = `<b>📡 LAUDO OPERACIONAL DE VISTORIA</b>\n`;
+        t += `<b>OS/Protocolo:</b> ${campo('protocolo_manual', '___________')}\n`;
+        t += `<b>Tipo de Projeto:</b> ${campo('tipo_projeto')}\n`;
+        t += `<b>Data:</b> ${escapeHtml(dData || '____/____/________')}\n`;
+
+        t += secao('🏢', 'DADOS DO CLIENTE');
+        t += linha('Cliente', campo('cliente'));
+        t += linha('Endereço', campo('endereco'));
+        t += linha('Cidade/UF', campo('cidade'));
+        t += linha('Responsável no Local', campo('responsavel_local'));
+        t += linha('Técnico Responsável', campo('tecnico'));
+
+        if(document.getElementById('tipo_projeto').value === 'CFTV') {
+            t += secao('🎥', 'PARÂMETROS DE CFTV');
+            t += linha('Quantidade de câmeras previstas', campo('cftv_qtd', '0'));
+            t += linha('Tipo das câmeras', campo('cftv_tipo'));
+            t += linha('Tecnologia', campo('cftv_tech'));
+            t += linha('Gravação desejada', campo('cftv_gravacao'));
+            t += linha('Visão Noturna', campo('cftv_noturna'));
+            t += linha('Altura média de instalação', campo('cftv_altura'));
+            t += linha('Alimentação', campo('cftv_alimentacao'));
+            t += linha('Armazenamento', campo('cftv_armazenamento'));
+            t += linha('Acesso remoto', campo('cftv_remoto'));
         }
 
         if(document.getElementById('card_wifi').style.display !== 'none') {
-            t += `━━━━━━━━━━━━━━━━━━\n📶 PARÂMETROS DE WI-FI / CABEADO\n(preencher apenas se aplicável)\n━━━━━━━━━━━━━━━━━━\n\n`;
-            t += `• Quantidade estimada de usuários:\n${document.getElementById('wifi_users').value}\n\n---\n\n`;
-            t += `• Quantidade estimada de dispositivos:\n${document.getElementById('wifi_devices').value}\n\n---\n\n`;
-            t += `• Ambientes que o cliente quer ser atendido:\n${document.getElementById('wifi_ambientes').value || "__________________________________"}\n\n---\n\n`;
-            t += `• Pontos cabeados previstos:\n${document.getElementById('cabo_pontos').value}\n\n---\n\n`;
-            t += `• Tipo de ponto cabeado:\n(X) ${document.getElementById('cabo_tipo').value}\n\n`;
-            t += `• Necessidade de cobertura:\n(X) ${document.getElementById('wifi_cobertura').value}\n\n`;
-            t += `• Tipo de ambiente:\n(X) ${document.getElementById('wifi_tipo_amb').value}\n\n`;
-            
+            t += secao('📶', 'PARÂMETROS DE WI-FI / CABEADO');
+            t += linha('Usuários estimados', campo('wifi_users', '0'));
+            t += linha('Dispositivos estimados', campo('wifi_devices', '0'));
+            t += linha('Ambientes que o cliente quer ser atendido', campo('wifi_ambientes'));
+            t += linha('Pontos cabeados previstos', campo('cabo_pontos', '0'));
+            t += linha('Tipo de ponto cabeado', campo('cabo_tipo'));
+            t += linha('Necessidade de cobertura', campo('wifi_cobertura'));
+            t += linha('Tipo de ambiente', campo('wifi_tipo_amb'));
             let interf = document.getElementById('wifi_interfere').value;
-            t += `• Possui interferência conhecida?\n(X) ${interf}\n\n`;
+            t += linha('Interferência conhecida', escapeHtml(interf));
             if(interf === 'Sim') {
-                t += `Se sim, qual?\n${document.getElementById('wifi_interfere_desc').value}\n\n---\n\n`;
+                t += linha('Descrição da interferência', campo('wifi_interfere_desc'));
             }
         }
 
-        t += `━━━━━━━━━━━━━━━━━━\n🖥️ INVENTÁRIO DE ATIVOS\n━━━━━━━━━━━━━━━━━━\n\n`;
-        let txtInv = "";
+        t += secao('🖥️', 'INVENTÁRIO DE ATIVOS');
+        let totalItensInventario = 0;
         document.querySelectorAll('#corpo_tabela tr').forEach(tr => {
-            const l = tr.querySelector('.item-local').value.trim();
-            const n = tr.querySelector('.item-nome').value.trim();
-            const ti = tr.querySelector('.item-tipo').value;
-            const q = tr.querySelector('.item-qtd').value;
-            if(n) txtInv += `[${l||'Geral'}] ${n}: ${q} un (${ti})\n---\n`;
+            const local = tr.querySelector('.item-local').value.trim();
+            const nome = tr.querySelector('.item-nome').value.trim();
+            const tipoConexao = tr.querySelector('.item-tipo').value;
+            const qtd = tr.querySelector('.item-qtd').value || '0';
+            if(nome) {
+                totalItensInventario++;
+                t += `• <b>${escapeHtml(nome)}</b> — ${escapeHtml(qtd)} un | ${escapeHtml(tipoConexao)} | Local: ${escapeHtml(local || 'Geral')}\n`;
+            }
         });
-        if(!txtInv) txtInv = "[Recepção] Exemplo: 00 un (Wi-Fi)\n---\n";
-        t += `${txtInv}\n`;
-        t += `🔢 Total Geral de Dispositivos:\n${document.getElementById('soma_total').innerText}\n\n---\n\n`;
+        if(totalItensInventario === 0) {
+            t += `• Nenhum ativo informado.\n`;
+        }
+        t += `\n<b>Total Geral de Dispositivos:</b> ${escapeHtml(document.getElementById('soma_total').innerText)}\n`;
 
-        t += `━━━━━━━━━━━━━━━━━━\n⚙️ EQUIPAMENTOS EXISTENTES NO LOCAL\n━━━━━━━━━━━━━━━━━━\n\n`;
-        t += `• Tipo de ativação:\n(X) ${document.getElementById('hw_ativacao_zero').value === 'Sim' ? 'Ativação do zero' : 'Aproveitar estrutura/equipamentos existentes'}\n\n`;
-        t += `• Equipamentos existentes atualmente no local:\n${document.getElementById('equipamentos_existentes').value || "__________________________________"}\n\n---\n\n`;
+        t += secao('⚙️', 'EQUIPAMENTOS EXISTENTES NO LOCAL');
+        const tipoAtivacao = document.getElementById('hw_ativacao_zero').value === 'Sim' ? 'Ativação do zero' : 'Aproveitar estrutura/equipamentos existentes';
+        t += linha('Tipo de ativação', escapeHtml(tipoAtivacao));
+        t += `<b>Equipamentos descritos pelo técnico:</b>\n${campo('equipamentos_existentes')}\n`;
 
-        t += `━━━━━━━━━━━━━━━━━━\n🧱 INFRAESTRUTURA FÍSICA\n━━━━━━━━━━━━━━━━━━\n\n`;
-        t += `• Possui tubulação disponível?\n(X) ${document.getElementById('inf_tub').value}\n\n`;
-        t += `• Possui eletrocalha?\n(X) ${document.getElementById('inf_ele').value}\n\n`;
-        t += `• Passagem de cabo será:\n(X) ${document.getElementById('inf_passagem').value}\n\n`;
-        
+        t += secao('🧱', 'INFRAESTRUTURA FÍSICA');
+        t += linha('Possui tubulação disponível', campo('inf_tub'));
+        t += linha('Possui eletrocalha', campo('inf_ele'));
+        t += linha('Passagem de cabo será', campo('inf_passagem'));
         let dif = document.getElementById('inf_dif').value;
-        t += `• Existe dificuldade de passagem?\n(X) ${dif}\n\n`;
-        if(dif === 'Sim') t += `Descreva:\n${document.getElementById('inf_dif_desc').value}\n\n---\n\n---\n\n`;
-
-        t += `• Necessita escada?\n(X) ${document.getElementById('inf_esc').value}\n\n`;
-        t += `• Necessita andaime?\n(X) ${document.getElementById('inf_and').value}\n\n`;
-        
+        t += linha('Existe dificuldade de passagem', escapeHtml(dif));
+        if(dif === 'Sim') {
+            t += linha('Descrição da dificuldade', campo('inf_dif_desc'));
+        }
+        t += linha('Necessita escada', campo('inf_esc'));
+        t += linha('Necessita andaime', campo('inf_and'));
         let risco = document.getElementById('inf_risco').value;
-        t += `• Existe risco de danificar estrutura/acabamento?\n(X) ${risco}\n\n`;
-        if(risco === 'Sim') t += `Descreva:\n${document.getElementById('inf_risco_desc').value}\n\n---\n\n`;
+        t += linha('Risco de danificar estrutura/acabamento', escapeHtml(risco));
+        if(risco === 'Sim') {
+            t += linha('Descrição do risco', campo('inf_risco_desc'));
+        }
 
-        t += `━━━━━━━━━━━━━━━━━━\n📝 PARECER TÉCNICO\n━━━━━━━━━━━━━━━━━━\n\n`;
-        t += `${document.getElementById('parecer').value || "---\n\n---\n\n---\n\n---"}\n\n`;
+        t += secao('📝', 'PARECER TÉCNICO');
+        t += `${campo('parecer', 'Sem parecer informado.')}\n`;
 
-        t += `━━━━━━━━━━━━━━━━━━\n📐 DOCUMENTAÇÃO\n━━━━━━━━━━━━━━━━━━\n\n`;
-        t += `• Planta baixa disponível?\n(X) ${document.getElementById('doc_planta').value}\n\n`;
-        t += `• Necessita desenho de planta?\n(X) ${document.getElementById('doc_desenho').value}\n\n`;
-        t += `• Fotos da vistoria anexadas?\n(X) ${document.getElementById('doc_fotos').value}\n\n`;
+        t += secao('📐', 'DOCUMENTAÇÃO');
+        t += linha('Planta baixa disponível', campo('doc_planta'));
+        t += linha('Necessita desenho de planta', campo('doc_desenho'));
+        t += linha('Fotos da vistoria anexadas', campo('doc_fotos'));
 
-        t += `━━━━━━━━━━━━━━━━━━\n📍 LOCALIZAÇÃO\n━━━━━━━━━━━━━━━━━━\n\n`;
-        let end = document.getElementById('endereco').value || "---\n\n---";
-        t += `• Endereço:\n${end}\n\n`;
-        let gpsFinal = document.getElementById('gps_coords').value || "---";
-        t += `• GPS / Google Maps:\n${gpsFinal}\n`;
+        t += secao('📍', 'LOCALIZAÇÃO');
+        t += linha('Endereço', campo('endereco'));
+        t += linha('GPS / Google Maps', campo('gps_coords', 'Não capturado'));
+
+        t += `\n<b>✅ Relatório gerado pelo Vistoria Pro - Ora Empresas</b>`;
 
         document.getElementById('texto_copia').value = t;
         document.getElementById('backup_box').style.display = 'block';
@@ -610,7 +632,7 @@
             await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, { 
                 method: "POST", 
                 headers: {"Content-Type":"application/json"}, 
-                body: JSON.stringify({chat_id: CHAT_ID, text: `<pre>${t}</pre>`, parse_mode: "HTML"})
+                body: JSON.stringify({chat_id: CHAT_ID, text: t, parse_mode: "HTML"})
             });
 
             for (let f of arquivosAcumulados) {
