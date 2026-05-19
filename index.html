@@ -147,8 +147,8 @@
                         <input type="date" id="data_vistoria">
                     </div>
                     <div class="form-group">
-                        <label>Coordenadas GPS</label>
-                        <input type="text" id="gps_coords" placeholder="Aguardando captura...">
+                        <label>Localização / Google Maps</label>
+                        <input type="text" id="gps_coords" placeholder="Clique em capturar GPS para gerar o link...">
                         <button type="button" class="btn-gps" onclick="capturarGPS()">📍 Capturar GPS</button>
                     </div>
                 </div>
@@ -231,62 +231,6 @@
                             <option value="Sim">Sim</option>
                             <option value="Não">Não</option>
                         </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" id="card_wifi">
-                <h3 class="card-title">📶 Parâmetros de Wi-Fi / Cabeado</h3>
-                <div class="form-row">
-                    <div class="form-group"><label>Quantidade estimada de usuários</label><input type="number" id="wifi_users" value="0"></div>
-                    <div class="form-group"><label>Quantidade estimada de dispositivos</label><input type="number" id="wifi_devices" value="0"></div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Necessidade de cobertura</label>
-                        <select id="wifi_cobertura">
-                            <option value="Total">Total</option>
-                            <option value="Parcial">Parcial</option>
-                            <option value="Áreas específicas">Áreas específicas</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Tipo de ambiente</label>
-                        <select id="wifi_tipo_amb">
-                            <option value="Escritório">Escritório</option>
-                            <option value="Galpão">Galpão</option>
-                            <option value="Área aberta">Área aberta</option>
-                            <option value="Residencial">Residencial</option>
-                            <option value="Outro">Outro (Descrever na Obs)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Ambientes que o cliente quer ser atendido</label>
-                    <input type="text" id="wifi_ambientes" placeholder="Ex: Recepção, Diretoria, Salão de Vendas">
-                </div>
-                <div class="form-row" style="margin-top: 20px;">
-                    <div class="form-group">
-                        <label>Pontos cabeados previstos</label>
-                        <input type="number" id="cabo_pontos" value="0" min="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Tipo de ponto cabeado</label>
-                        <select id="cabo_tipo">
-                            <option value="Dados">Dados</option>
-                            <option value="Dados + Voz">Dados + Voz</option>
-                            <option value="Outro">Outro (Descrever na Obs)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Possui interferência conhecida?</label>
-                        <select id="wifi_interfere" onchange="document.getElementById('wifi_interfere_desc').style.display = this.value === 'Sim' ? 'block' : 'none'">
-                            <option value="Não">Não</option>
-                            <option value="Sim">Sim</option>
-                        </select>
-                        <input type="text" id="wifi_interfere_desc" placeholder="Se sim, qual?" style="display:none; margin-top:10px;">
                     </div>
                 </div>
             </div>
@@ -425,12 +369,9 @@
     function alternarMódulos() {
         const tipo = document.getElementById('tipo_projeto').value;
         const cftv = document.getElementById('card_cftv');
-        const wifi = document.getElementById('card_wifi');
         
         // CFTV só aparece quando o projeto selecionado for CFTV.
         cftv.style.display = (tipo === 'CFTV') ? 'block' : 'none';
-        // Para os demais tipos, mantém a tela única de Wi-Fi / Cabeado.
-        wifi.style.display = (tipo === 'CFTV') ? 'none' : 'block';
     }
     document.addEventListener("DOMContentLoaded", alternarMódulos);
 
@@ -439,7 +380,11 @@
         inputGps.value = "⏳ Buscando..."; 
         if (!navigator.geolocation) { inputGps.value = ""; return; }
         navigator.geolocation.getCurrentPosition(
-            (p) => { inputGps.value = `${p.coords.latitude}, ${p.coords.longitude}`; },
+            (p) => {
+                const lat = p.coords.latitude;
+                const lng = p.coords.longitude;
+                inputGps.value = `https://www.google.com/maps?q=${lat},${lng}`;
+            },
             (erro) => { inputGps.value = ""; alert("Falha no GPS."); },
             { enableHighAccuracy: false, timeout: 15000, maximumAge: 0 }
         );
@@ -510,6 +455,14 @@
 
         const linha = (titulo, valor) => `• <b>${titulo}:</b> ${valor}\n`;
         const secao = (icone, titulo) => `\n━━━━━━━━━━━━━━━━━━━━\n<b>${icone} ${titulo}</b>\n━━━━━━━━━━━━━━━━━━━━\n`;
+        const linkMaps = () => {
+            const valor = (document.getElementById('gps_coords').value || '').trim();
+            if (!valor) return 'Não capturado';
+            if (valor.startsWith('http://') || valor.startsWith('https://')) {
+                return `<a href="${escapeHtml(valor)}">Abrir no Google Maps</a>`;
+            }
+            return `<a href="https://www.google.com/maps?q=${encodeURIComponent(valor)}">Abrir no Google Maps</a>`;
+        };
 
         let dData = document.getElementById('data_vistoria').value;
         if(dData) {
@@ -540,22 +493,6 @@
             t += linha('Alimentação', campo('cftv_alimentacao'));
             t += linha('Armazenamento', campo('cftv_armazenamento'));
             t += linha('Acesso remoto', campo('cftv_remoto'));
-        }
-
-        if(document.getElementById('card_wifi').style.display !== 'none') {
-            t += secao('📶', 'PARÂMETROS DE WI-FI / CABEADO');
-            t += linha('Usuários estimados', campo('wifi_users', '0'));
-            t += linha('Dispositivos estimados', campo('wifi_devices', '0'));
-            t += linha('Ambientes que o cliente quer ser atendido', campo('wifi_ambientes'));
-            t += linha('Pontos cabeados previstos', campo('cabo_pontos', '0'));
-            t += linha('Tipo de ponto cabeado', campo('cabo_tipo'));
-            t += linha('Necessidade de cobertura', campo('wifi_cobertura'));
-            t += linha('Tipo de ambiente', campo('wifi_tipo_amb'));
-            let interf = document.getElementById('wifi_interfere').value;
-            t += linha('Interferência conhecida', escapeHtml(interf));
-            if(interf === 'Sim') {
-                t += linha('Descrição da interferência', campo('wifi_interfere_desc'));
-            }
         }
 
         t += secao('🖥️', 'INVENTÁRIO DE ATIVOS');
@@ -607,7 +544,7 @@
 
         t += secao('📍', 'LOCALIZAÇÃO');
         t += linha('Endereço', campo('endereco'));
-        t += linha('GPS / Google Maps', campo('gps_coords', 'Não capturado'));
+        t += linha('Google Maps', linkMaps());
 
         t += `\n<b>✅ Relatório gerado pelo Vistoria Pro - Ora Empresas</b>`;
 
