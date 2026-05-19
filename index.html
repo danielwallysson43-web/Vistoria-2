@@ -72,6 +72,8 @@
         
         #status_bot { text-align: center; font-weight: 600; padding: 16px; margin-top: 20px; border-radius: 12px; display: none; font-size: 14px; }
         #backup_box { display: none; border-left-color: var(--ora-cyan); background: #f0f9ff; border: 1px solid #bae6fd; margin-top: 20px; border-radius: 16px; padding: 20px;}
+        .copy-preview { width: 100%; min-height: 320px; max-height: 520px; overflow: auto; padding: 14px 16px; border: 1px solid #bae6fd; border-radius: 12px; background: #ffffff; box-sizing: border-box; font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.55; white-space: normal; }
+        .copy-preview:focus { outline: none; border-color: var(--ora-cyan); box-shadow: var(--shadow-glow); }
 
         @media (max-width: 600px) { 
             body { padding: 15px 10px; } 
@@ -352,8 +354,8 @@
                 <p style="font-size: 13px; color: var(--text-muted); margin-top: -15px; margin-bottom: 15px;">
                     O texto foi formatado conforme o seu modelo. Você pode copiá-lo abaixo.
                 </p>
-                <textarea id="texto_copia" rows="20" style="font-family: monospace; font-size: 12px; border: 1px solid #bae6fd;" readonly></textarea>
-                <button type="button" onclick="copiarTextoBackup()" style="width: 100%; padding: 15px; background: var(--ora-cyan); color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 15px;">📋 Copiar Relatório</button>
+                <div id="texto_copia" class="copy-preview" contenteditable="true" aria-label="Prévia do relatório formatado"></div>
+                <button type="button" onclick="copiarTextoBackup()" style="width: 100%; padding: 15px; background: var(--ora-cyan); color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 15px;">📋 Copiar Relatório Formatado</button>
             </div>
 
         </div>
@@ -430,9 +432,35 @@
         document.getElementById('soma_total').innerText = t;
     }
 
-    function copiarTextoBackup() {
-        const c = document.getElementById('texto_copia'); c.select(); c.setSelectionRange(0, 99999); 
-        navigator.clipboard.writeText(c.value); alert("✅ Relatório copiado!");
+    async function copiarTextoBackup() {
+        const box = document.getElementById('texto_copia');
+        const html = box.dataset.html || box.innerHTML;
+        const textoLimpo = box.innerText || '';
+
+        try {
+            // Copia em formato rico (HTML) para manter negrito e link ao colar no Telegram.
+            // Também envia uma versão em texto puro como fallback.
+            if (navigator.clipboard && window.ClipboardItem) {
+                await navigator.clipboard.write([
+                    new ClipboardItem({
+                        'text/html': new Blob([html], { type: 'text/html' }),
+                        'text/plain': new Blob([textoLimpo], { type: 'text/plain' })
+                    })
+                ]);
+            } else {
+                const range = document.createRange();
+                const selection = window.getSelection();
+                range.selectNodeContents(box);
+                selection.removeAllRanges();
+                selection.addRange(range);
+                document.execCommand('copy');
+                selection.removeAllRanges();
+            }
+            alert("✅ Relatório formatado copiado! Agora cole no Telegram.");
+        } catch (e) {
+            navigator.clipboard.writeText(textoLimpo);
+            alert("⚠️ Seu navegador copiou em texto simples. Se o negrito não aparecer, use o envio automático pelo bot.");
+        }
     }
 
     async function processarEnvioApi() {
@@ -548,18 +576,12 @@
 
         t += `\n<b>✅ Relatório gerado pelo Vistoria Pro - Ora Empresas</b>`;
 
-        // Versão limpa para copiar e colar manualmente, sem aparecer tags HTML como <b> ou <a>.
-        const textoCopia = t
-            .replace(/<a\s+href="([^"]+)">([^<]+)<\/a>/gi, '$2: $1')
-            .replace(/<b>(.*?)<\/b>/gi, '*$1*')
-            .replace(/<[^>]+>/g, '')
-            .replace(/&amp;/g, '&')
-            .replace(/&lt;/g, '<')
-            .replace(/&gt;/g, '>')
-            .replace(/&quot;/g, '"')
-            .replace(/&#39;/g, "'");
-
-        document.getElementById('texto_copia').value = textoCopia;
+        // Prévia e cópia formatada para colar manualmente no Telegram.
+        // A caixa mostra o relatório com negrito de verdade e o botão copia como HTML rico.
+        const htmlCopia = t.replace(/\n/g, '<br>');
+        const boxCopia = document.getElementById('texto_copia');
+        boxCopia.innerHTML = htmlCopia;
+        boxCopia.dataset.html = htmlCopia;
         document.getElementById('backup_box').style.display = 'block';
 
         if (!navigator.onLine) {
