@@ -89,13 +89,10 @@
 
 <datalist id="sugestoes_equipamentos">
     <option value="Régua de Tomadas">
-    <option value="Câmera IP Bullet">
-    <option value="Câmera IP Dome">
     <option value="Switch PoE">
     <option value="Switch Gerenciável">
     <option value="Roteador Wi-Fi">
     <option value="Access Point (AP)">
-    <option value="NVR / DVR">
     <option value="Rack">
     <option value="Nobreak">
 </datalist>
@@ -120,27 +117,26 @@
                     <div class="form-group" style="flex: 100%;">
                         <label>Tipo de Projeto</label>
                         <select id="tipo_projeto" onchange="alternarMódulos()" style="background-color: #f0f9ff; border-color: var(--ora-cyan);">
+                            <option value="Wi-Fi / Cabeado" selected>Wi-Fi / Cabeado</option>
                             <option value="CFTV">CFTV</option>
-                            <option value="Wi-Fi">Wi-Fi</option>
                             <option value="Telefonia">Telefonia</option>
                             <option value="Cabeamento Estruturado">Cabeamento Estruturado</option>
                             <option value="Infra de Rede">Infra de Rede</option>
-                            <option value="Projeto Misto" selected>Projeto Misto</option>
+                            <option value="Projeto Misto">Projeto Misto</option>
                             <option value="Outro">Outro (Especificar na Obs)</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group"><label>Cliente</label><input type="text" id="cliente" placeholder="Razão Social ou Nome"></div>
-                    <div class="form-group"><label>Unidade / Filial</label><input type="text" id="filial" placeholder="Ex: Matriz, Loja 02"></div>
+                    <div class="form-group"><label>Endereço Completo</label><input type="text" id="endereco" placeholder="Rua, número, bairro e referência"></div>
                 </div>
                 <div class="form-row">
                     <div class="form-group"><label>Cidade/UF</label><input type="text" id="cidade" value="Teresina - PI"></div>
                     <div class="form-group"><label>Responsável no Local</label><input type="text" id="responsavel_local"></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group"><label>Contato (Telefone/WhatsApp)</label><input type="text" id="contato"></div>
-                    <div class="form-group">
+                    <div class="form-group" style="flex: 100%;">
                         <label>Técnico Responsável pela Vistoria</label>
                         <input type="text" id="tecnico" placeholder="Nome do Técnico">
                     </div>
@@ -151,7 +147,7 @@
                         <input type="date" id="data_vistoria">
                     </div>
                     <div class="form-group">
-                        <label>Coordenadas GPS / Endereço Completo</label>
+                        <label>Coordenadas GPS</label>
                         <input type="text" id="gps_coords" placeholder="Aguardando captura...">
                         <button type="button" class="btn-gps" onclick="capturarGPS()">📍 Capturar GPS</button>
                     </div>
@@ -240,7 +236,7 @@
             </div>
 
             <div class="card" id="card_wifi">
-                <h3 class="card-title">📶 Parâmetros de Wi-Fi</h3>
+                <h3 class="card-title">📶 Parâmetros de Wi-Fi / Cabeado</h3>
                 <div class="form-row">
                     <div class="form-group"><label>Quantidade estimada de usuários</label><input type="number" id="wifi_users" value="0"></div>
                     <div class="form-group"><label>Quantidade estimada de dispositivos</label><input type="number" id="wifi_devices" value="0"></div>
@@ -266,8 +262,22 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Ambientes atendidos</label>
+                    <label>Ambientes que o cliente quer ser atendido</label>
                     <input type="text" id="wifi_ambientes" placeholder="Ex: Recepção, Diretoria, Salão de Vendas">
+                </div>
+                <div class="form-row" style="margin-top: 20px;">
+                    <div class="form-group">
+                        <label>Pontos cabeados previstos</label>
+                        <input type="number" id="cabo_pontos" value="0" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de ponto cabeado</label>
+                        <select id="cabo_tipo">
+                            <option value="Dados">Dados</option>
+                            <option value="Dados + Voz">Dados + Voz</option>
+                            <option value="Outro">Outro (Descrever na Obs)</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -313,27 +323,19 @@
             </div>
 
             <div class="card">
-                <h3 class="card-title">⚙️ Infraestrutura / Hardware</h3>
-                <label style="margin-bottom: 15px;">Informar equipamentos previstos ou necessários:</label>
-                
-                <div class="grid-hw">
-                    <div class="grid-hw-item"><label>ONU</label><input type="number" id="hw_onu" value="0" min="0"></div>
-                    <div class="grid-hw-item"><label>Roteador</label><input type="number" id="hw_rot" value="0" min="0"></div>
-                    <div class="grid-hw-item"><label>Switch</label><input type="number" id="hw_sw" value="0" min="0"></div>
-                    <div class="grid-hw-item"><label>Switch PoE</label><input type="number" id="hw_swpoe" value="0" min="0"></div>
-                    <div class="grid-hw-item"><label>Access Point</label><input type="number" id="hw_ap" value="0" min="0"></div>
-                    <div class="grid-hw-item"><label>Câmeras</label><input type="number" id="hw_cam" value="0" min="0"></div>
-                    <div class="grid-hw-item"><label>DVR/NVR</label><input type="number" id="hw_dvr" value="0" min="0"></div>
-                    <div class="grid-hw-item"><label>HD</label><input type="number" id="hw_hd" value="0" min="0"></div>
-                    <div class="grid-hw-item"><label>Rack</label><input type="number" id="hw_rack" value="0" min="0"></div>
-                    <div class="grid-hw-item"><label>Patch Panel</label><input type="number" id="hw_patch" value="0" min="0"></div>
-                    <div class="grid-hw-item"><label>Caixa de Cabo</label><input type="number" id="hw_cabo" value="0" min="0"></div>
-                    <div class="grid-hw-item"><label>Nobreak</label><input type="number" id="hw_nb" value="0" min="0"></div>
-                    <div class="grid-hw-item"><label>Telefone IP</label><input type="number" id="hw_tel" value="0" min="0"></div>
+                <h3 class="card-title">⚙️ Equipamentos Existentes no Local</h3>
+                <div class="form-row">
+                    <div class="form-group" style="flex: 100%;">
+                        <label>Tipo de ativação</label>
+                        <select id="hw_ativacao_zero">
+                            <option value="Não">Aproveitar estrutura/equipamentos existentes</option>
+                            <option value="Sim">Ativação do zero</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label>Outro equipamento:</label>
-                    <input type="text" id="hw_outros" placeholder="Descreva outros itens e quantidades...">
+                    <label>Descreva os equipamentos existentes atualmente no local</label>
+                    <textarea id="equipamentos_existentes" rows="5" placeholder="Ex: 01 ONU, 01 roteador, 02 switches, rack pequeno, nobreak, APs existentes, observações sobre estado dos equipamentos..."></textarea>
                 </div>
             </div>
 
@@ -497,10 +499,11 @@
 
         t += `━━━━━━━━━━━━━━━━━━\n🏢 DADOS DO CLIENTE\n━━━━━━━━━━━━━━━━━━\n\n`;
         t += `• Cliente: ${document.getElementById('cliente').value || "__________________________________"}\n\n`;
-        t += `• Unidade/Filial: ${document.getElementById('filial').value || "___________________________"}\n\n`;
+        t += `• Endereço: ${document.getElementById('endereco').value || "__________________________________"}\n\n`;
+        
         t += `• Cidade/UF: ${document.getElementById('cidade').value || "_______________________________"}\n\n`;
         t += `• Responsável no Local: ${document.getElementById('responsavel_local').value || "_____________________"}\n\n`;
-        t += `• Contato: ${document.getElementById('contato').value || "_________________________________"}\n\n`;
+        
         t += `• Técnico Responsável pela Vistoria: ${document.getElementById('tecnico').value || "________________________"}\n\n`;
         t += `---\n\n`;
         let dData = document.getElementById('data_vistoria').value;
@@ -523,10 +526,12 @@
         }
 
         if(document.getElementById('card_wifi').style.display !== 'none') {
-            t += `━━━━━━━━━━━━━━━━━━\n📶 PARÂMETROS DE WI-FI\n(preencher apenas se aplicável)\n━━━━━━━━━━━━━━━━━━\n\n`;
+            t += `━━━━━━━━━━━━━━━━━━\n📶 PARÂMETROS DE WI-FI / CABEADO\n(preencher apenas se aplicável)\n━━━━━━━━━━━━━━━━━━\n\n`;
             t += `• Quantidade estimada de usuários:\n${document.getElementById('wifi_users').value}\n\n---\n\n`;
             t += `• Quantidade estimada de dispositivos:\n${document.getElementById('wifi_devices').value}\n\n---\n\n`;
-            t += `• Ambientes atendidos:\n${document.getElementById('wifi_ambientes').value || "__________________________________"}\n\n---\n\n`;
+            t += `• Ambientes que o cliente quer ser atendido:\n${document.getElementById('wifi_ambientes').value || "__________________________________"}\n\n---\n\n`;
+            t += `• Pontos cabeados previstos:\n${document.getElementById('cabo_pontos').value}\n\n---\n\n`;
+            t += `• Tipo de ponto cabeado:\n(X) ${document.getElementById('cabo_tipo').value}\n\n`;
             t += `• Necessidade de cobertura:\n(X) ${document.getElementById('wifi_cobertura').value}\n\n`;
             t += `• Tipo de ambiente:\n(X) ${document.getElementById('wifi_tipo_amb').value}\n\n`;
             
@@ -550,15 +555,9 @@
         t += `${txtInv}\n`;
         t += `🔢 Total Geral de Dispositivos:\n${document.getElementById('soma_total').innerText}\n\n---\n\n`;
 
-        t += `━━━━━━━━━━━━━━━━━━\n⚙️ INFRAESTRUTURA / HARDWARE\n━━━━━━━━━━━━━━━━━━\n\n(Informar equipamentos previstos ou necessários)\n\n`;
-        const ids = ['onu','rot','sw','swpoe','ap','cam','dvr','hd','rack','patch','cabo','nb','tel'];
-        const nomes = ['ONU','Roteador','Switch','Switch PoE','Access Point','Câmeras','DVR/NVR','HD','Rack','Patch Panel','Caixa de Cabo','Nobreak','Telefone IP'];
-        ids.forEach((id, idx) => {
-            let v = parseInt(document.getElementById('hw_'+id).value);
-            t += `[${v > 0 ? 'X' : ' '}] ${nomes[idx]}\nQtd: ${v > 0 ? v : '_______'}\n\n`;
-        });
-        let hOutros = document.getElementById('hw_outros').value;
-        t += `[${hOutros ? 'X' : ' '}] Outro: ${hOutros || "__________________"}\n\n---\n\n`;
+        t += `━━━━━━━━━━━━━━━━━━\n⚙️ EQUIPAMENTOS EXISTENTES NO LOCAL\n━━━━━━━━━━━━━━━━━━\n\n`;
+        t += `• Tipo de ativação:\n(X) ${document.getElementById('hw_ativacao_zero').value === 'Sim' ? 'Ativação do zero' : 'Aproveitar estrutura/equipamentos existentes'}\n\n`;
+        t += `• Equipamentos existentes atualmente no local:\n${document.getElementById('equipamentos_existentes').value || "__________________________________"}\n\n---\n\n`;
 
         t += `━━━━━━━━━━━━━━━━━━\n🧱 INFRAESTRUTURA FÍSICA\n━━━━━━━━━━━━━━━━━━\n\n`;
         t += `• Possui tubulação disponível?\n(X) ${document.getElementById('inf_tub').value}\n\n`;
