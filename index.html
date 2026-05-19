@@ -548,7 +548,18 @@
 
         t += `\n<b>✅ Relatório gerado pelo Vistoria Pro - Ora Empresas</b>`;
 
-        document.getElementById('texto_copia').value = t;
+        // Versão limpa para copiar e colar manualmente, sem aparecer tags HTML como <b> ou <a>.
+        const textoCopia = t
+            .replace(/<a\s+href="([^"]+)">([^<]+)<\/a>/gi, '$2: $1')
+            .replace(/<b>(.*?)<\/b>/gi, '*$1*')
+            .replace(/<[^>]+>/g, '')
+            .replace(/&amp;/g, '&')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'");
+
+        document.getElementById('texto_copia').value = textoCopia;
         document.getElementById('backup_box').style.display = 'block';
 
         if (!navigator.onLine) {
