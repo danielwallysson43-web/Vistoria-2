@@ -1,16 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vistoria Pro - Ora Empresas</title>
-    <link rel="manifest" href="manifest.json">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&display=swap" rel="stylesheet">
-    
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vistoria Pro - Ora Empresas</title>
+
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&amp;display=swap" rel="stylesheet"/>
+<style>
         :root {
             --ora-dark: #0a2540;   
             --ora-cyan: #0284c7;   
@@ -88,280 +87,262 @@
     </style>
 </head>
 <body>
-
 <datalist id="sugestoes_equipamentos">
-    <option value="Régua de Tomadas">
-    <option value="Switch PoE">
-    <option value="Switch Gerenciável">
-    <option value="Roteador Wi-Fi">
-    <option value="Access Point (AP)">
-    <option value="Rack">
-    <option value="Nobreak">
-</datalist>
-
+<option value="Régua de Tomadas">
+<option value="Switch PoE">
+<option value="Switch Gerenciável">
+<option value="Roteador Wi-Fi">
+<option value="Access Point (AP)">
+<option value="Rack">
+<option value="Nobreak">
+</option></option></option></option></option></option></option></datalist>
 <div class="container" id="conteudo_laudo">
-    <header class="main-header">
-        <div class="brand-box">
-            <p class="brand-logo-safe">Ora<span>Empresas</span></p>
-        </div>
-        <div class="protocol-box">
-            <label>Protocolo / OS</label>
-            <input type="text" id="protocolo_manual" class="protocol-input" placeholder="000000">
-        </div>
-    </header>
-
-    <div class="content-padding">
-        <div id="formulario_perguntas">
-            
-            <div class="card">
-                <h3 class="card-title">🏢 Dados do Cliente e Projeto</h3>
-                <div class="form-row">
-                    <div class="form-group" style="flex: 100%;">
-                        <label>Tipo de Projeto</label>
-                        <select id="tipo_projeto" onchange="alternarMódulos()" style="background-color: #f0f9ff; border-color: var(--ora-cyan);">
-                            <option value="Wi-Fi / Cabeado" selected>Wi-Fi / Cabeado</option>
-                            <option value="CFTV">CFTV</option>
-                            <option value="Telefonia">Telefonia</option>
-                            <option value="Cabeamento Estruturado">Cabeamento Estruturado</option>
-                            <option value="Infra de Rede">Infra de Rede</option>
-                            <option value="Projeto Misto">Projeto Misto</option>
-                            <option value="Outro">Outro (Especificar na Obs)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group"><label>Cliente</label><input type="text" id="cliente" placeholder="Razão Social ou Nome"></div>
-                    <div class="form-group"><label>Endereço Completo</label><input type="text" id="endereco" placeholder="Rua, número, bairro e referência"></div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group"><label>Cidade/UF</label><input type="text" id="cidade" value="Teresina - PI"></div>
-                    <div class="form-group"><label>Responsável no Local</label><input type="text" id="responsavel_local"></div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group" style="flex: 100%;">
-                        <label>Técnico Responsável pela Vistoria</label>
-                        <input type="text" id="tecnico" placeholder="Nome do Técnico">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Data da Vistoria</label>
-                        <input type="date" id="data_vistoria">
-                    </div>
-                    <div class="form-group">
-                        <label>Localização / Google Maps</label>
-                        <input type="text" id="gps_coords" placeholder="Clique em capturar GPS para gerar o link...">
-                        <button type="button" class="btn-gps" onclick="capturarGPS()">📍 Capturar GPS</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" id="card_cftv">
-                <h3 class="card-title">🎥 Parâmetros de CFTV</h3>
-                <div class="form-row">
-                    <div class="form-group"><label>Quantidade de câmeras previstas</label><input type="number" id="cftv_qtd" value="0"></div>
-                    <div class="form-group">
-                        <label>Tipo das câmeras</label>
-                        <select id="cftv_tipo">
-                            <option value="Dome">Dome</option>
-                            <option value="Bullet">Bullet</option>
-                            <option value="Speed Dome">Speed Dome</option>
-                            <option value="Outro">Outro (Descrever na Obs)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Tecnologia</label>
-                        <select id="cftv_tech">
-                            <option value="IP">IP</option>
-                            <option value="Analógica">Analógica</option>
-                            <option value="Híbrida">Híbrida</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Gravação desejada</label>
-                        <select id="cftv_gravacao">
-                            <option value="7 dias">7 dias</option>
-                            <option value="15 dias">15 dias</option>
-                            <option value="30 dias">30 dias</option>
-                            <option value="Outro">Outro (Descrever na Obs)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Visão Noturna</label>
-                        <select id="cftv_noturna">
-                            <option value="Infravermelho">Infravermelho</option>
-                            <option value="ColorHunter / FullColor">ColorHunter / FullColor</option>
-                            <option value="Não informado">Não informado</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Altura média de instalação</label>
-                        <select id="cftv_altura">
-                            <option value="Até 3m">Até 3m</option>
-                            <option value="3m a 5m">3m a 5m</option>
-                            <option value="Acima de 5m">Acima de 5m</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Alimentação</label>
-                        <select id="cftv_alimentacao">
-                            <option value="Switch PoE">Switch PoE</option>
-                            <option value="Fonte individual">Fonte individual</option>
-                            <option value="Não definido">Não definido</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Armazenamento</label>
-                        <select id="cftv_armazenamento">
-                            <option value="NVR">NVR</option>
-                            <option value="DVR">DVR</option>
-                            <option value="Cloud">Cloud</option>
-                            <option value="Não definido">Não definido</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Cliente deseja acesso remoto?</label>
-                        <select id="cftv_remoto">
-                            <option value="Sim">Sim</option>
-                            <option value="Não">Não</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3 class="card-title">🖥️ Inventário de Ativos</h3>
-                <table id="tabela_ativos">
-                    <thead>
-                        <tr>
-                            <th style="width: 25%;">Local</th>
-                            <th style="width: 40%;">Equipamento</th>
-                            <th style="width: 15%;">Conexão</th>
-                            <th style="width: 10%;">Qtd</th>
-                            <th style="width: 10%;"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="corpo_tabela">
-                        <tr>
-                            <td><input type="text" placeholder="Ex: Recepção" class="item-local"></td>
-                            <td><input type="text" list="sugestoes_equipamentos" placeholder="Ex: Notebook" class="item-nome"></td>
-                            <td>
-                                <select class="item-tipo">
-                                    <option value="Wi-Fi">Wi-Fi</option>
-                                    <option value="Cabo">Cabo</option>
-                                </select>
-                            </td>
-                            <td><input type="number" value="1" min="1" class="item-qtd" onchange="calcularTotal()"></td>
-                            <td><button type="button" class="btn-del" onclick="removerLinha(this)">✕</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button type="button" class="btn-add" onclick="adicionarLinha()">+ Adicionar Dispositivo</button>
-                <div class="total-box">Total Geral de Dispositivos: <span id="soma_total">1</span></div>
-            </div>
-
-            <div class="card">
-                <h3 class="card-title">⚙️ Equipamentos Existentes no Local</h3>
-                <div class="form-row">
-                    <div class="form-group" style="flex: 100%;">
-                        <label>Tipo de ativação</label>
-                        <select id="hw_ativacao_zero">
-                            <option value="Não">Aproveitar estrutura/equipamentos existentes</option>
-                            <option value="Sim">Ativação do zero</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Descreva os equipamentos existentes atualmente no local</label>
-                    <textarea id="equipamentos_existentes" rows="5" placeholder="Ex: 01 ONU, 01 roteador, 02 switches, rack pequeno, nobreak, APs existentes, observações sobre estado dos equipamentos..."></textarea>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3 class="card-title">🧱 Infraestrutura Física</h3>
-                <div class="grid-hw">
-                    <div class="grid-hw-item"><label>Possui tubulação disponível?</label><select id="inf_tub"><option>Sim</option><option>Não</option></select></div>
-                    <div class="grid-hw-item"><label>Possui eletrocalha?</label><select id="inf_ele"><option>Sim</option><option>Não</option></select></div>
-                    <div class="grid-hw-item"><label>Necessita escada?</label><select id="inf_esc"><option>Não</option><option>Sim</option></select></div>
-                    <div class="grid-hw-item"><label>Necessita andaime?</label><select id="inf_and"><option>Não</option><option>Sim</option></select></div>
-                </div>
-                <div class="form-row" style="margin-top: 15px;">
-                    <div class="form-group">
-                        <label>Passagem de cabo será:</label>
-                        <select id="inf_passagem">
-                            <option value="Aparente">Aparente</option>
-                            <option value="Forro">Forro</option>
-                            <option value="Eletroduto">Eletroduto</option>
-                            <option value="Subterrâneo">Subterrâneo</option>
-                            <option value="Outro">Outro</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Existe dificuldade de passagem?</label>
-                    <select id="inf_dif" onchange="document.getElementById('inf_dif_desc').style.display = this.value === 'Sim' ? 'block' : 'none'">
-                        <option value="Não">Não</option>
-                        <option value="Sim">Sim</option>
-                    </select>
-                    <input type="text" id="inf_dif_desc" placeholder="Descreva a dificuldade" style="display:none; margin-top:10px;">
-                </div>
-                <div class="form-group">
-                    <label>Existe risco de danificar estrutura/acabamento?</label>
-                    <select id="inf_risco" onchange="document.getElementById('inf_risco_desc').style.display = this.value === 'Sim' ? 'block' : 'none'">
-                        <option value="Não">Não</option>
-                        <option value="Sim">Sim</option>
-                    </select>
-                    <input type="text" id="inf_risco_desc" placeholder="Descreva o risco" style="display:none; margin-top:10px;">
-                </div>
-            </div>
-
-            <div class="card">
-                <h3 class="card-title">📝 Parecer Técnico</h3>
-                <div class="form-group">
-                    <textarea id="parecer" rows="5" placeholder="Escreva aqui as observações gerais da vistoria..."></textarea>
-                </div>
-                
-                <h3 class="card-title" style="margin-top: 30px;">📐 Documentação</h3>
-                <div class="grid-hw">
-                    <div class="grid-hw-item"><label>Planta baixa disponível?</label><select id="doc_planta"><option>Não</option><option>Sim</option></select></div>
-                    <div class="grid-hw-item"><label>Necessita desenho de planta?</label><select id="doc_desenho"><option>Não</option><option>Sim</option></select></div>
-                    <div class="grid-hw-item"><label>Fotos anexadas?</label><select id="doc_fotos"><option>Sim</option><option>Não</option></select></div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3 class="card-title">📸 Evidências de Campo (Fotos)</h3>
-                <input type="file" id="midia" multiple accept="image/*,video/*">
-                <div id="lista_arquivos_selecionados" class="lista-arquivos"></div>
-            </div>
-
-            <div id="status_bot"></div>
-            
-            <div class="footer-btns">
-                <button type="button" id="btn_finalizar" onclick="processarEnvioApi()">🚀 Finalizar Vistoria</button>
-            </div>
-
-            <div id="backup_box">
-                <h3 class="card-title" style="color: var(--ora-cyan);">💾 Laudo Gerado</h3>
-                <p style="font-size: 13px; color: var(--text-muted); margin-top: -15px; margin-bottom: 15px;">
+<header class="main-header">
+<div class="brand-box">
+<p class="brand-logo-safe">Ora<span>Empresas</span></p>
+</div>
+<div class="protocol-box">
+<label>Protocolo / OS</label>
+<input class="protocol-input" id="protocolo_manual" placeholder="000000" type="text"/>
+</div>
+</header>
+<div class="content-padding">
+<div id="formulario_perguntas">
+<div class="card">
+<h3 class="card-title">🏢 Dados do Cliente e Projeto</h3>
+<div class="form-row">
+<div class="form-group" style="flex: 100%;">
+<label>Tipo de Projeto</label>
+<select id="tipo_projeto" onchange="alternarMódulos()" required="required" style="background-color: #f0f9ff; border-color: var(--ora-cyan);"><option disabled="disabled" selected="selected" value="">Selecione...</option>
+<option value="Wi-Fi / Cabeado">Wi-Fi / Cabeado</option>
+<option value="CFTV">CFTV</option>
+<option value="Telefonia">Telefonia</option>
+<option value="Cabeamento Estruturado">Cabeamento Estruturado</option>
+<option value="Infra de Rede">Infra de Rede</option>
+<option value="Projeto Misto">Projeto Misto</option>
+<option value="Outro">Outro (Especificar na Obs)</option>
+</select>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Cliente</label><input id="cliente" placeholder="Razão Social ou Nome" type="text"/></div>
+<div class="form-group"><label>Endereço Completo</label><input id="endereco" placeholder="Rua, número, bairro e referência" type="text"/></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Cidade/UF</label><input id="cidade" type="text" value="Teresina - PI"/></div>
+<div class="form-group"><label>Responsável no Local</label><input id="responsavel_local" type="text"/></div>
+</div>
+<div class="form-row">
+<div class="form-group" style="flex: 100%;">
+<label>Técnico Responsável pela Vistoria</label>
+<input id="tecnico" placeholder="Nome do Técnico" type="text"/>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Data da Vistoria</label>
+<input id="data_vistoria" type="date"/>
+</div>
+<div class="form-group">
+<label>Localização / Google Maps</label>
+<input id="gps_coords" placeholder="Clique em capturar GPS para gerar o link..." type="text"/>
+<button class="btn-gps" onclick="capturarGPS()" type="button">📍 Capturar GPS</button>
+</div>
+</div>
+</div>
+<div class="card" id="card_cftv">
+<h3 class="card-title">🎥 Parâmetros de CFTV</h3>
+<div class="form-row">
+<div class="form-group"><label>Quantidade de câmeras previstas</label><input id="cftv_qtd" type="number" value="0"/></div>
+<div class="form-group">
+<label>Tipo das câmeras</label>
+<select id="cftv_tipo" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option>
+<option value="Dome">Dome</option>
+<option value="Bullet">Bullet</option>
+<option value="Speed Dome">Speed Dome</option>
+<option value="Outro">Outro (Descrever na Obs)</option>
+</select>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Tecnologia</label>
+<select id="cftv_tech" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option>
+<option value="IP">IP</option>
+<option value="Analógica">Analógica</option>
+<option value="Híbrida">Híbrida</option>
+</select>
+</div>
+<div class="form-group">
+<label>Gravação desejada</label>
+<select id="cftv_gravacao" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option>
+<option value="7 dias">7 dias</option>
+<option value="15 dias">15 dias</option>
+<option value="30 dias">30 dias</option>
+<option value="Outro">Outro (Descrever na Obs)</option>
+</select>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Visão Noturna</label>
+<select id="cftv_noturna" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option>
+<option value="Infravermelho">Infravermelho</option>
+<option value="ColorHunter / FullColor">ColorHunter / FullColor</option>
+<option value="Não informado">Não informado</option>
+</select>
+</div>
+<div class="form-group">
+<label>Altura média de instalação</label>
+<select id="cftv_altura" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option>
+<option value="Até 3m">Até 3m</option>
+<option value="3m a 5m">3m a 5m</option>
+<option value="Acima de 5m">Acima de 5m</option>
+</select>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Alimentação</label>
+<select id="cftv_alimentacao" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option>
+<option value="Switch PoE">Switch PoE</option>
+<option value="Fonte individual">Fonte individual</option>
+<option value="Não definido">Não definido</option>
+</select>
+</div>
+<div class="form-group">
+<label>Armazenamento</label>
+<select id="cftv_armazenamento" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option>
+<option value="NVR">NVR</option>
+<option value="DVR">DVR</option>
+<option value="Cloud">Cloud</option>
+<option value="Não definido">Não definido</option>
+</select>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Cliente deseja acesso remoto?</label>
+<select id="cftv_remoto" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option>
+<option value="Sim">Sim</option>
+<option value="Não">Não</option>
+</select>
+</div>
+</div>
+</div>
+<div class="card">
+<h3 class="card-title">🖥️ Inventário de Ativos</h3>
+<table id="tabela_ativos">
+<thead>
+<tr>
+<th style="width: 50%;">Equipamento</th>
+<th style="width: 25%;">Conexão</th>
+<th style="width: 15%;">Qtd</th>
+<th style="width: 10%;"></th>
+</tr>
+</thead>
+<tbody id="corpo_tabela">
+<tr>
+<td><input class="item-nome" list="sugestoes_equipamentos" placeholder="Ex: Notebook" type="text"/></td>
+<td>
+<select class="item-tipo" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option>
+<option value="Wi-Fi">Wi-Fi</option>
+<option value="Cabo">Cabo</option>
+</select>
+</td>
+<td><input class="item-qtd" min="1" onchange="calcularTotal()" type="number" value="1"/></td>
+<td><button class="btn-del" onclick="removerLinha(this)" type="button">✕</button></td>
+</tr>
+</tbody>
+</table>
+<button class="btn-add" onclick="adicionarLinha()" type="button">+ Adicionar Dispositivo</button>
+<div class="total-box">Total Geral de Dispositivos: <span id="soma_total">1</span></div>
+</div>
+<div class="card">
+<h3 class="card-title">⚙️ Equipamentos Existentes no Local</h3>
+<div class="form-row">
+<div class="form-group" style="flex: 100%;">
+<label>Tipo de ativação</label>
+<select id="hw_ativacao_zero" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option>
+<option value="Não">Aproveitar estrutura/equipamentos existentes</option>
+<option value="Sim">Ativação do zero</option>
+</select>
+</div>
+</div>
+<div class="form-group">
+<label>Descreva os equipamentos existentes atualmente no local</label>
+<textarea id="equipamentos_existentes" placeholder="Ex: 01 ONU, 01 roteador, 02 switches, rack pequeno, nobreak, APs existentes, observações sobre estado dos equipamentos..." rows="5"></textarea>
+</div>
+</div>
+<div class="card">
+<h3 class="card-title">🧱 Infraestrutura Física</h3>
+<div class="grid-hw">
+<div class="grid-hw-item"><label>Possui tubulação disponível?</label><select id="inf_tub" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
+<div class="grid-hw-item"><label>Possui eletrocalha?</label><select id="inf_ele" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
+<div class="grid-hw-item"><label>Necessita escada?</label><select id="inf_esc" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option><option>Não</option><option>Sim</option></select></div>
+<div class="grid-hw-item"><label>Necessita andaime?</label><select id="inf_and" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option><option>Não</option><option>Sim</option></select></div>
+</div>
+<div class="form-row" style="margin-top: 15px;">
+<div class="form-group">
+<label>Passagem de cabo será:</label>
+<select id="inf_passagem" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option>
+<option value="Aparente">Aparente</option>
+<option value="Forro">Forro</option>
+<option value="Eletroduto">Eletroduto</option>
+<option value="Subterrâneo">Subterrâneo</option>
+<option value="Outro">Outro</option>
+</select>
+</div>
+</div>
+<div class="form-group">
+<label>Existe dificuldade de passagem?</label>
+<select id="inf_dif" onchange="document.getElementById('inf_dif_desc').style.display = this.value === 'Sim' ? 'block' : 'none'" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option>
+<option value="Não">Não</option>
+<option value="Sim">Sim</option>
+</select>
+<input id="inf_dif_desc" placeholder="Descreva a dificuldade" style="display:none; margin-top:10px;" type="text"/>
+</div>
+<div class="form-group">
+<label>Existe risco de danificar estrutura/acabamento?</label>
+<select id="inf_risco" onchange="document.getElementById('inf_risco_desc').style.display = this.value === 'Sim' ? 'block' : 'none'" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option>
+<option value="Não">Não</option>
+<option value="Sim">Sim</option>
+</select>
+<input id="inf_risco_desc" placeholder="Descreva o risco" style="display:none; margin-top:10px;" type="text"/>
+</div>
+</div>
+<div class="card">
+<h3 class="card-title">📝 Parecer Técnico</h3>
+<div class="form-group">
+<textarea id="parecer" placeholder="Escreva aqui as observações gerais da vistoria..." rows="5"></textarea>
+</div>
+<h3 class="card-title" style="margin-top: 30px;">📐 Documentação</h3>
+<div class="grid-hw">
+<div class="grid-hw-item"><label>Planta baixa disponível?</label><select id="doc_planta" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option><option>Não</option><option>Sim</option></select></div>
+<div class="grid-hw-item"><label>Necessita desenho de planta?</label><select id="doc_desenho" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option><option>Não</option><option>Sim</option></select></div>
+<div class="grid-hw-item"><label>Fotos anexadas?</label><select id="doc_fotos" required="required"><option disabled="disabled" selected="selected" value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
+</div>
+</div>
+<div class="card">
+<h3 class="card-title">📸 Evidências de Campo (Fotos)</h3>
+<input accept="image/*,video/*" id="midia" multiple="" type="file"/>
+<div class="lista-arquivos" id="lista_arquivos_selecionados"></div>
+</div>
+<div id="status_bot"></div>
+<div class="footer-btns">
+<button id="btn_finalizar" onclick="processarEnvioApi()" type="button">🚀 Finalizar Vistoria</button>
+</div>
+<div id="backup_box">
+<h3 class="card-title" style="color: var(--ora-cyan);">💾 Laudo Gerado</h3>
+<p style="font-size: 13px; color: var(--text-muted); margin-top: -15px; margin-bottom: 15px;">
                     O texto abaixo usa o padrão do Telegram para negrito com **texto**. Copie e cole no Telegram.
                 </p>
-                <div id="texto_copia" class="copy-preview" contenteditable="true" aria-label="Prévia do relatório formatado"></div>
-                <button type="button" onclick="copiarTextoBackup()" style="width: 100%; padding: 15px; background: var(--ora-cyan); color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 15px;">📋 Copiar Relatório para Telegram</button>
-            </div>
-
-        </div>
-    </div>
+<div aria-label="Prévia do relatório formatado" class="copy-preview" contenteditable="true" id="texto_copia"></div>
+<button onclick="copiarTextoBackup()" style="width: 100%; padding: 15px; background: var(--ora-cyan); color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 15px;" type="button">📋 Copiar Relatório para Telegram</button>
 </div>
-
+</div>
+</div>
+</div>
 <script>
     const TOKEN = "8797747366:AAHBVt7Xh7O-hms4DmB6c8j5AmWiOhkB6K4";
     const CHAT_ID = "-5263060753"; 
@@ -416,9 +397,8 @@
         const tb = document.getElementById('corpo_tabela');
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td><input type="text" placeholder="Local" class="item-local"></td>
             <td><input type="text" list="sugestoes_equipamentos" placeholder="Equipamento" class="item-nome"></td>
-            <td><select class="item-tipo"><option value="Wi-Fi">Wi-Fi</option><option value="Cabo">Cabo</option></select></td>
+            <td><select class="item-tipo" required><option value="" selected disabled>Selecione...</option><option value="Wi-Fi">Wi-Fi</option><option value="Cabo">Cabo</option></select></td>
             <td><input type="number" value="1" min="1" class="item-qtd" onchange="calcularTotal()"></td>
             <td><button type="button" class="btn-del" onclick="removerLinha(this)">✕</button></td>
         `;
@@ -451,10 +431,50 @@
         }
     }
 
+
+    function validarSelecoesObrigatorias() {
+        const status = document.getElementById('status_bot');
+        const selects = Array.from(document.querySelectorAll('select'));
+        let primeiroErro = null;
+        let faltando = [];
+
+        selects.forEach(sel => {
+            sel.style.borderColor = '';
+            const visivel = sel.offsetParent !== null;
+            if (visivel && !String(sel.value || '').trim()) {
+                sel.style.borderColor = '#dc2626';
+                if (!primeiroErro) primeiroErro = sel;
+                const label = sel.closest('.form-group, .grid-hw-item')?.querySelector('label')?.innerText || sel.id || 'Campo obrigatório';
+                faltando.push(label);
+            }
+        });
+
+        if (primeiroErro) {
+            status.style.display = 'block';
+            status.style.background = '#fee2e2';
+            status.style.color = '#991b1b';
+            status.innerText = '⚠️ Selecione todas as opções obrigatórias antes de finalizar. Campo pendente: ' + faltando[0];
+            primeiroErro.focus();
+            return false;
+        }
+        return true;
+    }
+
+    document.addEventListener('change', function(e) {
+        if (e.target && e.target.tagName === 'SELECT' && e.target.value) {
+            e.target.style.borderColor = '';
+        }
+    });
+
     async function processarEnvioApi() {
         const status = document.getElementById('status_bot');
         const btn = document.getElementById('btn_finalizar');
         btn.disabled = true;
+
+        if (!validarSelecoesObrigatorias()) {
+            btn.disabled = false;
+            return;
+        }
 
         const escapeHtml = (valor) => String(valor ?? '')
             .replace(/&/g, '&amp;')
@@ -514,13 +534,12 @@
         t += secao('🖥️', 'INVENTÁRIO DE ATIVOS');
         let totalItensInventario = 0;
         document.querySelectorAll('#corpo_tabela tr').forEach(tr => {
-            const local = tr.querySelector('.item-local').value.trim();
             const nome = tr.querySelector('.item-nome').value.trim();
             const tipoConexao = tr.querySelector('.item-tipo').value;
             const qtd = tr.querySelector('.item-qtd').value || '0';
             if(nome) {
                 totalItensInventario++;
-                t += `• <b>${escapeHtml(nome)}</b> — ${escapeHtml(qtd)} un | ${escapeHtml(tipoConexao)} | Local: ${escapeHtml(local || 'Geral')}\n`;
+                t += `• <b>${escapeHtml(nome)}</b> — ${escapeHtml(qtd)} un | ${escapeHtml(tipoConexao)}\n`;
             }
         });
         if(totalItensInventario === 0) {
@@ -583,15 +602,6 @@
         boxCopia.dataset.telegram = textoTelegramManual;
         document.getElementById('backup_box').style.display = 'block';
 
-        if (!navigator.onLine) {
-            status.style.display = "block"; 
-            status.style.background = "#fef08a";
-            status.style.color = "#854d0e";
-            status.innerText = "⚠️ Você está Offline! Relatório gerado na caixa acima. Copie o texto para envio posterior.";
-            btn.disabled = false; 
-            return;
-        }
-
         status.style.display = "block"; 
         status.style.background = "#f0f9ff";
         status.style.color = "#0a2540";
@@ -627,10 +637,5 @@
     }
 </script>
 
-<script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js'); });
-    }
-</script>
 </body>
 </html>
