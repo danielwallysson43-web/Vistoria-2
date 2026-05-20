@@ -356,90 +356,96 @@
 </div>
 <div id="form_ativacao" style="display:none;">
 <button class="btn-back" onclick="voltarInicio()" type="button">← Voltar para tipo de serviço</button>
+
 <div class="card">
 <h3 class="card-title">✅ Ativação Concluída</h3>
 <div class="form-row">
-<div class="form-group"><label>Protocolo</label><input id="atv_protocolo" placeholder="Ex: 2370409" type="text"/></div>
-<div class="form-group"><label>Resolução</label><input id="atv_resolucao" type="text" value="ATIVAÇÃO"/></div>
+<div class="form-group"><label>Técnico responsável</label><input id="atv_tecnico" placeholder="Nome do técnico" type="text"/></div>
+<div class="form-group"><label>Resolução</label><input id="atv_resolucao" placeholder="Ex: Ativação concluída" type="text"/></div>
 </div>
 <div class="form-row">
-<div class="form-group"><label>Patrimônio utilizado</label><input id="atv_patrimonio" placeholder="Ex: 076030/084486" type="text"/></div>
-<div class="form-group"><label>Nome do cliente</label><input id="atv_cliente" placeholder="Nome do cliente" type="text"/></div>
+<div class="form-group"><label>Cliente</label><input id="atv_cliente" placeholder="Nome do cliente" type="text"/></div>
+<div class="form-group"><label>Rack</label><input id="atv_rack" placeholder="Rack/local de instalação" type="text"/></div>
 </div>
+</div>
+
+<div class="card">
+<h3 class="card-title">---- GPON ----</h3>
 <div class="form-row">
 <div class="form-group"><label>Rede</label><input id="atv_rede" placeholder="Ex: SM net" type="text"/></div>
-<div class="form-group"><label>Slot</label><input id="atv_slot" type="text"/></div>
+<div class="form-group"><label>OLT / PON</label><input id="atv_olt_pon" placeholder="Ex: OLT 01 / PON 02" type="text"/></div>
 </div>
 <div class="form-row">
-<div class="form-group"><label>Potência CTO</label><input id="atv_potencia_cto" placeholder="Ex: -22" type="text"/></div>
-<div class="form-group"><label>GPO</label><input id="atv_gpo" type="text"/></div>
+<div class="form-group"><label>CTO</label><input id="atv_cto" placeholder="Identificação da CTO" type="text"/></div>
+<div class="form-group"><label>Potência</label><input id="atv_potencia" placeholder="Ex: -22" type="text"/></div>
 </div>
 </div>
+
 <div class="card">
-<h3 class="card-title">♦️ CTO / Vaga</h3>
+<h3 class="card-title">---- DROP ----</h3>
 <div class="form-row">
-<div class="form-group"><label>CTO Atenuada?</label><select id="atv_cto_atenuada" required=""><option disabled="" selected="" value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
-<div class="form-group"><label>CTO/Vaga verificada?</label><select id="atv_cto_verificada" required=""><option disabled="" selected="" value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
-</div>
-<div class="form-row">
-<div class="form-group"><label>Verificador</label><input id="atv_verificador" type="text"/></div>
-<div class="form-group"><label>Quantidade de vagas</label><input id="atv_qtd_vagas" min="0" type="number"/></div>
+<div class="form-group"><label>Metragem</label><input id="atv_drop_metragem" placeholder="Ex: 80m" type="text"/></div>
+<div class="form-group"><label>dBm</label><input id="atv_drop_dbm" placeholder="Ex: -23" type="text"/></div>
 </div>
 </div>
+
 <div class="card">
-<h3 class="card-title">♦️ DROP</h3>
+<h3 class="card-title">---- ONU / ROTEADOR ----</h3>
+<div id="atv_onu_lista">
+<div class="onu-bloco" style="border:1px solid var(--border-soft); border-radius:12px; padding:15px; margin-bottom:15px; background:#f8fafc;">
 <div class="form-row">
-<div class="form-group"><label>DROP etiquetado?</label><select id="atv_drop_etiquetado" required=""><option disabled="" selected="" value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
-<div class="form-group"><label>dBm DROP interno</label><input id="atv_dbm_drop" placeholder="Ex: -23" type="text"/></div>
+<div class="form-group"><label>SN</label><input class="atv_onu_sn" placeholder="Serial da ONU/Roteador" type="text"/></div>
+<div class="form-group"><label>Acesso Remoto</label><select class="atv_onu_acesso" required><option disabled selected value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
 </div>
 <div class="form-row">
-<div class="form-group"><label>Início metragem do DROP</label><input id="atv_drop_inicio" type="text"/></div>
-<div class="form-group"><label>Fim metragem do DROP</label><input id="atv_drop_fim" type="text"/></div>
+<div class="form-group"><label>IPv4</label><select class="atv_onu_ipv4" required><option disabled selected value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
+<div class="form-group"><label>IPv6</label><select class="atv_onu_ipv6" required><option disabled selected value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
 </div>
 </div>
+</div>
+<button type="button" class="btn-add" onclick="adicionarOnuAtivacao()">+ Adicionar ONU/Roteador</button>
+</div><div class="card">
+<h3 class="card-title">---- WI-FI ----</h3>
+<div class="form-row">
+<div class="form-group"><label>2.4</label><input id="atv_wifi_24" placeholder="Ex: Canal 6 / 20MHz" type="text"/></div>
+<div class="form-group"><label>5.0</label><input id="atv_wifi_50" placeholder="Ex: Canal 36" type="text"/></div>
+</div>
+</div>
+
 <div class="card">
-<h3 class="card-title">♦️ ONU / Roteador</h3>
-<div class="form-row">
-<div class="form-group"><label>Acesso remoto?</label><select id="atv_acesso_remoto" required=""><option disabled="" selected="" value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
-<div class="form-group"><label>IPv4?</label><select id="atv_ipv4" required=""><option disabled="" selected="" value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
-</div>
-<div class="form-row">
-<div class="form-group"><label>IPv4/IPv6?</label><select id="atv_ipv46" required=""><option disabled="" selected="" value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
-<div class="form-group"><label>Sinal ONU</label><input id="atv_sinal_onu" type="text"/></div>
-</div>
-<div class="form-row">
-<div class="form-group"><label>Canal 2.4</label><input id="atv_canal_24" placeholder="Ex: 6" type="text"/></div>
-<div class="form-group"><label>Canal 5.8</label><input id="atv_canal_58" placeholder="Ex: 36" type="text"/></div>
-</div>
-<div class="form-row">
-<div class="form-group"><label>Frequência MHz 2.4</label><input id="atv_freq_24" placeholder="Ex: 20" type="text"/></div>
-<div class="form-group"><label>Frequência MHz 5.8</label><input id="atv_freq_58" placeholder="Ex: AUTO" type="text"/></div>
+<h3 class="card-title">---- TESTES ----</h3>
+<div class="grid-hw">
+<div class="grid-hw-item"><label>Navegação</label><select id="atv_teste_navegacao" required><option disabled selected value="">Selecione...</option><option>OK</option><option>Falhou</option><option>Não testado</option></select></div>
+<div class="grid-hw-item"><label>Wi-Fi</label><select id="atv_teste_wifi" required><option disabled selected value="">Selecione...</option><option>OK</option><option>Falhou</option><option>Não testado</option></select></div>
+<div class="grid-hw-item"><label>Cabeado</label><select id="atv_teste_cabeado" required><option disabled selected value="">Selecione...</option><option>OK</option><option>Falhou</option><option>Não testado</option></select></div>
 </div>
 </div>
+
 <div class="card">
-<h3 class="card-title">🔷 Repetidores e Firmware</h3>
-<div class="form-row">
-<div class="form-group"><label>Possui repetidores?</label><select id="atv_repetidores" required=""><option disabled="" selected="" value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
-<div class="form-group"><label>Tipo de repetidor</label><select id="atv_tipo_repetidor" required=""><option disabled="" selected="" value="">Selecione...</option><option>Por cabo</option><option>Por Wi-Fi</option><option>Não se aplica</option></select></div>
-</div>
-<div class="form-row">
-<div class="form-group"><label>Firmware atualizado?</label><select id="atv_firmware" required=""><option disabled="" selected="" value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
-</div>
-</div>
-<div class="card">
-<h3 class="card-title">♦️ NOC</h3>
+<h3 class="card-title">---- NOC ----</h3>
 <div class="form-row">
 <div class="form-group"><label>Atendente</label><input id="atv_noc_atendente" type="text"/></div>
-<div class="form-group"><label>Hora inicial</label><input id="atv_noc_hora_inicial" placeholder="Ex: 08:30" type="text"/></div>
+<div class="form-group"><label>Hora Inicial</label><input id="atv_noc_hora_inicial" placeholder="Ex: 08:30" type="text"/></div>
 </div>
 <div class="form-row">
-<div class="form-group"><label>Hora final</label><input id="atv_noc_hora_final" placeholder="Ex: 09:10" type="text"/></div>
+<div class="form-group"><label>Hora Final</label><input id="atv_noc_hora_final" placeholder="Ex: 09:10" type="text"/></div>
 </div>
 </div>
+
 <div class="card">
-<h3 class="card-title">📝 Observações</h3>
-<textarea id="atv_observacoes" placeholder="Ex: O equipamento não foi ativo por complicações na ativação do NOC." rows="5"></textarea>
+<h3 class="card-title">🔴 Observações</h3>
+<textarea id="atv_observacoes" placeholder="Observações da ativação..." rows="5"></textarea>
 </div>
+
+<div class="card">
+<h3 class="card-title">📍 Localização</h3>
+<div class="form-group">
+<label>Localização / Google Maps</label>
+<input id="atv_gps_coords" placeholder="Clique em capturar GPS para gerar o link..." type="text"/>
+<button class="btn-gps" onclick="capturarGPSAtivacao()" type="button">📍 Capturar GPS</button>
+</div>
+</div>
+
 <div class="card">
 <h3 class="card-title">📸 Evidências de Campo (Fotos)</h3>
 <input accept="image/*,video/*" id="midia_ativacao" multiple="" type="file"/>
@@ -455,6 +461,10 @@
 <h3 class="card-title">🛠️ Manutenção</h3>
 <div class="form-row">
 <div class="form-group"><label>Protocolo</label><input id="mnt_protocolo" placeholder="Ex: 2371655" type="text"/></div>
+<div class="form-group"><label>Técnico responsável</label><input id="mnt_tecnico" placeholder="Nome do técnico" type="text"/></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Problema</label><input id="mnt_problema" placeholder="Descreva o problema identificado" type="text"/></div>
 <div class="form-group"><label>Resolução</label><input id="mnt_resolucao" placeholder="Ex: Conector da CTO danificado. Substituído." type="text"/></div>
 </div>
 <div class="form-row">
@@ -496,24 +506,28 @@
 </div>
 <div class="card">
 <h3 class="card-title">♦️ ONU / Roteador</h3>
+<div id="mnt_onu_lista">
+<div class="onu-bloco" style="border:1px solid var(--border-soft); border-radius:12px; padding:15px; margin-bottom:15px; background:#f8fafc;">
 <div class="form-row">
-<div class="form-group"><label>Acesso remoto?</label><select id="mnt_acesso_remoto" required><option disabled selected value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
-<div class="form-group"><label>IPv4?</label><select id="mnt_ipv4" required><option disabled selected value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
-</div>
-<div class="form-row">
-<div class="form-group"><label>IPv4/IPv6?</label><select id="mnt_ipv46" required><option disabled selected value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
-<div class="form-group"><label>Sinal ONU</label><input id="mnt_sinal_onu" placeholder="Ex: bridge" type="text"/></div>
+<div class="form-group"><label>Acesso remoto?</label><select class="mnt_onu_acesso" required><option disabled selected value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
+<div class="form-group"><label>IPv4?</label><select class="mnt_onu_ipv4" required><option disabled selected value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
 </div>
 <div class="form-row">
-<div class="form-group"><label>Canal 2.4</label><input id="mnt_canal_24" placeholder="Ex: auto" type="text"/></div>
-<div class="form-group"><label>Canal 5.8</label><input id="mnt_canal_58" type="text"/></div>
+<div class="form-group"><label>IPv4/IPv6?</label><select class="mnt_onu_ipv46" required><option disabled selected value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
+<div class="form-group"><label>Sinal ONU</label><input class="mnt_onu_sinal" placeholder="Ex: bridge" type="text"/></div>
 </div>
 <div class="form-row">
-<div class="form-group"><label>Frequência MHz 2.4</label><input id="mnt_freq_24" placeholder="Ex: auto" type="text"/></div>
-<div class="form-group"><label>Frequência MHz 5.8</label><input id="mnt_freq_58" type="text"/></div>
+<div class="form-group"><label>Canal 2.4</label><input class="mnt_onu_canal24" placeholder="Ex: auto" type="text"/></div>
+<div class="form-group"><label>Canal 5.8</label><input class="mnt_onu_canal58" type="text"/></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Frequência MHz 2.4</label><input class="mnt_onu_freq24" placeholder="Ex: auto" type="text"/></div>
+<div class="form-group"><label>Frequência MHz 5.8</label><input class="mnt_onu_freq58" type="text"/></div>
 </div>
 </div>
-<div class="card">
+</div>
+<button type="button" class="btn-add" onclick="adicionarOnuManutencao()">+ Adicionar ONU/Roteador</button>
+</div><div class="card">
 <h3 class="card-title">🔷 Repetidores e Firmware</h3>
 <div class="form-row">
 <div class="form-group"><label>Possui repetidores?</label><select id="mnt_repetidores" required><option disabled selected value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
@@ -612,6 +626,21 @@
         );
     }
 
+    function capturarGPSAtivacao() {
+        const inputGps = document.getElementById('atv_gps_coords');
+        inputGps.value = "⏳ Buscando...";
+        if (!navigator.geolocation) { inputGps.value = ""; return; }
+        navigator.geolocation.getCurrentPosition(
+            (p) => {
+                const lat = p.coords.latitude;
+                const lng = p.coords.longitude;
+                inputGps.value = `https://www.google.com/maps?q=${lat},${lng}`;
+            },
+            (erro) => { inputGps.value = ""; alert("Falha no GPS."); },
+            { enableHighAccuracy: false, timeout: 15000, maximumAge: 0 }
+        );
+    }
+
     let arquivosAcumulados = [];
     document.getElementById('midia').addEventListener('change', function(e) {
         for (let i = 0; i < this.files.length; i++) { arquivosAcumulados.push(this.files[i]); }
@@ -660,7 +689,120 @@
 
     function removerArquivoManutencao(index) { arquivosManutencao.splice(index, 1); atualizarVisualManutencao(); }
 
-    
+    function criarOnuAtivacao(removivel = true) {
+        const div = document.createElement('div');
+        div.className = 'onu-bloco onu-extra';
+        div.style.cssText = 'border:1px solid var(--border-soft); border-radius:12px; padding:15px; margin-bottom:15px; background:#f8fafc;';
+        div.innerHTML = `
+            <div class="form-row">
+                <div class="form-group"><label>SN</label><input class="atv_onu_sn" placeholder="Serial da ONU/Roteador" type="text"/></div>
+            </div>
+            ${removivel ? '<button type="button" class="btn-del" onclick="removerBlocoOnu(this)">Remover ONU/Roteador</button>' : ''}
+        `;
+        return div;
+    }
+
+    function adicionarOnuAtivacao() {
+        // Equipamentos adicionais precisam apenas do SN. Acesso Remoto, IPv4 e IPv6 ficam somente no primeiro equipamento.
+        document.getElementById('atv_onu_lista').appendChild(criarOnuAtivacao(true));
+    }
+
+    function criarOnuManutencao(removivel = true) {
+        const div = document.createElement('div');
+        div.className = 'onu-bloco onu-extra';
+        div.style.cssText = 'border:1px solid var(--border-soft); border-radius:12px; padding:15px; margin-bottom:15px; background:#f8fafc;';
+        div.innerHTML = `
+            <div class="form-row">
+                <div class="form-group"><label>Sinal ONU</label><input class="mnt_onu_sinal" placeholder="Ex: bridge" type="text"/></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Canal 2.4</label><input class="mnt_onu_canal24" placeholder="Ex: auto" type="text"/></div>
+                <div class="form-group"><label>Canal 5.8</label><input class="mnt_onu_canal58" type="text"/></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Frequência MHz 2.4</label><input class="mnt_onu_freq24" placeholder="Ex: auto" type="text"/></div>
+                <div class="form-group"><label>Frequência MHz 5.8</label><input class="mnt_onu_freq58" type="text"/></div>
+            </div>
+            ${removivel ? '<button type="button" class="btn-del" onclick="removerBlocoOnu(this)">Remover ONU/Roteador</button>' : ''}
+        `;
+        return div;
+    }
+
+    function adicionarOnuManutencao() {
+        // Equipamentos adicionais não repetem Acesso Remoto, IPv4 e IPv4/IPv6.
+        document.getElementById('mnt_onu_lista').appendChild(criarOnuManutencao(true));
+    }
+
+    function removerBlocoOnu(btn) {
+        const bloco = btn.closest('.onu-bloco');
+        if (bloco) bloco.remove();
+    }
+
+    function valorBloco(bloco, seletor, padrao = 'Não informado') {
+        const el = bloco.querySelector(seletor);
+        const valor = el ? String(el.value || '').trim() : '';
+        return escapeHtmlGlobal(valor || padrao);
+    }
+
+    function montarOnusAtivacao() {
+        let texto = '';
+        document.querySelectorAll('#atv_onu_lista .onu-bloco').forEach((bloco, index) => {
+            const extra = bloco.classList.contains('onu-extra');
+            texto += `
+<b>ONU/ROTEADOR ${index + 1}</b>
+`;
+            texto += `◼️ <b>SN:</b> ${valorBloco(bloco, '.atv_onu_sn')}
+`;
+            if (!extra) {
+                texto += `◼️ <b>Acesso Remoto:</b> ${valorBloco(bloco, '.atv_onu_acesso')}
+`;
+                texto += `◼️ <b>IPv4:</b> ${valorBloco(bloco, '.atv_onu_ipv4')}
+`;
+                texto += `◼️ <b>IPv6:</b> ${valorBloco(bloco, '.atv_onu_ipv6')}
+`;
+            }
+        });
+        return texto || '
+<b>ONU/ROTEADOR</b>
+Não informado
+';
+    }
+
+    function montarOnusManutencao() {
+        let texto = '';
+        document.querySelectorAll('#mnt_onu_lista .onu-bloco').forEach((bloco, index) => {
+            const extra = bloco.classList.contains('onu-extra');
+            texto += `
+<b>ONU/ROTEADOR ${index + 1}</b>
+`;
+            if (!extra) {
+                texto += `◼️ <b>Acesso Remoto:</b> ${valorBloco(bloco, '.mnt_onu_acesso')}
+`;
+                texto += `◼️ <b>IPv4:</b> ${valorBloco(bloco, '.mnt_onu_ipv4')}
+`;
+                texto += `◼️ <b>IPv4/IPv6:</b> ${valorBloco(bloco, '.mnt_onu_ipv46')}
+`;
+            }
+            texto += `🔷 <b>Canal</b>
+`;
+            texto += `◼️ <b>2.4:</b> ${valorBloco(bloco, '.mnt_onu_canal24')}
+`;
+            texto += `◼️ <b>5.8:</b> ${valorBloco(bloco, '.mnt_onu_canal58')}
+`;
+            texto += `◼️ <b>Frequência MHz 2.4:</b> ${valorBloco(bloco, '.mnt_onu_freq24')}
+`;
+            texto += `◼️ <b>Frequência MHz 5.8:</b> ${valorBloco(bloco, '.mnt_onu_freq58')}
+`;
+            texto += `◼️ <b>Sinal ONU:</b> ${valorBloco(bloco, '.mnt_onu_sinal')}
+`;
+        });
+        return texto || '
+<b>ONU/ROTEADOR</b>
+Não informado
+';
+    }
+
+
     function atualizarVisualDaLista() {
         const divLista = document.getElementById('lista_arquivos_selecionados');
         if (arquivosAcumulados.length === 0) { divLista.style.display = 'none'; return; }
@@ -803,7 +945,6 @@
     }
 
     async function processarAtivacao() {
-        const status = document.getElementById('status_bot');
         const btn = document.querySelector('#form_ativacao .btn-finalizar-servico');
         btn.disabled = true;
 
@@ -818,48 +959,53 @@
             return escapeHtmlGlobal(valor || padrao);
         };
         const linhaAtv = (titulo, valor) => `◼️ <b>${titulo}:</b> ${valor}\n`;
-        const simNao = (id) => campoAtv(id);
+        const statusTeste = (id) => campoAtv(id);
+        const linkMapsAtv = () => {
+            const valor = (document.getElementById('atv_gps_coords').value || '').trim();
+            if (!valor) return 'Não informado';
+            if (valor.startsWith('http')) return `<a href="${escapeHtmlGlobal(valor)}">Abrir no Google Maps</a>`;
+            return `<a href="https://www.google.com/maps?q=${encodeURIComponent(valor)}">Abrir no Google Maps</a>`;
+        };
 
-        let t = `<b>1 - Ativação Concluída</b>\n`;
-        t += `🔴 <b>Análise Técnica</b>\n\n`;
-        t += `🔷 <b>Resolução:</b> ${campoAtv('atv_resolucao', 'ATIVAÇÃO')}\n\n`;
-        t += `<b>PATRIMÔNIO UTILIZADO:</b> ${campoAtv('atv_patrimonio')}\n\n`;
-        t += `♦️ <b>Protocolo:</b> ${campoAtv('atv_protocolo')}\n\n`;
-        t += `♦️ <b>NOME DO CLIENTE:</b> ${campoAtv('atv_cliente')}\n`;
+        let t = `<b>1 - ATIVAÇÃO CONCLUÍDA</b>\n\n`;
+        t += `🔴 <b>ANÁLISE TÉCNICA</b>\n`;
+        t += `🔷<b>Resolução:</b> ${campoAtv('atv_resolucao')}\n`;
+        t += `♦️<b>TÉCNICO:</b> ${campoAtv('atv_tecnico')}\n\n`;
+
+        t += `♦️<b>CLIENTE:</b> ${campoAtv('atv_cliente')}\n`;
+        t += `♦️<b>RACK:</b> ${campoAtv('atv_rack')}\n\n`;
+
+        t += `<b>---- GPON ----</b>\n`;
         t += linhaAtv('Rede', campoAtv('atv_rede'));
-        t += linhaAtv('Slot', campoAtv('atv_slot'));
-        t += linhaAtv('Potência CTO', campoAtv('atv_potencia_cto'));
-        t += `\n♦️ <b>GPO</b>\n`;
-        t += linhaAtv('CTO Atenuada', simNao('atv_cto_atenuada'));
-        t += `\n♦️ <b>CTO/Vaga</b>\n`;
-        t += linhaAtv('Verificada', simNao('atv_cto_verificada'));
-        t += linhaAtv('Verificador', campoAtv('atv_verificador'));
-        t += linhaAtv('QT Vagas', campoAtv('atv_qtd_vagas'));
-        t += `\n♦️ <b>DROP</b>\n`;
-        t += linhaAtv('Etiquetado', simNao('atv_drop_etiquetado'));
-        t += linhaAtv('dBm DROP interno', campoAtv('atv_dbm_drop'));
-        t += linhaAtv('Início metragem do DROP', campoAtv('atv_drop_inicio'));
-        t += linhaAtv('Fim metragem do DROP', campoAtv('atv_drop_fim'));
-        t += `\n♦️ <b>ONU/ROTEADOR</b>\n`;
-        t += linhaAtv('Acesso Remoto', simNao('atv_acesso_remoto'));
-        t += linhaAtv('IPv4', simNao('atv_ipv4'));
-        t += linhaAtv('IPv4/IPv6', simNao('atv_ipv46'));
-        t += `🔷 <b>Canal</b>\n`;
-        t += linhaAtv('2.4', campoAtv('atv_canal_24'));
-        t += linhaAtv('5.8', campoAtv('atv_canal_58'));
-        t += linhaAtv('Frequência MHz 2.4', campoAtv('atv_freq_24'));
-        t += linhaAtv('Frequência MHz 5.8', campoAtv('atv_freq_58'));
-        t += linhaAtv('Sinal ONU', campoAtv('atv_sinal_onu'));
-        t += `\n🔷 <b>Possui Repetidores:</b> ${simNao('atv_repetidores')}\n`;
-        t += linhaAtv('Tipo', campoAtv('atv_tipo_repetidor'));
-        t += `\n♦️ <b>FIRMWARE</b>\n`;
-        t += linhaAtv('Atualizada', simNao('atv_firmware'));
-        t += `\n♦️ <b>NOC</b>\n`;
+        t += linhaAtv('OLT/PON', campoAtv('atv_olt_pon'));
+        t += linhaAtv('CTO', campoAtv('atv_cto'));
+        t += linhaAtv('Potência', campoAtv('atv_potencia'));
+
+        t += `\n<b>---- DROP ----</b>\n`;
+        t += linhaAtv('Metragem', campoAtv('atv_drop_metragem'));
+        t += linhaAtv('Dbm', campoAtv('atv_drop_dbm'));
+
+        t += `\n<b>---- ONU/ROTEADOR ----</b>\n`;
+        t += linhaAtv('SN', campoAtv('atv_sn'));
+        t += linhaAtv('Acesso Remoto', campoAtv('atv_acesso_remoto'));
+        t += linhaAtv('IPv4', campoAtv('atv_ipv4'));
+        t += linhaAtv('IPv6', campoAtv('atv_ipv6'));
+
+        t += `\n<b>---- WI-FI ----</b>\n`;
+        t += linhaAtv('2.4', campoAtv('atv_wifi_24'));
+        t += linhaAtv('5.0', campoAtv('atv_wifi_50'));
+
+        t += `\n<b>---- TESTES ----</b>\n`;
+        t += `◼️ <b>Navegação</b> [${statusTeste('atv_teste_navegacao')}]\n`;
+        t += `◼️ <b>Wi-Fi</b> [${statusTeste('atv_teste_wifi')}]\n`;
+        t += `◼️ <b>Cabeado</b> [${statusTeste('atv_teste_cabeado')}]\n`;
+
+        t += `\n<b>---- NOC ----</b>\n`;
         t += linhaAtv('Atendente', campoAtv('atv_noc_atendente'));
         t += linhaAtv('Hora Inicial', campoAtv('atv_noc_hora_inicial'));
         t += linhaAtv('Hora Final', campoAtv('atv_noc_hora_final'));
-        t += `\n━━━━━━━━━━━━━━━━━━━━\n`;
-        t += `<b>Observações:</b> ${campoAtv('atv_observacoes', 'Sem observações.')}\n`;
+
+        t += `\n🔴 <b>OBSERVAÇÕES:</b> ${campoAtv('atv_observacoes', 'Sem observações.')}\n`;
         t += `\n<b>✅ Relatório gerado pelo Vistoria Pro - Ora Empresas</b>`;
 
         const textoTelegramManual = prepararCopiaManual(t);
@@ -900,6 +1046,8 @@
         t += `🔴 <b>Análise Técnica</b>
 
 `;
+        t += `🔷 <b>Problema:</b> ${campoMnt('mnt_problema')}
+`;
         t += `🔷 <b>Resolução:</b> ${campoMnt('mnt_resolucao')}
 `;
         t += `<b>Patrimônio:</b> ${campoMnt('mnt_patrimonio')}
@@ -909,6 +1057,9 @@
 
 `;
         t += `♦️ <b>Nome do cliente:</b> ${campoMnt('mnt_cliente')}
+
+`;
+        t += `♦️ <b>Técnico:</b> ${campoMnt('mnt_tecnico')}
 
 `;
         t += `♦️ <b>CTO</b>
@@ -936,16 +1087,7 @@
         t += `
 ♦️ <b>ONU/ROTEADOR</b>
 `;
-        t += linhaMnt('Acesso Remoto', simNaoMnt('mnt_acesso_remoto'));
-        t += linhaMnt('IPv4', simNaoMnt('mnt_ipv4'));
-        t += linhaMnt('IPv4/IPv6', simNaoMnt('mnt_ipv46'));
-        t += `🔷 <b>Canal</b>
-`;
-        t += linhaMnt('2.4', campoMnt('mnt_canal_24'));
-        t += linhaMnt('5.8', campoMnt('mnt_canal_58'));
-        t += linhaMnt('Frequência MHz 2.4', campoMnt('mnt_freq_24'));
-        t += linhaMnt('Frequência MHz 5.8', campoMnt('mnt_freq_58'));
-        t += linhaMnt('Sinal ONU', campoMnt('mnt_sinal_onu'));
+        t += montarOnusManutencao();
         t += `
 🔷 <b>Possui Repetidores:</b> ${simNaoMnt('mnt_repetidores')}
 `;
