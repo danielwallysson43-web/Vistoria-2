@@ -122,9 +122,9 @@
 <div class="card">
 <h3 class="card-title">🧭 Selecione o Tipo de Serviço</h3>
 <div class="service-grid">
-<button class="service-card-btn" onclick="escolherServico('vistoria')" type="button">📋<strong>Vistoria</strong><span>Formulário atual de vistoria técnica.</span></button>
-<button class="service-card-btn" onclick="escolherServico('ativacao')" type="button">✅<strong>Ativação</strong><span>Questionário completo de ativação concluída.</span></button>
-<button class="service-card-btn" onclick="escolherServico('manutencao')" type="button">🛠️<strong>Manutenção</strong><span>Questionário completo de manutenção técnica.</span></button>
+<button class="service-card-btn" onclick="escolherServico('vistoria')" data-service="vistoria" type="button">📋<strong>Vistoria</strong><span>Formulário atual de vistoria técnica.</span></button>
+<button class="service-card-btn" onclick="escolherServico('ativacao')" data-service="ativacao" type="button">✅<strong>Ativação</strong><span>Questionário completo de ativação concluída.</span></button>
+<button class="service-card-btn" onclick="escolherServico('manutencao')" data-service="manutencao" type="button">🛠️<strong>Manutenção</strong><span>Questionário completo de manutenção técnica.</span></button>
 </div>
 </div>
 </div>
@@ -499,8 +499,11 @@
 <div class="form-group"><label>dBm DROP interno</label><input id="mnt_dbm_drop" placeholder="Ex: -24" type="text"/></div>
 </div>
 <div class="form-row">
-<div class="form-group"><label>Início metragem do DROP</label><input id="mnt_drop_inicio" type="text"/></div>
-<div class="form-group"><label>Fim metragem do DROP</label><input id="mnt_drop_fim" type="text"/></div>
+<div class="form-group"><label>Início metragem do DROP</label><input id="mnt_drop_inicio" type="number" step="0.01" placeholder="Ex: 10" oninput="calcularMetragemDropManutencao()"/></div>
+<div class="form-group"><label>Fim metragem do DROP</label><input id="mnt_drop_fim" type="number" step="0.01" placeholder="Ex: 5" oninput="calcularMetragemDropManutencao()"/></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Metragem utilizada</label><input id="mnt_drop_total" type="text" placeholder="Calculado automaticamente" readonly style="background:#f1f5f9; font-weight:800; color:var(--ora-dark);"/></div>
 </div>
 </div>
 <div class="card">
@@ -610,7 +613,35 @@
     }
 
 
-    document.getElementById('data_vistoria').valueAsDate = new Date();
+    // Garante que os botões da tela inicial funcionem mesmo se o navegador estiver com cache antigo.
+    window.escolherServico = escolherServico;
+    window.voltarInicio = voltarInicio;
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('[data-service]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                escolherServico(btn.getAttribute('data-service'));
+            });
+        });
+
+        const dataVistoria = document.getElementById('data_vistoria');
+        if (dataVistoria) dataVistoria.valueAsDate = new Date();
+
+        // Desativa service workers/cache antigo durante a fase de alterações.
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function (regs) {
+                regs.forEach(function (reg) { reg.unregister(); });
+            }).catch(function () {});
+        }
+        if (window.caches) {
+            caches.keys().then(function (keys) {
+                keys.forEach(function (key) { caches.delete(key); });
+            }).catch(function () {});
+        }
+    });
+
+    // Data preenchida dentro do DOMContentLoaded para evitar erro de carregamento.
+    // document.getElementById('data_vistoria').valueAsDate = new Date();
 
     function alternarMódulos() {
         const tipo = document.getElementById('tipo_projeto').value;
@@ -664,6 +695,24 @@
             (erro) => { inputGps.value = ""; alert("Falha no GPS."); },
             { enableHighAccuracy: false, timeout: 15000, maximumAge: 0 }
         );
+    }
+
+
+    function calcularMetragemDropManutencao() {
+        const inicioInput = document.getElementById('mnt_drop_inicio');
+        const fimInput = document.getElementById('mnt_drop_fim');
+        const totalInput = document.getElementById('mnt_drop_total');
+        if (!inicioInput || !fimInput || !totalInput) return;
+
+        const inicio = parseFloat(String(inicioInput.value).replace(',', '.'));
+        const fim = parseFloat(String(fimInput.value).replace(',', '.'));
+
+        if (Number.isFinite(inicio) && Number.isFinite(fim)) {
+            const total = Math.abs(inicio - fim);
+            totalInput.value = `${total.toLocaleString('pt-BR', { maximumFractionDigits: 2 })} m`;
+        } else {
+            totalInput.value = '';
+        }
     }
 
     let arquivosAcumulados = [];
@@ -1112,8 +1161,10 @@ Não informado
 `;
         t += linhaMnt('Etiquetado', simNaoMnt('mnt_drop_etiquetado'));
         t += linhaMnt('dBm DROP interno', campoMnt('mnt_dbm_drop'));
+        calcularMetragemDropManutencao();
         t += linhaMnt('Início metragem do DROP', campoMnt('mnt_drop_inicio'));
         t += linhaMnt('Fim metragem do DROP', campoMnt('mnt_drop_fim'));
+        t += linhaMnt('Metragem utilizada', campoMnt('mnt_drop_total'));
         t += `
 ♦️ <b>ONU/ROTEADOR</b>
 `;
