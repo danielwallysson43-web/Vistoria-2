@@ -460,7 +460,6 @@
 <div class="card">
 <h3 class="card-title">🛠️ Manutenção</h3>
 <div class="form-row">
-<div class="form-group"><label>Protocolo</label><input id="mnt_protocolo" placeholder="Ex: 2371655" type="text"/></div>
 <div class="form-group"><label>Técnico responsável</label><input id="mnt_tecnico" placeholder="Nome do técnico" type="text"/></div>
 </div>
 <div class="form-row">
@@ -531,6 +530,9 @@
 <h3 class="card-title">🔷 Repetidores e Firmware</h3>
 <div class="form-row">
 <div class="form-group"><label>Possui repetidores?</label><select id="mnt_repetidores" required><option disabled selected value="">Selecione...</option><option>Sim</option><option>Não</option></select></div>
+<div class="form-group"><label>Quantidade de repetidores</label><input id="mnt_qtd_repetidores" min="0" placeholder="Ex: 2" type="number"/></div>
+</div>
+<div class="form-row">
 <div class="form-group"><label>Tipo de repetidor</label><select id="mnt_tipo_repetidor" required><option disabled selected value="">Selecione...</option><option>Por cabo</option><option>Por Wi-Fi</option><option>Não se aplica</option></select></div>
 </div>
 <div class="form-row">
@@ -550,6 +552,14 @@
 <div class="card">
 <h3 class="card-title">🔴 Observações</h3>
 <textarea id="mnt_observacoes" placeholder="Observações da manutenção..." rows="5"></textarea>
+</div>
+<div class="card">
+<h3 class="card-title">📍 Localização</h3>
+<div class="form-group">
+<label>Localização / Google Maps</label>
+<input id="mnt_gps_coords" placeholder="Clique em capturar GPS para gerar o link..." type="text"/>
+<button class="btn-gps" onclick="capturarGPSManutencao()" type="button">📍 Capturar GPS</button>
+</div>
 </div>
 <div class="card">
 <h3 class="card-title">📸 Evidências de Campo (Fotos)</h3>
@@ -628,6 +638,21 @@
 
     function capturarGPSAtivacao() {
         const inputGps = document.getElementById('atv_gps_coords');
+        inputGps.value = "⏳ Buscando...";
+        if (!navigator.geolocation) { inputGps.value = ""; return; }
+        navigator.geolocation.getCurrentPosition(
+            (p) => {
+                const lat = p.coords.latitude;
+                const lng = p.coords.longitude;
+                inputGps.value = `https://www.google.com/maps?q=${lat},${lng}`;
+            },
+            (erro) => { inputGps.value = ""; alert("Falha no GPS."); },
+            { enableHighAccuracy: false, timeout: 15000, maximumAge: 0 }
+        );
+    }
+
+    function capturarGPSManutencao() {
+        const inputGps = document.getElementById('mnt_gps_coords');
         inputGps.value = "⏳ Buscando...";
         if (!navigator.geolocation) { inputGps.value = ""; return; }
         navigator.geolocation.getCurrentPosition(
@@ -762,10 +787,10 @@
 `;
             }
         });
-        return texto || '
+        return texto || `
 <b>ONU/ROTEADOR</b>
 Não informado
-';
+`;
     }
 
     function montarOnusManutencao() {
@@ -796,10 +821,10 @@ Não informado
             texto += `◼️ <b>Sinal ONU:</b> ${valorBloco(bloco, '.mnt_onu_sinal')}
 `;
         });
-        return texto || '
+        return texto || `
 <b>ONU/ROTEADOR</b>
 Não informado
-';
+`;
     }
 
 
@@ -1040,6 +1065,14 @@ Não informado
         const linhaMnt = (titulo, valor) => `◼️ <b>${titulo}:</b> ${valor}
 `;
         const simNaoMnt = (id) => campoMnt(id);
+        const linkMapsMnt = () => {
+            const valor = (document.getElementById('mnt_gps_coords').value || '').trim();
+            if (!valor) return 'Não capturado';
+            if (valor.startsWith('http://') || valor.startsWith('https://')) {
+                return `<a href="${escapeHtmlGlobal(valor)}">Abrir no Google Maps</a>`;
+            }
+            return `<a href="https://www.google.com/maps?q=${encodeURIComponent(valor)}">Abrir no Google Maps</a>`;
+        };
 
         let t = `<b>Manutenção</b>
 `;
@@ -1051,9 +1084,6 @@ Não informado
         t += `🔷 <b>Resolução:</b> ${campoMnt('mnt_resolucao')}
 `;
         t += `<b>Patrimônio:</b> ${campoMnt('mnt_patrimonio')}
-
-`;
-        t += `♦️ <b>Protocolo:</b> ${campoMnt('mnt_protocolo')}
 
 `;
         t += `♦️ <b>Nome do cliente:</b> ${campoMnt('mnt_cliente')}
@@ -1091,6 +1121,7 @@ Não informado
         t += `
 🔷 <b>Possui Repetidores:</b> ${simNaoMnt('mnt_repetidores')}
 `;
+        t += linhaMnt('Quantidade', campoMnt('mnt_qtd_repetidores'));
         t += linhaMnt('Tipo', campoMnt('mnt_tipo_repetidor'));
         t += `
 ♦️ <b>FIRMWARE</b>
@@ -1106,6 +1137,9 @@ Não informado
 ━━━━━━━━━━━━━━━━━━━━
 `;
         t += `🔴 <b>Observações:</b> ${campoMnt('mnt_observacoes', 'Sem observações.')}
+`;
+        t += `
+📍 <b>Localização:</b> ${linkMapsMnt()}
 `;
         t += `
 <b>✅ Relatório gerado pelo Vistoria Pro - Ora Empresas</b>`;
