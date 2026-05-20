@@ -350,17 +350,8 @@
 <input accept="image/*,video/*" id="midia" multiple="" type="file"/>
 <div class="lista-arquivos" id="lista_arquivos_selecionados"></div>
 </div>
-<div id="status_bot"></div>
 <div class="footer-btns">
 <button id="btn_finalizar" onclick="processarEnvioApi()" type="button">🚀 Finalizar Vistoria</button>
-</div>
-<div id="backup_box">
-<h3 class="card-title" style="color: var(--ora-cyan);">💾 Relatório Gerado</h3>
-<p style="font-size: 13px; color: var(--text-muted); margin-top: -15px; margin-bottom: 15px;">
-                    O texto abaixo usa o padrão do Telegram para negrito com **texto**. Copie e cole no Telegram.
-                </p>
-<div aria-label="Prévia do relatório formatado" class="copy-preview" contenteditable="true" id="texto_copia"></div>
-<button onclick="copiarTextoBackup()" style="width: 100%; padding: 15px; background: var(--ora-cyan); color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 15px;" type="button">📋 Copiar Relatório para Telegram</button>
 </div>
 </div>
 <div id="form_ativacao" style="display:none;">
@@ -456,6 +447,7 @@
 </div>
 <div class="footer-btns">
 <button class="btn-finalizar-servico" onclick="processarAtivacao()" type="button">🚀 Finalizar Ativação</button>
+</div>
 </div>
 <div id="form_manutencao" style="display:none;">
 <button class="btn-back" onclick="voltarInicio()" type="button">← Voltar para tipo de serviço</button>
@@ -555,6 +547,14 @@
 </div>
 </div>
 
+<div id="status_bot"></div>
+<div id="backup_box">
+<h3 class="card-title" style="color: var(--ora-cyan);">💾 Relatório Gerado</h3>
+<p style="font-size: 13px; color: var(--text-muted); margin-top: -15px; margin-bottom: 15px;">
+                    O texto abaixo usa o padrão do Telegram para negrito com **texto**. Copie e cole no Telegram.
+                </p>
+<div aria-label="Prévia do relatório formatado" class="copy-preview" contenteditable="true" id="texto_copia"></div>
+<button onclick="copiarTextoBackup()" style="width: 100%; padding: 15px; background: var(--ora-cyan); color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 15px;" type="button">📋 Copiar Relatório para Telegram</button>
 </div>
 
 </div>
